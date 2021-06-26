@@ -1,0 +1,60 @@
+ARG ALPINE_TAG=latest
+FROM alpine:latest as toolchain
+RUN apk update && \
+    apk add --no-cache \
+    git \
+    build-base \
+    cmake \
+    automake \
+    autoconf \
+    pkgconfig \
+    libtool \
+    coreutils \
+    curl \
+    unzip \
+    gettext-tiny-dev
+
+FROM toolchain as tmux-build
+WORKDIR /tmux
+
+# Add additional dependencies for tmux (may be moved into toolchain)
+RUN apk add --no-cache \
+    libevent-dev \
+    ncurses-dev \
+    byacc
+
+ARG STD_XDG_DATA_HOME=/root/.local/share
+ARG STD_XDG_CONFIG_HOME=/root/.local/share
+
+ARG TMUX_GIT_TAG=3.2a
+ARG TMUX_OUTPUT_DIR=/tmux/tmux-install
+ARG TMUX_XDG_DATA_HOME=$STD_XDG_DATA_HOME
+ARG TMUX_XDG_CONFIG_HOME=$STD_XDG_CONFIG_HOME
+
+ENV XDG_DATA_HOME=$TMUX_XDG_DATA_HOME
+ENV XDG_CONFIG_HOME=$TMUX_XDG_CONFIG_HOME
+ENV TMUX_OUTPUT=$TMUX_OUTPUT_DIR
+
+RUN git clone https://github.com/tmux/tmux.git --branch $TMUX_GIT_TAG .
+
+RUN ./autogen.sh && ./configure --prefix="$TMUX_OUTPUT" && make install
+
+FROM base-developer:$ALPINE_TAG
+WORKDIR /projects
+
+ARG STD_XDG_DATA_HOME=/root/.local/share
+ARG STD_XDG_CONFIG_HOME=/root/.local/share
+
+ENV XDG_CONFIG_HOME=$STD_XDG_CONFIG_HOME
+ENV XDG_DATA_HOME=$STD_XDG_DATA_HOME
+
+COPY --from=tmux-build /tmux/tmux-install  /tmux
+
+RUN apk update && \
+    apk add --no-cache \
+    tmux \
+    openssh-server
+
+RUN rm /usr/bin/tmux && ln -s /tmux/bin/tmux /usr/bin/tmux
+
+CMD ["tmux"]

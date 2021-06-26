@@ -1,0 +1,49 @@
+version: "3.8"
+
+# Templates
+x-base-developer:
+  &default-base-developer
+  build:
+    context: .
+    dockerfile: Dockerfile-base-developer
+  image: ${DOCKER_REGISTY_AND_PATH:-}base-developer:latest
+x-nvim-developer:
+  &default-nvim-developer
+  image: ${DOCKER_REGISTY_AND_PATH}nvim-developer:latest
+  build: 
+    context: .
+    dockerfile: Dockerfile-nvim
+    #target: #(toolchain, neovim-build)
+  volumes:
+    - $HOME/projects:/projects
+x-tmux-developer:
+  &default-tmux-developer
+  image: ${DOCKER_REGISTY_AND_PATH}tmux-developer:latest
+  build: 
+    context: .
+    dockerfile: Dockerfile-tmux
+    #target: #(toolchain, tmux-build)
+  volumes:
+    - $HOME/projects:/projects
+
+# Services
+services:
+  base-developer_latest:
+    *default-base-developer
+  base-developer_specific:
+    << : *default-base-developer
+    image: ${DOCKER_REGISTY_AND_PATH:-}base-developer:${ALPINE_TAG}
+  nvim-developer_latest:
+    *default-nvim-developer
+  nvim-developer_specific:
+    <<  : *default-nvim-developer
+    image: ${DOCKER_REGISTY_AND_PATH}nvim-developer:${NEOVIM_DOCKER_TAG}
+  tmux-developer_latest:
+    *default-tmux-developer
+  tmux-developer_specific:
+    <<  : *default-tmux-developer
+    image: ${DOCKER_REGISTY_AND_PATH}tmux-developer:${TMUX_DOCKER_TAG}
+  # vscode-developer:
+  #     build: 
+  #         context: .
+  #         dockerfile: Dockerfile-vscode

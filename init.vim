@@ -6,4 +6,3 @@ Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 
-#autocmd VimEnter * PlugInstall
