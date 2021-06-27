@@ -1,0 +1,6 @@
+.*                   eol=lf
+Dockerfile*          eol=lf
+*.yml                eol=lf
+*.vim                eol=lf
+*.md                 eol=lf
+.env                 eol=lf
