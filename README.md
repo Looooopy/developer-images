@@ -53,6 +53,9 @@ It includes standard things as;
     openssh-client
     curl
 
+> TODO:
+> * Generate/Pickup ssh keys for github
+
 ### nvim-developer
 
 The image is based on `base-developer` and includes
@@ -71,6 +74,17 @@ The image is based on `base-developer` and includes
 
     - tmux
     - openssh-server
+
+> TODO 
+>
+>  SSH
+>  * configure ssh server
+>  * generate ssh keys
+>  * start ssh server
+>
+>  TMUX 
+>  * Add common plugins
+>  * configure it to be able to store sessions on a volume
 
 ### vscode-developer
 
