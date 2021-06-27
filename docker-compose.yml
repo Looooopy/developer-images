@@ -14,6 +14,9 @@ x-nvim-developer:
     context: .
     dockerfile: Dockerfile-nvim
     #target: #(toolchain, neovim-build)
+    args:
+      - STD_XDG_DATA_HOME
+      - STD_XDG_CONFIG_HOME
   volumes:
     - $HOME/projects:/projects
 x-tmux-developer:
@@ -23,6 +26,9 @@ x-tmux-developer:
     context: .
     dockerfile: Dockerfile-tmux
     #target: #(toolchain, tmux-build)
+    args:
+      - STD_XDG_DATA_HOME
+      - STD_XDG_CONFIG_HOME
   volumes:
     - $HOME/projects:/projects
 
