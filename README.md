@@ -53,20 +53,21 @@ It includes standard things as;
     openssh-client
     curl
 
-> TODO:
+> TODO
+>
 > * Generate/Pickup ssh keys for github
 
 ### nvim-developer
 
 The image is based on `base-developer` and includes
 
-1. vim-plug to manage plugins
+1. [vim-plug](https://github.com/junegunn/vim-plug) to manage plugins
 
 2. Plugins [init.vim](./initvim):
 
-   - nvim-telescope/telescope.nvim
-   - nvim-lua/popup.nvim
-   - nvim-lua/plenary.nvim
+   * [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+   * [nvim-lua/popup.nvim](https://github.com/nvim-lua/popup.nvim) - required by telescope
+   * [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim) - required by telescope
 
 ### tmux-developer
 
@@ -75,22 +76,50 @@ The image is based on `base-developer` and includes
     - tmux
     - openssh-server
 
-> TODO 
+> TODO
 >
->  SSH
->  * configure ssh server
->  * generate ssh keys
->  * start ssh server
+> * SSH
 >
->  TMUX 
->  * Add common plugins
->  * configure it to be able to store sessions on a volume
+>   * configure ssh server
+>   * generate ssh keys
+>   * start ssh server
+>
+> * TMUX
+>
+>   * Add common plugins
+>   * configure it to be able to store sessions on a volume
 
 ### vscode-developer
 
 This image is only working on linux so i have disabled it until futher notice, beacuse i am running things in MacOS.
 
+Read more here: https://daksh-jain00.medium.com/running-gui-app-vscode-in-a-docker-container-9162a8822c63
+
 > Mabe it is possible to run in MacOS, but need more investigation.
+
+### rider-developer
+
+> Not done anything on this yet more than some investigation.
+
+#### Linux: prerequisites
+
+#### For regular .NET or Mono applications
+
+install the latest stable Mono release from http://www.mono-project.com/download/.
+
+#### For .NET Core applications, install .NET Core for Linux
+
+    apt-get update
+    apt-get install -y
+    apt-transport-https &
+    apt-get update && apt-get > install -y dotnet-sdk-5.0
+
+#### Install Raider for linux
+
+    wget https://download.jetbrains.com/rider/JetBrains.Rider-2021.1.3.tar.gz
+    tar -xzf JetBrains.Rider-2021.1.3.tar.gz -C /opt
+    cd opt/JetBrains\ Rider-2021.1.3/bin/
+    ./rider.sh
 
 ## Run containers
 
