@@ -50,6 +50,10 @@ services:
     <<  : *default-tmux-developer
     image: ${DOCKER_REGISTY_AND_PATH}tmux-developer:${TMUX_DOCKER_TAG}
   # vscode-developer:
-  #     build: 
+  #     build:
   #         context: .
   #         dockerfile: Dockerfile-vscode
+  # rider-developer:
+  #     build:
+  #         context: .
+  #         dockerfile: Dockerfile-rider
