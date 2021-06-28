@@ -4,3 +4,4 @@ Dockerfile*          eol=lf
 *.vim                eol=lf
 *.md                 eol=lf
 .env                 eol=lf
+*.conf               eol=lf

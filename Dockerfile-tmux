@@ -49,12 +49,19 @@ ENV XDG_CONFIG_HOME=$STD_XDG_CONFIG_HOME
 ENV XDG_DATA_HOME=$STD_XDG_DATA_HOME
 
 COPY --from=tmux-build /tmux/tmux-install  /tmux
+COPY ./tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
 
+# TMUX binaries
 RUN apk update && \
     apk add --no-cache \
     tmux \
-    openssh-server
+    openssh-server \
+    bash
 
-RUN rm /usr/bin/tmux && ln -s /tmux/bin/tmux /usr/bin/tmux
+RUN rm /usr/bin/tmux && ln -s /tmux/bin/tmux /usr/bin/tmux && \
+    # Tmux Plugin Manager
+    git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm && \
+    # Install all plugins listend in tmux.conf
+    $XDG_CONFIG_HOME/tmux/plugins/tpm/bin/install_plugins
 
 CMD ["tmux"]
