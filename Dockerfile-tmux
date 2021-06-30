@@ -35,7 +35,8 @@ ENV XDG_DATA_HOME=$TMUX_XDG_DATA_HOME
 ENV XDG_CONFIG_HOME=$TMUX_XDG_CONFIG_HOME
 ENV TMUX_OUTPUT=$TMUX_OUTPUT_DIR
 
-RUN git clone https://github.com/tmux/tmux.git --branch $TMUX_GIT_TAG .
+RUN git clone https://github.com/tmux/tmux.git --branch $TMUX_GIT_TAG . && \
+    git clone https://github.com/gpakosz/.tmux.git
 
 RUN ./autogen.sh && ./configure --prefix="$TMUX_OUTPUT" && make install
 
@@ -45,23 +46,34 @@ WORKDIR /projects
 ARG STD_XDG_DATA_HOME=/root/.local/share
 ARG STD_XDG_CONFIG_HOME=/root/.local/share
 
-ENV XDG_CONFIG_HOME=$STD_XDG_CONFIG_HOME
-ENV XDG_DATA_HOME=$STD_XDG_DATA_HOME
+ENV XDG_CONFIG_HOME=$STD_XDG_CONFIG_HOME \
+    XDG_DATA_HOME=$STD_XDG_DATA_HOME \
+    LC_ALL=en_US.UTF-8
 
 COPY --from=tmux-build /tmux/tmux-install  /tmux
-COPY ./tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
+COPY --from=tmux-build /tmux/.tmux/.tmux.conf  $XDG_CONFIG_HOME/tmux/.tmux.conf
+COPY --from=tmux-build /tmux/.tmux/.tmux.conf.local  $XDG_CONFIG_HOME/tmux/.tmux.conf.local
+COPY ./plugins.conf $XDG_CONFIG_HOME/tmux/plugins.conf
 
 # TMUX binaries
 RUN apk update && \
     apk add --no-cache \
     tmux \
-    openssh-server \
-    bash
+# awk already exist in alpine, perl and sed required by .tmux.conf fetched from git
+    perl \
+    sed \
+    openssh-server
 
-RUN rm /usr/bin/tmux && ln -s /tmux/bin/tmux /usr/bin/tmux && \
-    # Tmux Plugin Manager
-    git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm && \
-    # Install all plugins listend in tmux.conf
-    $XDG_CONFIG_HOME/tmux/plugins/tpm/bin/install_plugins
+# Remove binary from apk install and symlink to our newly built tmux
+RUN rm /usr/bin/tmux && ln -sf /tmux/bin/tmux /usr/bin/tmux \
+# Symlink to the .tmux.conf fetched from git
+    &&  ln -sf $XDG_CONFIG_HOME/tmux/.tmux.conf /root/.tmux.conf && \
+# Copy the .tmux.conf.local fetched from git
+    cp $XDG_CONFIG_HOME/tmux/.tmux.conf.local /root/.tmux.conf.local
+
+#     # Tmux Plugin Manager
+#     && git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm \
+#     # Install all plugins listend in tmux.conf
+#     && $XDG_CONFIG_HOME/tmux/plugins/tpm/bin/install_plugins
 
 CMD ["tmux"]

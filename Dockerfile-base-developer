@@ -6,3 +6,5 @@ RUN apk update && \
         git \
         openssh-client \
         curl \
+        sed \
+        jq
