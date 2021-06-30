@@ -67,9 +67,10 @@ RUN apk update && \
 # Remove binary from apk install and symlink to our newly built tmux
 RUN rm /usr/bin/tmux && ln -sf /tmux/bin/tmux /usr/bin/tmux \
 # Symlink to the .tmux.conf fetched from git
-    &&  ln -sf $XDG_CONFIG_HOME/tmux/.tmux.conf /root/.tmux.conf && \
+    &&  ln -sf $XDG_CONFIG_HOME/tmux/.tmux.conf /root/.tmux.conf \
 # Copy the .tmux.conf.local fetched from git
-    cp $XDG_CONFIG_HOME/tmux/.tmux.conf.local /root/.tmux.conf.local
+    && cp $XDG_CONFIG_HOME/tmux/.tmux.conf.local /root/.tmux.conf.local \
+    && echo "stty -ixoff" > /root/.profile
 
 #     # Tmux Plugin Manager
 #     && git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm \

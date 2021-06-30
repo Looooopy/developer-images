@@ -89,6 +89,20 @@ The image is based on `base-developer` and includes
 >   * Add common plugins
 >   * configure it to be able to store sessions on a volume
 
+#### Troubleshooting
+
+When you notice that you bash promt do not except input thats probably beacuase you have accedental turn off flow control by keyboard shgortcut
+
+    Ctrl + s
+
+You can turn on flow control by pressing, which will alow you to see what you are typing again.
+
+    Ctrl + q
+
+> I had to allow tty to disable flow control and that in this turn of the functionality to exit docker container with ```Ctrl + q```
+> You need to type exit in shell to terminate the docker container.
+
+
 ### vscode-developer
 
 This image is only working on linux so i have disabled it until futher notice, beacuse i am running things in MacOS.
