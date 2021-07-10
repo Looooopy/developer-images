@@ -1,10 +1,30 @@
 ARG ALPINE_TAG=latest
 FROM alpine:$ALPINE_TAG
 
+ARG DEV_USER
+ARG DEV_UID
+ARG DEV_GID
+
+ENV DEV_USER=$DEV_USER \
+    DEV_UID=$DEV_UID \
+    DEV_GID=$DEV_GID
+
+RUN addgroup $DEV_USER \
+    && adduser \
+        --shell /bin/bash \
+        --disabled-password \
+        --gecos "${DEV_USER}" \
+        --ingroup ${DEV_USER} \
+        -u ${DEV_UID} \
+        ${DEV_USER}
+
 RUN apk update && \
     apk add --no-cache \
         git \
         openssh-client \
         curl \
         sed \
-        jq
+        jq \
+        htop \
+        neofetch \
+        cmatrix
