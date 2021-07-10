@@ -1,5 +1,6 @@
 ARG ALPINE_TAG=latest
-FROM alpine:latest as toolchain
+########## toolchain ##########
+FROM base-developer:$ALPINE_TAG as toolchain
 RUN apk update && \
     apk add --no-cache \
     git \
@@ -14,11 +15,21 @@ RUN apk update && \
     unzip \
     gettext-tiny-dev
 
+########## neovim-build ##########
 FROM toolchain as neovim-build
 WORKDIR /neovim
 
-ARG STD_XDG_DATA_HOME=/root/.local/share
-ARG STD_XDG_CONFIG_HOME=/root/.local/share
+ARG DEV_USER
+ARG DEV_UID
+ARG DEV_GID
+
+ENV USER=$DEV_USER \
+    UID=${DEV_UID} \
+    GID=${DEV_GID} \
+    USERNAME=$DEV_USER
+
+ARG STD_XDG_DATA_HOME=/home/$DEV_USER/.local/share
+ARG STD_XDG_CONFIG_HOME=/home/$DEV_USER/.local/share
 
 ARG NEOVIM_OUTPUT_DIR=/neovim/nvim-install
 ARG NEOVIM_GIT_TAG=nightly
@@ -33,14 +44,23 @@ RUN make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$NEO
 RUN curl -fLo "${XDG_DATA_HOME:?}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+
+########## FINAL IMAGE ##########
 FROM base-developer:$ALPINE_TAG
 WORKDIR /projects
 
-ARG STD_XDG_DATA_HOME=/root/.local/share
-ARG STD_XDG_CONFIG_HOME=/root/.local/share
+ARG DEV_USER
+ARG DEV_UID
+ARG DEV_GID
 
-ENV XDG_CONFIG_HOME=$STD_XDG_CONFIG_HOME
-ENV XDG_DATA_HOME=$STD_XDG_DATA_HOME
+ARG STD_XDG_DATA_HOME=/home/$DEV_USER/.local/share
+ARG STD_XDG_CONFIG_HOME=/home/$DEV_USER/.local/share
+
+ENV ENV DEV_USER=$DEV_USER \
+    DEV_UID=$DEV_UID \
+    DEV_GID=$DEV_GID \
+    XDG_CONFIG_HOME=$STD_XDG_CONFIG_HOME \
+    XDG_DATA_HOME=$STD_XDG_DATA_HOME
 
 COPY --from=neovim-build /neovim/nvim-install /neovim
 COPY --from=neovim-build $XDG_DATA_HOME $XDG_DATA_HOME
@@ -52,6 +72,8 @@ RUN apk update && \
     rm /usr/bin/nvim && ln -s /neovim/bin/nvim /usr/bin/nvim && \
     rm -r /usr/share/nvim && ln -s /neovim/share /usr/share/nvim && \
     ln -s /neovim/lib/parser/c.so /usr/lib/c.so
+
+USER ${DEV_USER}
 
 RUN nvim --headless +PlugInstall +qall
 

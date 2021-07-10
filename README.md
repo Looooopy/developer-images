@@ -2,17 +2,41 @@
 
 Setup a docker container with all essential binaries to do some code editing.
 
-## Build image
+## Running a container
 
-If you wish to build all images, just run
+### Script to run
 
-    docker-compose build
+Syntax:
 
-If you wish to build a specific image, run one or more of the options
+    developer-images>
+    ./run [tmux or mnvim] [latest or specific] [sh]
 
-    docker-compose build [options]
+Sample:
 
-### Options
+> Run tmux latest
+
+    developer-images>
+    ./run tmux
+
+> Run tmux specific version and bypass start of tmux ans just login to shell
+
+    developer-images>
+    ./run tmux specific sh
+
+
+### docker-compose instead of script
+
+If you just want to run a specific container with [options](#options)
+
+    developer-images>
+    DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose run --rm [options]
+
+If you jsut want the shell
+
+    developer-images>
+    DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose run --rm [options] sh
+
+## Options
 
 Available build options
 
@@ -27,6 +51,17 @@ Available build options
 | tmux-developer          | Build both specific and latest |                                |            |
 | tmux-developer_specific | Build specific based on .env   |                                | 31.5MB     |
 | tmux-developer_latest   | Build on latest base-developer |                                | 31.5MB     |
+
+
+## Build image
+
+If you wish to build all images, just run
+
+    DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose build
+
+If you wish to build a specific image, run one or more of the [options](#options)
+
+    DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose build [options]
 
 ### Environment
 
@@ -84,10 +119,6 @@ The image is based on `base-developer` and includes
 >   * generate ssh keys
 >   * start ssh server
 >
-> * TMUX
->
->   * Add common plugins
->   * configure it to be able to store sessions on a volume
 
 #### Troubleshooting
 

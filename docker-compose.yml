@@ -1,38 +1,62 @@
 version: "3.8"
+## See https://github.com/compose-spec/compose-spec/blob/master/spec.md
 
-# Templates
+## Templates
 x-base-developer:
   &default-base-developer
   build:
     context: .
     dockerfile: Dockerfile-base-developer
-  image: ${DOCKER_REGISTY_AND_PATH:-}base-developer:latest
-x-nvim-developer:
-  &default-nvim-developer
-  image: ${DOCKER_REGISTY_AND_PATH}nvim-developer:latest
-  build: 
-    context: .
-    dockerfile: Dockerfile-nvim
-    #target: #(toolchain, neovim-build)
     args:
-      - STD_XDG_DATA_HOME
-      - STD_XDG_CONFIG_HOME
-  volumes:
-    - $HOME/projects:/projects
+      ALPINE_TAG: ${ALPINE_TAG}
+      DEV_USER: ${DEV_USER}
+      DEV_UID: "${DEV_UID:?'Missing DEV_UID Run DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose build [options]'}"
+      DEV_GID: "${DEV_GID}"
+  image: ${DOCKER_REGISTY_AND_PATH:-}base-developer:latest
 x-tmux-developer:
   &default-tmux-developer
   image: ${DOCKER_REGISTY_AND_PATH}tmux-developer:latest
   build: 
     context: .
     dockerfile: Dockerfile-tmux
-    #target: #(toolchain, tmux-build)
+    #target: toolchain
+    #target: tmux-build
     args:
-      - STD_XDG_DATA_HOME
-      - STD_XDG_CONFIG_HOME
+      ALPINE_TAG:
+      STD_XDG_DATA_HOME:
+      STD_XDG_CONFIG_HOME:
+      DEV_USER: ${DEV_USER}
+      DEV_UID: "${DEV_UID:?'Missing DEV_UID Run DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose build [options]'}"
+      DEV_GID: "${DEV_GID}"
+  hostname: tmux-docker
   volumes:
-    - $HOME/projects:/projects
+## Working directory there you will have your projects
+## Windows
+    # - /mnt/c/Users/[USER]/projects:/projects
+## Linux
+    # - $HOME/projects:/projects
+## store tmux session on host machine to be able to restore setup in console.
+    - /tmp/resurrect:/home/${DEV_USER}/.tmux/resurrect
+x-nvim-developer:
+  &default-nvim-developer
+  image: ${DOCKER_REGISTY_AND_PATH}nvim-developer:latest
+  build:
+    context: .
+    dockerfile: Dockerfile-nvim
+    #target: toolchain
+    #target: neovim-build
+    args:
+      ALPINE_TAG:
+      STD_XDG_DATA_HOME:
+      STD_XDG_CONFIG_HOME:
+#  volumes:
+## Working directory there you will have your projects
+## Windows
+    # - /mnt/c/Users/[USER]/projects:/projects
+## Linux
+    # - $HOME/projects:/projects
 
-# Services
+## Services
 services:
   base-developer_latest:
     *default-base-developer

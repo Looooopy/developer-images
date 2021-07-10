@@ -5,3 +5,5 @@ Dockerfile*          eol=lf
 *.md                 eol=lf
 .env                 eol=lf
 *.conf               eol=lf
+run                  eol=lf
+build                eol=lf
