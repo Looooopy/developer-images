@@ -2,4 +2,4 @@
 
 source "$PWD/scripts/common.sh"
 
-run "$@"
+build "$@"

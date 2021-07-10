@@ -1,15 +1,23 @@
 # Developer images
 
-Setup a docker container with all essential binaries to do some code editing.
+This project aims to setup docker containers with all essential binaries to do
+
+  * Code editing
+
+  * Machine configuration through a terminal
 
 ## Running a container
 
-### Script to run
+### How to build and run
+
+Collection of scripts to make it more convient to build and run.
+
+### Run
 
 Syntax:
 
     developer-images>
-    ./run [tmux or mnvim] [latest or specific] [sh]
+    ./run [tmux or nvim] [latest or specific] [sh]
 
 Sample:
 
@@ -18,10 +26,34 @@ Sample:
     developer-images>
     ./run tmux
 
-> Run tmux specific version and bypass start of tmux ans just login to shell
+> Run tmux specific version and bypass start of tmux and just login to shell
 
     developer-images>
     ./run tmux specific sh
+
+### Build
+
+Syntax:
+
+    developer-images>
+    ./build [latest or specific] [base, tmux and/or nvim]
+
+Sample:
+
+> Build all images versions
+
+    developer-images>
+    ./build
+
+> Build tmux and nvim latest and not base image (it still need to be prsent)
+
+    developer-images>
+    ./build latest tmux nvim
+
+> Build base and tmux latest
+
+    developer-images>
+    ./build latest base tmux
 
 
 ### docker-compose instead of script
@@ -165,25 +197,3 @@ install the latest stable Mono release from http://www.mono-project.com/download
     tar -xzf JetBrains.Rider-2021.1.3.tar.gz -C /opt
     cd opt/JetBrains\ Rider-2021.1.3/bin/
     ./rider.sh
-
-## Run containers
-
-### neovim
-
-Run specific version
-
-    docker-compose run nvim-developer_specific
-
-Run latest version
-
-    docker-compose run nvim-developer_latest
-
-### tmux
-
-Run specific version
-
-    docker-compose run tmux-developer_specific
-
-Run latest version
-
-    docker-compose run tmux-developer_latest
