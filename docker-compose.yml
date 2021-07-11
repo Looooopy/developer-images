@@ -2,17 +2,27 @@ version: "3.8"
 ## See https://github.com/compose-spec/compose-spec/blob/master/spec.md
 
 ## Templates
+x-build-args:
+  &default-my-build-args
+  ALPINE_TAG: ${ALPINE_TAG}
+  DEV_USER: ${DEV_USER}
+  DEV_UID: "${DEV_UID:?'Missing DEV_UID Run DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose build [options]'}"
+  DEV_GID: "${DEV_GID}"
+
+x-build-args-xdg_x:
+  &default-build-args-xdg-x
+  STD_XDG_DATA_HOME:
+  STD_XDG_CONFIG_HOME:
+
 x-base-developer:
   &default-base-developer
   build:
     context: .
     dockerfile: Dockerfile-base-developer
     args:
-      ALPINE_TAG: ${ALPINE_TAG}
-      DEV_USER: ${DEV_USER}
-      DEV_UID: "${DEV_UID:?'Missing DEV_UID Run DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose build [options]'}"
-      DEV_GID: "${DEV_GID}"
+      << : *default-my-build-args
   image: ${DOCKER_REGISTY_AND_PATH:-}base-developer:latest
+
 x-tmux-developer:
   &default-tmux-developer
   image: ${DOCKER_REGISTY_AND_PATH}tmux-developer:latest
@@ -22,21 +32,13 @@ x-tmux-developer:
     #target: toolchain
     #target: tmux-build
     args:
-      ALPINE_TAG:
-      STD_XDG_DATA_HOME:
-      STD_XDG_CONFIG_HOME:
-      DEV_USER: ${DEV_USER}
-      DEV_UID: "${DEV_UID:?'Missing DEV_UID Run DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose build [options]'}"
-      DEV_GID: "${DEV_GID}"
+      << : *default-my-build-args
+      << : *default-build-args-xdg-x
   hostname: tmux-docker
   volumes:
-## Working directory there you will have your projects
-## Windows
-    # - /mnt/c/Users/[USER]/projects:/projects
-## Linux
-    # - $HOME/projects:/projects
-## store tmux session on host machine to be able to restore setup in console.
-    - /tmp/resurrect:/home/${DEV_USER}/.tmux/resurrect
+    - projects:/projects
+    - tmux-ressurect:/home/${DEV_USER}/.tmux/resurrect
+
 x-nvim-developer:
   &default-nvim-developer
   image: ${DOCKER_REGISTY_AND_PATH}nvim-developer:latest
@@ -46,15 +48,10 @@ x-nvim-developer:
     #target: toolchain
     #target: neovim-build
     args:
-      ALPINE_TAG:
-      STD_XDG_DATA_HOME:
-      STD_XDG_CONFIG_HOME:
-#  volumes:
-## Working directory there you will have your projects
-## Windows
-    # - /mnt/c/Users/[USER]/projects:/projects
-## Linux
-    # - $HOME/projects:/projects
+      << : *default-my-build-args
+      << : *default-build-args-xdg-x
+  volumes:
+    - projects:/projects
 
 ## Services
 services:
@@ -81,3 +78,22 @@ services:
   #     build:
   #         context: .
   #         dockerfile: Dockerfile-rider
+
+volumes:
+## Mapping to localhost
+## https://blog.code4hire.com/2018/06/define-named-volume-with-host-mount-in-the-docker-compose-file/
+  projects:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PROJECTS_HOST_PATH}
+      o: bind
+  tmux-ressurect:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${TMUX_RESURRECT_HOST_PATH}
+      o: bind
+## Mapping just to a named volume inside docker
+#  projects:
+#  tmux-ressurect:
