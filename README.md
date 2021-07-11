@@ -159,35 +159,33 @@ The image is based on `base-developer` and includes
 
 #### Troubleshooting
 
-When you notice that you bash promt do not accept inputs, thats probably beacuase you have accedental turn off flow control by keyboard shortcuts
+When you notice that you bash prompt do not accept inputs, thats probably beacuase you have accedental turn off flow control by keyboard shortcuts ```Ctrl + q```
 
-    Ctrl + s
 
-You can turn on flow control by pressing, which will alow you to see what you are typing again.
+You can turn on flow control by pressing ```Ctrl + q```, which will allow you to see what you are typing again.
 
-    Ctrl + q
 
 > I had to allow tty to disable flow control and that in this turn of the functionality to exit docker container with ```Ctrl + q```
-> You need to type exit in shell to terminate the docker container.
+> You need to type exit in shell to terminate the docker container or just use ```<tmux prefix> + d```
 
 
 ### vscode-developer
 
-This image is only working on linux so i have disabled it until futher notice, beacuse i am running things in MacOS.
+This image shold only work on linux so i have disabled it until futher notice, i have not tested it myself.
 
 Read more here: https://daksh-jain00.medium.com/running-gui-app-vscode-in-a-docker-container-9162a8822c63
 
-> Mabe it is possible to run in MacOS, but need more investigation.
+> I am running on MacOS but maybe it is possible to run there, but I need to do more investigation.
 
 ### rider-developer
 
-> Not done anything on this yet more than some investigation.
+> Have only done some investigation.
 
 #### Linux: prerequisites
 
 #### For regular .NET or Mono applications
 
-install the latest stable Mono release from http://www.mono-project.com/download/.
+Install the latest stable Mono release from http://www.mono-project.com/download/.
 
 #### For .NET Core applications, install .NET Core for Linux
 
