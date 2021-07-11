@@ -116,14 +116,14 @@ Is an image based on alpine.
 
 It includes standard things as;
 
-    [git](https://git-scm.com/download/linux)
-    [openssh-client](https://www.openssh.com/manual.html)
-    [curl](https://curl.se/docs/)
-    [sed](https://www.gnu.org/software/sed/)
-    [jq](https://stedolan.github.io/jq/manual/)
-    [htop](https://htop.dev/)
-    [neofetch](https://github.com/dylanaraps/neofetch)
-    [cmatrix](https://github.com/abishekvashok/cmatrix) --> Standard beacuse you are a NERD
+[git](https://git-scm.com/download/linux)
+[openssh-client](https://www.openssh.com/manual.html)
+[curl](https://curl.se/docs/)
+[sed](https://www.gnu.org/software/sed/)
+[jq](https://stedolan.github.io/jq/manual/)
+[htop](https://htop.dev/)
+[neofetch](https://github.com/dylanaraps/neofetch)
+[cmatrix](https://github.com/abishekvashok/cmatrix) --> Standard beacuse you are a NERD
 
 > TODO
 >
