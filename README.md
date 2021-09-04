@@ -2,9 +2,9 @@
 
 This project aims to setup docker containers with all essential binaries to do
 
-  * Code editing
+- Code editing
 
-  * Machine configuration through a terminal
+- Machine configuration through a terminal
 
 ## Running a container
 
@@ -55,7 +55,6 @@ Sample:
     developer-images>
     ./build latest base tmux
 
-
 ### docker-compose instead of script
 
 If you just want to run a specific container with [options](#options)
@@ -72,18 +71,19 @@ If you jsut want the shell
 
 Available build options
 
-| Options                 | Description                    | Note                           | Image Size |
-| ----------------------- | ------------------------------ | ------------------------------ | ---------- |
-| base-developer          | Build both specific and latest | Base image not intended to run |            |
-| base-developer_specific | Build specific based on .env   | Base image not intended to run | 25.8MB     |
-| base-developer_latest   | Build latest alpine            | Base image not intended to run | 25.8MB     |
-| nvim-developer          | Build both specific and latest |                                |            |
-| nvim-developer_specific | Build specific based on .env   |                                | 73.7MB     |
-| nvim-developer_latest   | Build on latest base-developer |                                | 73.7MB     |
-| tmux-developer          | Build both specific and latest |                                |            |
-| tmux-developer_specific | Build specific based on .env   |                                | 31.5MB     |
-| tmux-developer_latest   | Build on latest base-developer |                                | 31.5MB     |
+| Options                 | Description                    | Note                           | Image Size     |
+| ----------------------- | ------------------------------ | ------------------------------ | -------------- |
+| base-developer          | Build both specific and latest | Base image not intended to run |                |
+| base-developer_specific | Build specific based on .env   | Base image not intended to run | 25.8MB         |
+| base-developer_latest   | Build latest alpine            | Base image not intended to run | 25.8MB         |
+| nvim-developer          | Build both specific and latest |                                |                |
+| nvim-developer_specific | Build specific based on .env   |                                | 267MB (73.7MB) |
+| nvim-developer_latest   | Build on latest base-developer |                                | 267MB (73.7MB) |
+| tmux-developer          | Build both specific and latest |                                |                |
+| tmux-developer_specific | Build specific based on .env   |                                | 31.5MB         |
+| tmux-developer_latest   | Build on latest base-developer |                                | 31.5MB         |
 
+> nvim-developer when installed treesitter it requred some build environment (gcc, g++, libstdc++) which maked it larger
 
 ## Build image
 
@@ -99,42 +99,60 @@ If you wish to build a specific image, run one or more of the [options](#options
 
 Is defined in .env file
 
-| Env                     | Value         | Description                                |
-| ----------------------- | ------------- | ------------------------------------------ |
-| ALPINE_TAG              | 3.9           | Base image for base-developer              |
-| NEOVIM_DOCKER_TAG       | nightly       | Tag nvim-developer specific                |
-| NEOVIM_GIT_TAG          | nightly       | Checkout git branch nvim                   |
-| TMUX_GIT_TAG            | 3.2a          | Checkout git branch tmux                   |
-| TMUX_DOCKER_TAG         | 3.2a          | Tag tmux-developer specific                |
-| STD_XDG_DATA_HOME       | /root/.data   | Used by both tmux and nvim                 |
-| STD_XDG_CONFIG_HOME     | /root/.config | Used by both tmux and nvim                 |
-| DOCKER_REGISTY_AND_PATH | docker.io/    | General prefix to docker registry and path |
+#### Base build args
+
+| Env        | Value    | Description                   |
+| ---------- | -------- | ----------------------------- |
+| ALPINE_TAG | 3.9      | Base image for base-developer |
+| DEV_USER   | dev_user | Create $DEV_USER              |
+
+#### Neovim build args
+
+| Env                 | Value         | Description                 |
+| ------------------- | ------------- | --------------------------- |
+| NEOVIM_DOCKER_TAG   | nightly       | Tag nvim-developer specific |
+| NEOVIM_GIT_TAG      | nightly       | Checkout git branch nvim    |
+| STD_XDG_DATA_HOME   | /root/.data   | Used by both tmux and nvim  |
+| STD_XDG_CONFIG_HOME | /root/.config | Used by both tmux and nvim  |
+
+#### TMUX build args
+
+| Env                      | Value         | Description                                   |
+| ------------------------ | ------------- | --------------------------------------------- |
+| TMUX_GIT_TAG             | 3.2a          | Checkout git branch tmux                      |
+| TMUX_DOCKER_TAG          | 3.2a          | Tag tmux-developer specific                   |
+| TMUX_RESURRECT_PROCESSES | ssh           | Process that will be restored on <prefix> + r |
+| STD_XDG_DATA_HOME        | /root/.data   | Used by both tmux and nvim                    |
+| STD_XDG_CONFIG_HOME      | /root/.config | Used by both tmux and nvim                    |
+
+#### Runtime args for all images
+
+| Env                         | Value      | Description                                            |
+| --------------------------- | ---------- | ------------------------------------------------------ |
+| ALL_DOCKER_REGISTY_AND_PATH | docker.io/ | General prefix to docker registry and path             |
+| ALL_VOLUME_TYPE             | container  | If volume will be used from 'container' or 'localhost' |
+| ALL_PROJECTS_HOST_PATH      |
 
 ### base-developer
 
 Is an image based on alpine.
 
-It includes standard things as;
+It includes these standard packages
 
-[git](https://git-scm.com/download/linux)
-
-[openssh-client](https://www.openssh.com/manual.html)
-
-[curl](https://curl.se/docs/)
-
-[sed](https://www.gnu.org/software/sed/)
-
-[jq](https://stedolan.github.io/jq/manual/)
-
-[htop](https://htop.dev/)
-
-[neofetch](https://github.com/dylanaraps/neofetch)
-
-[cmatrix](https://github.com/abishekvashok/cmatrix) --> Standard beacuse you are a NERD
+| Packages                                              | Required by       |
+| ----------------------------------------------------- | ----------------- |
+| [git](https://git-scm.com/download/linux)             | Fetch code        |
+| [openssh-client](https://www.openssh.com/manual.html) | Git               |
+| [curl](https://curl.se/docs/)                         | Fetch code/config |
+| [sed](https://www.gnu.org/software/sed/)              | Parse config      |
+| [jq](https://stedolan.github.io/jq/manual/)           | Parse config      |
+| [htop](https://htop.dev/)                             | What's running    |
+| [neofetch](https://github.com/dylanaraps/neofetch)    | System info       |
+| [cmatrix](https://github.com/abishekvashok/cmatrix)   | Nerd standard     |
 
 > TODO
 >
-> * Generate/Pickup ssh keys for github
+> - Generate/Pickup ssh keys for github
 
 ### nvim-developer
 
@@ -144,37 +162,46 @@ The image is based on `base-developer` and includes
 
 2. Plugins [init.vim](./initvim):
 
-   * [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-   * [nvim-lua/popup.nvim](https://github.com/nvim-lua/popup.nvim) - required by telescope
-   * [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim) - required by telescope
+   | Packages                                                                          | Description        | Required by                   |
+   | --------------------------------------------------------------------------------- | ------------------ | ----------------------------- |
+   | [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder       |                               |
+   | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)             | Syntax highligting |                               |
+   | [ray-x/lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)           | Function signature |                               |
+   | [hrsh7th/nvim-cmp](https://github.com/hrsh7th/nvim-cmp)                           | Completion engine  |                               |
+   | [lewis6991/gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)             | Git decoration     |                               |
+   | [nvim-lua/popup.nvim](https://github.com/nvim-lua/popup.nvim)                     |                    | telescope.nvim                |
+   | [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim)                 |                    | telescope.nvim, gitsigns.nvim |
+   | [hrsh7th/vim-vsnip](https://github.com/hrsh7th/vim-vsnip)                         |                    | nvim-cmp                      |
+   | [hrsh7th/cmp-buffer](https://github.com/hrsh7th/cmp-buffer)                       |                    | nvim-cmp                      |
+
 
 ### tmux-developer
 
 The image is based on `base-developer` and includes
 
-    - tmux
-    - openssh-server
+| Packages                                                                                | Required by         | Using          |
+| --------------------------------------------------------------------------------------- | ------------------- | -------------- |
+| [tmux](https://github.com/tmux/tmux)                                                    |                     |                |
+| [openssh-server](https://pkgs.alpinelinux.org/package/v3.14/main/x86_64/openssh-server) | tmux share sessions | /usr/sbin/sshd |
+| [openrc](https://pkgs.alpinelinux.org/package/v3.14/main/x86_64/openrc)                 | start ssh server    | /bin/rc-status |
+| [procps](https://pkgs.alpinelinux.org/package/v3.14/main/x86_64/procps)                 | tmux \_username     | /bin/ps        |
 
 > TODO
 >
-> * SSH
+> - SSH
 >
->   * configure ssh server
->   * generate ssh keys
->   * start ssh server
->
+>   - configure ssh server
+>   - generate ssh keys
+>   - start ssh server
 
 #### Troubleshooting
 
-When you notice that you bash prompt do not accept inputs, thats probably beacuase you have accedental turn off flow control by keyboard shortcuts ```Ctrl + q```
+When you notice that you bash prompt do not accept inputs, thats probably beacuase you have accedental turn off flow control by keyboard shortcuts `Ctrl + q`
 
+You can turn on flow control by pressing `Ctrl + q`, which will allow you to see what you are typing again.
 
-You can turn on flow control by pressing ```Ctrl + q```, which will allow you to see what you are typing again.
-
-
-> I had to allow tty to disable flow control and that in this turn of the functionality to exit docker container with ```Ctrl + q```
-> You need to type exit in shell to terminate the docker container or just use ```<tmux prefix> + d```
-
+> I had to allow tty to disable flow control and that in this turn of the functionality to exit docker container with `Ctrl + q`
+> You need to type exit in shell to terminate the docker container or just use `<tmux prefix> + d`
 
 ### vscode-developer
 
