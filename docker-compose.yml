@@ -21,11 +21,10 @@ x-base-developer:
     dockerfile: Dockerfile-base-developer
     args:
       << : *default-my-build-args
-  image: ${DOCKER_REGISTY_AND_PATH:-}base-developer:latest
+  image: ${ALL_DOCKER_REGISTY_AND_PATH:-}base-developer:latest
 
 x-tmux-developer:
   &default-tmux-developer
-  image: ${DOCKER_REGISTY_AND_PATH}tmux-developer:latest
   build: 
     context: .
     dockerfile: Dockerfile-tmux
@@ -34,14 +33,13 @@ x-tmux-developer:
     args:
       << : *default-my-build-args
       << : *default-build-args-xdg-x
+      TMUX_RESURRECT_PROCESSES: "${TMUX_RESURRECT_PROCESSES}"
   hostname: tmux-docker
-  volumes:
-    - projects:/projects
-    - tmux-ressurect:/home/${DEV_USER}/.tmux/resurrect
+  ports:
+    - '2022:22'
 
 x-nvim-developer:
   &default-nvim-developer
-  image: ${DOCKER_REGISTY_AND_PATH}nvim-developer:latest
   build:
     context: .
     dockerfile: Dockerfile-nvim
@@ -50,8 +48,6 @@ x-nvim-developer:
     args:
       << : *default-my-build-args
       << : *default-build-args-xdg-x
-  volumes:
-    - projects:/projects
 
 ## Services
 services:
@@ -59,17 +55,19 @@ services:
     *default-base-developer
   base-developer_specific:
     << : *default-base-developer
-    image: ${DOCKER_REGISTY_AND_PATH:-}base-developer:${ALPINE_TAG}
+    image: ${ALL_DOCKER_REGISTY_AND_PATH:-}base-developer:${ALPINE_TAG}
   nvim-developer_latest:
-    *default-nvim-developer
+    << : *default-nvim-developer
+    image: ${ALL_DOCKER_REGISTY_AND_PATH}nvim-developer:latest
   nvim-developer_specific:
     <<  : *default-nvim-developer
-    image: ${DOCKER_REGISTY_AND_PATH}nvim-developer:${NEOVIM_DOCKER_TAG}
+    image: ${ALL_DOCKER_REGISTY_AND_PATH}nvim-developer:${NEOVIM_DOCKER_TAG}
   tmux-developer_latest:
-    *default-tmux-developer
+    << : *default-tmux-developer
+    image: ${ALL_DOCKER_REGISTY_AND_PATH}tmux-developer:latest
   tmux-developer_specific:
     <<  : *default-tmux-developer
-    image: ${DOCKER_REGISTY_AND_PATH}tmux-developer:${TMUX_DOCKER_TAG}
+    image: ${ALL_DOCKER_REGISTY_AND_PATH}tmux-developer:${TMUX_DOCKER_TAG}
   # vscode-developer:
   #     build:
   #         context: .
@@ -78,22 +76,3 @@ services:
   #     build:
   #         context: .
   #         dockerfile: Dockerfile-rider
-
-volumes:
-## Mapping to localhost
-## https://blog.code4hire.com/2018/06/define-named-volume-with-host-mount-in-the-docker-compose-file/
-  projects:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${PROJECTS_HOST_PATH}
-      o: bind
-  tmux-ressurect:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${TMUX_RESURRECT_HOST_PATH}
-      o: bind
-## Mapping just to a named volume inside docker
-#  projects:
-#  tmux-ressurect:
