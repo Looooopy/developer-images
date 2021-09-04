@@ -27,6 +27,7 @@ ARG DEV_USER
 ARG DEV_UID
 ARG DEV_GID
 
+
 ENV USER=$DEV_USER \
     UID=${DEV_UID} \
     GID=${DEV_GID} \
@@ -37,12 +38,14 @@ ARG STD_XDG_CONFIG_HOME=/home/$DEV_USER/.local/share
 
 ARG TMUX_GIT_TAG=3.2a
 ARG TMUX_OUTPUT_DIR=/tmux/tmux-install
+ARG TMUX_RESURRECT_PROCESSES
 ARG TMUX_XDG_DATA_HOME=$STD_XDG_DATA_HOME
 ARG TMUX_XDG_CONFIG_HOME=$STD_XDG_CONFIG_HOME
 
-ENV XDG_DATA_HOME=$TMUX_XDG_DATA_HOME
-ENV XDG_CONFIG_HOME=$TMUX_XDG_CONFIG_HOME
-ENV TMUX_OUTPUT=$TMUX_OUTPUT_DIR
+ENV TMUX_OUTPUT=$TMUX_OUTPUT_DIR \
+    TMUX_RESURRECT_PROCESSES=$TMUX_RESURRECT_PROCESSES \
+    XDG_DATA_HOME=$TMUX_XDG_DATA_HOME \
+    XDG_CONFIG_HOME=$TMUX_XDG_CONFIG_HOME
 
 RUN git clone https://github.com/tmux/tmux.git --branch $TMUX_GIT_TAG . \
 ## Git Clone the .tmux config (Should we fork it or create our own?)
@@ -57,7 +60,12 @@ RUN git clone https://github.com/tmux/tmux.git --branch $TMUX_GIT_TAG . \
     && sed -i '/^tmux_conf_theme_left_separator_main="/s/^#*/#/g' /tmux/.tmux/.tmux.conf.local \
     && sed -i '/^tmux_conf_theme_left_separator_sub="/s/^#*/#/g' /tmux/.tmux/.tmux.conf.local \
     && sed -i '/^tmux_conf_theme_right_separator_sub="/s/^#*/#/g' /tmux/.tmux/.tmux.conf.local \
-    && sed -i '/^tmux_conf_theme_right_separator_main="/s/^#*/#/g' /tmux/.tmux/.tmux.conf.local
+    && sed -i '/^tmux_conf_theme_right_separator_main="/s/^#*/#/g' /tmux/.tmux/.tmux.conf.local \
+## Turn on ressurect processes if not empty
+    && [[ ${TMUX_RESURRECT_PROCESSES+x} == x ]] \
+        && sed -i "s/\(set -g @continuum-restore 'on'\)/set -g @continuum-restore-max-delay '2 5'\n\1/g" /tmux/.tmux/.tmux.conf.local \
+        && sed -i "s/\(set -g @continuum-restore 'on'\)/set -g @resurrect-processes '$TMUX_RESURRECT_PROCESSES'\n\1/g" /tmux/.tmux/.tmux.conf.local
+#        && sed -i "/set -g @continuum-restore 'on'/a set -g @resurrect-processes '$TMUX_RESURRECT_PROCESSES'" /tmux/.tmux/.tmux.conf.local
 
 RUN ./autogen.sh && ./configure --prefix="$TMUX_OUTPUT" && make install
 
@@ -91,7 +99,10 @@ RUN apk update && \
     perl \
 ## bash required by tmux-continuum plugin
     bash \
-    openssh-server
+    openssh-server \
+## Requeried for username to get populated through .tmux.conf.local (/bin/ps is replaced)
+## see https://github.com/gpakosz/.tmux/issues/498
+    procps
 
 RUN mkdir -p $STD_XDG_CONFIG_HOME \
     && mkdir -p $STD_XDG_CONFIG_HOME \
