@@ -110,8 +110,8 @@ Is defined in .env file
 
 | Env                 | Value         | Description                 |
 | ------------------- | ------------- | --------------------------- |
-| NEOVIM_DOCKER_TAG   | nightly       | Tag nvim-developer specific |
-| NEOVIM_GIT_BRANCH   | nightly       | Checkout git branch nvim    |
+| NEOVIM_DOCKER_TAG   | master        | Tag nvim-developer specific |
+| NEOVIM_GIT_BRANCH   | master        | Checkout git branch nvim    |
 | STD_XDG_DATA_HOME   | /root/.data   | Used by both tmux and nvim  |
 | STD_XDG_CONFIG_HOME | /root/.config | Used by both tmux and nvim  |
 
