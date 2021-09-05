@@ -100,6 +100,8 @@ RUN apk update && \
 ## bash required by tmux-continuum plugin
     bash \
     openssh-server \
+## configure ssh server
+    openrc \
 ## Requeried for username to get populated through .tmux.conf.local (/bin/ps is replaced)
 ## see https://github.com/gpakosz/.tmux/issues/498
     procps

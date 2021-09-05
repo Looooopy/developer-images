@@ -111,7 +111,7 @@ Is defined in .env file
 | Env                 | Value         | Description                 |
 | ------------------- | ------------- | --------------------------- |
 | NEOVIM_DOCKER_TAG   | nightly       | Tag nvim-developer specific |
-| NEOVIM_GIT_BRANCH      | nightly       | Checkout git branch nvim    |
+| NEOVIM_GIT_BRANCH   | nightly       | Checkout git branch nvim    |
 | STD_XDG_DATA_HOME   | /root/.data   | Used by both tmux and nvim  |
 | STD_XDG_CONFIG_HOME | /root/.config | Used by both tmux and nvim  |
 
@@ -119,7 +119,7 @@ Is defined in .env file
 
 | Env                      | Value         | Description                                   |
 | ------------------------ | ------------- | --------------------------------------------- |
-| TMUX_GIT_BRANCH             | 3.2a          | Checkout git branch tmux                      |
+| TMUX_GIT_BRANCH          | 3.2a          | Checkout git branch tmux                      |
 | TMUX_DOCKER_TAG          | 3.2a          | Tag tmux-developer specific                   |
 | TMUX_RESURRECT_PROCESSES | ssh           | Process that will be restored on <prefix> + r |
 | STD_XDG_DATA_HOME        | /root/.data   | Used by both tmux and nvim                    |
@@ -127,11 +127,11 @@ Is defined in .env file
 
 #### Runtime args for all images
 
-| Env                         | Value      | Description                                            |
-| --------------------------- | ---------- | ------------------------------------------------------ |
-| GENERIC_DOCKER_REGISTY_AND_PATH | docker.io/ | General prefix to docker registry and path             |
-| GENERIC_VOLUME_TYPE             | container  | If volume will be used from 'container' or 'localhost' |
-| DEV_PROJECTS_HOST_PATH      |
+| Env                             | Value      | Description                                                                                          |
+| ------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- |
+| GENERIC_DOCKER_REGISTY_AND_PATH | docker.io/ | General prefix to docker registry and path                                                           |
+| GENERIC_VOLUME_TYPE             | container  | If volume will be used from 'container' or 'localhost'                                               |
+| GENERIC_PROJECTS_HOST_PATH      |            | Set path to where you have yout projects on the host (used only with GENERIC_VOLUME_TYPE=localhost)  |
 
 ### base-developer
 
@@ -162,17 +162,20 @@ The image is based on `base-developer` and includes
 
 2. Plugins [init.vim](./initvim):
 
-   | Packages                                                                          | Description        | Required by                   |
-   | --------------------------------------------------------------------------------- | ------------------ | ----------------------------- |
-   | [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder       |                               |
-   | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)             | Syntax highligting |                               |
-   | [ray-x/lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)           | Function signature |                               |
-   | [hrsh7th/nvim-cmp](https://github.com/hrsh7th/nvim-cmp)                           | Completion engine  |                               |
-   | [lewis6991/gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)             | Git decoration     |                               |
-   | [nvim-lua/popup.nvim](https://github.com/nvim-lua/popup.nvim)                     |                    | telescope.nvim                |
-   | [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim)                 |                    | telescope.nvim, gitsigns.nvim |
-   | [hrsh7th/vim-vsnip](https://github.com/hrsh7th/vim-vsnip)                         |                    | nvim-cmp                      |
-   | [hrsh7th/cmp-buffer](https://github.com/hrsh7th/cmp-buffer)                       |                    | nvim-cmp                      |
+   | Packages                                                                          | Description        | Required by         | Start Cmd                                            |
+   | --------------------------------------------------------------------------------- | ------------------ | ------------------- | ---------------------------------------------------- |
+   | [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder       |                     | :Telescope                                           |
+   | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)             | Syntax highligting |                     |                                                      |
+   | [ray-x/lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)           | Function signature |                     |                                                      |
+   | [hrsh7th/nvim-cmp](https://github.com/hrsh7th/nvim-cmp)                           | Completion engine  |                     |                                                      |
+   | [lewis6991/gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)             | Git decoration     |                     | [Active automatic by init script](/nvim/init.vim)    |
+   | [akinsho/toggleterm](https://github.com/akinsho/toggleterm.nvim)                  | terminal           |                     | :ToggleTerm size=40 dir=/projects direction=vertical |
+   | [kyazdani42/nvim-tree](https://github.com/kyazdani42/nvim-tree.lua                | project tree       |                     | :NvimTreeOpen                                        |
+   | [kyazdani42/nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)   |                    | nvim-tree           |                                                      |
+   | [nvim-lua/popup.nvim](https://github.com/nvim-lua/popup.nvim)                     |                    | telescope           |                                                      |
+   | [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim)                 |                    | telescope, gitsigns |                                                      |
+   | [hrsh7th/vim-vsnip](https://github.com/hrsh7th/vim-vsnip)                         |                    | nvim-cmp            |                                                      |
+   | [hrsh7th/cmp-buffer](https://github.com/hrsh7th/cmp-buffer)                       |                    | nvim-cmp            |                                                      |
 
 
 ### tmux-developer

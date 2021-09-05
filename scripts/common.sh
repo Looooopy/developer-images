@@ -85,7 +85,7 @@ run() {
 
   case $service_short in
     tmux | nvim)
-      service="$1-developer_$version"
+      service="$service_short-developer_$version"
       ;;
     *)
       >&2 echo "service='$1' not an allowed service, use 'tmux', 'nvim'" && return 1
@@ -105,9 +105,9 @@ run() {
   case "${GENERIC_VOLUME_TYPE:?}" in
     container | localhost)
       if [[ -z "$start_arg" ]]; then
-        docker_compose container run --rm "$service"
+        docker_compose "${GENERIC_VOLUME_TYPE:?}" run --rm "$service"
       else
-        docker_compose container run --rm "$service" "$start_arg"
+        docker_compose "${GENERIC_VOLUME_TYPE:?}" run --rm "$service" "$start_arg"
       fi
       ;;
     *)
