@@ -170,7 +170,7 @@ The image is based on `base-developer` and includes
    | [hrsh7th/nvim-cmp](https://github.com/hrsh7th/nvim-cmp)                           | Completion engine  |                     |                                                      |
    | [lewis6991/gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)             | Git decoration     |                     | [Active automatic by init script](/nvim/init.vim)    |
    | [akinsho/toggleterm](https://github.com/akinsho/toggleterm.nvim)                  | terminal           |                     | :ToggleTerm size=40 dir=/projects direction=vertical |
-   | [kyazdani42/nvim-tree](https://github.com/kyazdani42/nvim-tree.lua                | project tree       |                     | :NvimTreeOpen                                        |
+   | [kyazdani42/nvim-tree](https://github.com/kyazdani42/nvim-tree.lua)               | project tree       |                     | :NvimTreeOpen                                        |
    | [kyazdani42/nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)   |                    | nvim-tree           |                                                      |
    | [nvim-lua/popup.nvim](https://github.com/nvim-lua/popup.nvim)                     |                    | telescope           |                                                      |
    | [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim)                 |                    | telescope, gitsigns |                                                      |
