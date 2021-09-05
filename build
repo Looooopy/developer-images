@@ -2,5 +2,6 @@
 
 source "$PWD/scripts/common.sh"
 
-export $(grep -v '^#' .env | grep ^GENERIC_VOLUME_TYPE | xargs -0)
+export_dot_env GENERIC_VOLUME_TYPE
 build "$@"
+unset GENERIC_VOLUME_TYPE

@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+export SRC_ROOT=./src
+
 echo_docker_compose_config() {
   local services=()
   services=( "$@" )
 
-  DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose config > temp.yaml
+  docker_compose "${GENERIC_VOLUME_TYPE:?}" config > temp.yaml
 
   if [ ${#services[@]} -eq 0 ]; then
     echo
@@ -26,7 +28,23 @@ docker_compose() {
   volume_type="${1:?}"
   shift
   # Docker dont threat UID and GID as envirnment variables so we have to do it externaly
-  DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose -f docker-compose.yml -f docker-compose-volume-${volume_type}.yml $@
+  DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose  -f "$SRC_ROOT"/docker-compose.yml -f "$SRC_ROOT"/docker-compose-volume-${volume_type}.yml --env-file "$SRC_ROOT"/.env  $@
+}
+
+export_dot_env() {
+  local specfic_value
+  local env_file
+
+  specfic_value="$1"
+  env_file="$SRC_ROOT"/.env
+
+  if [ -z ${specfic_value+x} ]; then
+    echo "Exporting all from "
+    export $(grep -v '^#' "$env_file" | xargs -0)
+  else
+    echo "Exporting spcific '$specfic_value'"
+    export $(grep -v '^#' "$env_file" | grep ^"$specfic_value" | xargs -0)
+  fi
 }
 
 
@@ -93,8 +111,7 @@ run() {
   esac
 
   if [ -z ${GENERIC_VOLUME_TYPE+x} ]; then
-    echo 'Try exporting "GENERIC_VOLUME_TYPE" from .env file'
-    export $(grep -v '^#' .env | grep ^GENERIC_VOLUME_TYPE | xargs -0)
+    export_dot_env GENERIC_VOLUME_TYPE
   else
     echo 'Exporting already defined "GENERIC_VOLUME_TYPE" from shell'
     export GENERIC_VOLUME_TYPE
