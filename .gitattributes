@@ -7,4 +7,5 @@ Dockerfile*          eol=lf
 *.conf               eol=lf
 run                  eol=lf
 build                eol=lf
+prune                eol=lf
 scripts/**           eol=lf

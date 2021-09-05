@@ -3,4 +3,4 @@
 source "$PWD/scripts/common.sh"
 
 export $(grep -v '^#' .env | grep ^GENERIC_VOLUME_TYPE | xargs -0)
-build "$@"
+prune_volumes

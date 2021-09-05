@@ -18,5 +18,17 @@ lua <<EOF
     require "lsp_signature".setup()
     -- [[ Git Signs Initialise ]]
     require('gitsigns').setup()
+
+    require'nvim-treesitter.configs'.setup {
+        highlight = {
+            enable = true,
+            disable = {},
+        },
+        indent = {
+            enable = false,
+            disable = {},
+        },
+    }
+
 EOF
 

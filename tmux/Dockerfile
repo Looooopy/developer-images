@@ -36,7 +36,7 @@ ENV USER=$DEV_USER \
 ARG STD_XDG_DATA_HOME=/home/$DEV_USER/.local/share
 ARG STD_XDG_CONFIG_HOME=/home/$DEV_USER/.local/share
 
-ARG TMUX_GIT_TAG=3.2a
+ARG TMUX_GIT_BRANCH=3.2a
 ARG TMUX_OUTPUT_DIR=/tmux/tmux-install
 ARG TMUX_RESURRECT_PROCESSES
 ARG TMUX_XDG_DATA_HOME=$STD_XDG_DATA_HOME
@@ -47,7 +47,7 @@ ENV TMUX_OUTPUT=$TMUX_OUTPUT_DIR \
     XDG_DATA_HOME=$TMUX_XDG_DATA_HOME \
     XDG_CONFIG_HOME=$TMUX_XDG_CONFIG_HOME
 
-RUN git clone https://github.com/tmux/tmux.git --branch $TMUX_GIT_TAG . \
+RUN git clone https://github.com/tmux/tmux.git --branch $TMUX_GIT_BRANCH . \
 ## Git Clone the .tmux config (Should we fork it or create our own?)
     && git clone https://github.com/gpakosz/.tmux.git \
 ## Uncomment all plugins and continuum-restore to enable them
@@ -89,7 +89,7 @@ ENV ENV DEV_USER=$DEV_USER \
 COPY --from=tmux-build /tmux/tmux-install  /tmux
 COPY --from=tmux-build /tmux/.tmux/.tmux.conf  $XDG_CONFIG_HOME/tmux/.tmux.conf
 COPY --from=tmux-build /tmux/.tmux/.tmux.conf.local  $XDG_CONFIG_HOME/tmux/.tmux.conf.local
-COPY ./plugins.conf $XDG_CONFIG_HOME/tmux/plugins.conf
+COPY ./tmux/plugins.conf $XDG_CONFIG_HOME/tmux/plugins.conf
 
 ## TMUX binaries
 RUN apk update && \

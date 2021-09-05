@@ -111,7 +111,7 @@ Is defined in .env file
 | Env                 | Value         | Description                 |
 | ------------------- | ------------- | --------------------------- |
 | NEOVIM_DOCKER_TAG   | nightly       | Tag nvim-developer specific |
-| NEOVIM_GIT_TAG      | nightly       | Checkout git branch nvim    |
+| NEOVIM_GIT_BRANCH      | nightly       | Checkout git branch nvim    |
 | STD_XDG_DATA_HOME   | /root/.data   | Used by both tmux and nvim  |
 | STD_XDG_CONFIG_HOME | /root/.config | Used by both tmux and nvim  |
 
@@ -119,7 +119,7 @@ Is defined in .env file
 
 | Env                      | Value         | Description                                   |
 | ------------------------ | ------------- | --------------------------------------------- |
-| TMUX_GIT_TAG             | 3.2a          | Checkout git branch tmux                      |
+| TMUX_GIT_BRANCH             | 3.2a          | Checkout git branch tmux                      |
 | TMUX_DOCKER_TAG          | 3.2a          | Tag tmux-developer specific                   |
 | TMUX_RESURRECT_PROCESSES | ssh           | Process that will be restored on <prefix> + r |
 | STD_XDG_DATA_HOME        | /root/.data   | Used by both tmux and nvim                    |
@@ -129,9 +129,9 @@ Is defined in .env file
 
 | Env                         | Value      | Description                                            |
 | --------------------------- | ---------- | ------------------------------------------------------ |
-| ALL_DOCKER_REGISTY_AND_PATH | docker.io/ | General prefix to docker registry and path             |
-| ALL_VOLUME_TYPE             | container  | If volume will be used from 'container' or 'localhost' |
-| ALL_PROJECTS_HOST_PATH      |
+| GENERIC_DOCKER_REGISTY_AND_PATH | docker.io/ | General prefix to docker registry and path             |
+| GENERIC_VOLUME_TYPE             | container  | If volume will be used from 'container' or 'localhost' |
+| DEV_PROJECTS_HOST_PATH      |
 
 ### base-developer
 

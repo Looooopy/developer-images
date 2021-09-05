@@ -18,23 +18,23 @@ x-base-developer:
   &default-base-developer
   build:
     context: .
-    dockerfile: Dockerfile-base-developer
+    dockerfile: base-developer/Dockerfile
     args:
       << : *default-my-build-args
-  image: ${ALL_DOCKER_REGISTY_AND_PATH:-}base-developer:latest
+  image: ${GENERIC_DOCKER_REGISTY_AND_PATH:-}base-developer:latest
 
 x-tmux-developer:
   &default-tmux-developer
   build: 
     context: .
-    dockerfile: Dockerfile-tmux
+    dockerfile: ./tmux/Dockerfile
     #target: toolchain
     #target: tmux-build
     args:
       << : *default-my-build-args
       << : *default-build-args-xdg-x
       TMUX_RESURRECT_PROCESSES: "${TMUX_RESURRECT_PROCESSES}"
-      TMUX_GIT_TAG: "${TMUX_GIT_TAG}"
+      TMUX_GIT_BRANCH: "${TMUX_GIT_BRANCH}"
       TMUX_DOCKER_TAG: "${TMUX_DOCKER_TAG}"
   hostname: tmux-docker
   ports:
@@ -44,13 +44,13 @@ x-nvim-developer:
   &default-nvim-developer
   build:
     context: .
-    dockerfile: Dockerfile-nvim
+    dockerfile: ./nvim/Dockerfile
     #target: toolchain
     #target: neovim-build
     args:
       << : *default-my-build-args
       << : *default-build-args-xdg-x
-      NEOVIM_GIT_TAG: "${NEOVIM_GIT_TAG}"
+      NEOVIM_GIT_BRANCH: "${NEOVIM_GIT_BRANCH}"
       NEOVIM_DOCKER_TAG: "${NEOVIM_DOCKER_TAG}"
 
 ## Services
@@ -59,24 +59,24 @@ services:
     *default-base-developer
   base-developer_specific:
     << : *default-base-developer
-    image: ${ALL_DOCKER_REGISTY_AND_PATH:-}base-developer:${ALPINE_TAG}
+    image: ${GENERIC_DOCKER_REGISTY_AND_PATH:-}base-developer:${ALPINE_TAG}
   nvim-developer_latest:
     << : *default-nvim-developer
-    image: ${ALL_DOCKER_REGISTY_AND_PATH}nvim-developer:latest
+    image: ${GENERIC_DOCKER_REGISTY_AND_PATH}nvim-developer:latest
   nvim-developer_specific:
     <<  : *default-nvim-developer
-    image: ${ALL_DOCKER_REGISTY_AND_PATH}nvim-developer:${NEOVIM_DOCKER_TAG}
+    image: ${GENERIC_DOCKER_REGISTY_AND_PATH}nvim-developer:${NEOVIM_DOCKER_TAG}
   tmux-developer_latest:
     << : *default-tmux-developer
-    image: ${ALL_DOCKER_REGISTY_AND_PATH}tmux-developer:latest
+    image: ${GENERIC_DOCKER_REGISTY_AND_PATH}tmux-developer:latest
   tmux-developer_specific:
     <<  : *default-tmux-developer
-    image: ${ALL_DOCKER_REGISTY_AND_PATH}tmux-developer:${TMUX_DOCKER_TAG}
+    image: ${GENERIC_DOCKER_REGISTY_AND_PATH}tmux-developer:${TMUX_DOCKER_TAG}
   # vscode-developer:
   #     build:
   #         context: .
-  #         dockerfile: Dockerfile-vscode
+  #         dockerfile: ./vscode/Dockerfile
   # rider-developer:
   #     build:
   #         context: .
-  #         dockerfile: Dockerfile-rider
+  #         dockerfile: ./rider/Dockerfile

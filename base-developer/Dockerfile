@@ -21,6 +21,7 @@ RUN addgroup $DEV_USER \
 RUN apk update && \
     apk add --no-cache \
         git \
+        tar \
         openssh-client \
         curl \
         sed \
@@ -28,3 +29,8 @@ RUN apk update && \
         htop \
         neofetch \
         cmatrix
+
+# Setup git with your credentials
+# Required input Github Personal access tokens
+# Generate SSH Key upload public key (Or should this be an input? through lastpass?)
+# Generate a GPG keys so we can start signing things (Or should this be an input? through lastpass?)

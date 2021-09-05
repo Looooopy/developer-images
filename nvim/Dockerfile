@@ -33,14 +33,14 @@ ARG STD_XDG_DATA_HOME=/home/$DEV_USER/.local/share
 ARG STD_XDG_CONFIG_HOME=/home/$DEV_USER/.local/share
 
 ARG NEOVIM_OUTPUT_DIR=/neovim/nvim-install
-ARG NEOVIM_GIT_TAG=nightly
+ARG NEOVIM_GIT_BRANCH=nightly
 ARG NEOVIM_XDG_DATA_HOME=$STD_XDG_DATA_HOME
 ARG NEOVIM_XDG_CONFIG_HOME=$STD_XDG_CONFIG_HOME
 
 ENV XDG_DATA_HOME=$NEOVIM_XDG_DATA_HOME
 ENV XDG_CONFIG_HOME=$NEOVIM_XDG_CONFIG_HOME
 
-RUN git clone https://github.com/neovim/neovim.git --branch "${NEOVIM_GIT_TAG:?}" .
+RUN git clone https://github.com/neovim/neovim.git --branch "${NEOVIM_GIT_BRANCH:?}" .
 RUN make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$NEOVIM_OUTPUT_DIR" install
 
 ########## FINAL IMAGE ##########
@@ -74,8 +74,11 @@ RUN apk update && \
     rm -r /usr/share/nvim && ln -s /neovim/share /usr/share/nvim && \
     ln -s /neovim/lib/parser/c.so /usr/lib/c.so
 
-RUN chgrp -R ${DEV_USER} ${STD_XDG_DATA_HOME:?}/nvim && \
-    chmod -R g=u ${STD_XDG_DATA_HOME:?}/nvim
+# Fix permissions for ${STD_XDG_DATA_HOME:?}/nvim and /projects
+RUN chgrp -R ${DEV_USER} ${STD_XDG_DATA_HOME:?}/nvim \
+    && chmod -R g=u ${STD_XDG_DATA_HOME:?}/nvim \
+    && chgrp -R ${DEV_USER} /projects \
+    && chmod -R g=u /projects
 
 # nvim-treesitter prereq's gcc g++ libstdc++ (git)
 RUN apk add --no-cache \
@@ -83,14 +86,14 @@ RUN apk add --no-cache \
         libstdc++ \
         g++
 
-# Install nvim plugins
 USER ${DEV_USER}
-COPY --chown=${DEV_USER}:${DEV_USER} ./init.vim $STD_XDG_CONFIG_HOME/nvim/init.vim
+
+# Install nvim plugins
+COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/init.vim $STD_XDG_CONFIG_HOME/nvim/init.vim
 RUN nvim --headless +PlugInstall +qall
 
-
 # Install tresitter languages
-COPY --chown=${DEV_USER}:${DEV_USER} ./treesitter_lang.vim $STD_XDG_CONFIG_HOME/temp/treesitter/lang.vim
+COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/treesitter_lang.vim $STD_XDG_CONFIG_HOME/temp/treesitter/lang.vim
 RUN bash -c "ts_lang=($(cat $XDG_CONFIG_HOME/temp/treesitter/lang.vim)); for lang in "\${ts_lang[@]}"; do nvim --headless +\"TSInstallSync \${lang}\" +q; done"
 RUN rm -R ${STD_XDG_CONFIG_HOME:?}/temp/
 
