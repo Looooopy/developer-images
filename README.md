@@ -103,7 +103,7 @@ Is defined in .env file
 
 | Env        | Value    | Description                   |
 | ---------- | -------- | ----------------------------- |
-| ALPINE_TAG | 3.9      | Base image for base-developer |
+| ALPINE_TAG | 3.14     | Base image for base-developer |
 | DEV_USER   | dev_user | Create $DEV_USER              |
 
 #### Neovim build args
