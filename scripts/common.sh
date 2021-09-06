@@ -27,8 +27,12 @@ docker_compose() {
   local volume_type
   volume_type="${1:?}"
   shift
+  if [[ "$(uname)" == 'Darwin' ]]; then
+    DEV_UID=1000 DEV_GID=1000 docker-compose  -f "$SRC_ROOT"/docker-compose.yml -f "$SRC_ROOT"/docker-compose-volume-${volume_type}.yml --env-file "$SRC_ROOT"/.env  $@
+  else
   # Docker dont threat UID and GID as envirnment variables so we have to do it externaly
   DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose  -f "$SRC_ROOT"/docker-compose.yml -f "$SRC_ROOT"/docker-compose-volume-${volume_type}.yml --env-file "$SRC_ROOT"/.env  $@
+  fi
 }
 
 export_dot_env() {
