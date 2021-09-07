@@ -93,8 +93,8 @@ COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/init.vim $STD_XDG_CONFIG_HOME/nvim/i
 RUN nvim --headless +PlugInstall +qall
 
 # Install tresitter languages
-COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/treesitter_lang.vim $STD_XDG_CONFIG_HOME/temp/treesitter/lang.vim
-RUN bash -c "ts_lang=($(cat $XDG_CONFIG_HOME/temp/treesitter/lang.vim)); for lang in "\${ts_lang[@]}"; do nvim --headless +\"TSInstallSync \${lang}\" +q; done"
+COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/treesitter/ $STD_XDG_CONFIG_HOME/temp/treesitter
+RUN bash -c "$XDG_CONFIG_HOME/temp/treesitter/install-langs.sh"
 RUN rm -R ${STD_XDG_CONFIG_HOME:?}/temp/
 
 CMD ["nvim","/projects"]

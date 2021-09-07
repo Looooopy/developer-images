@@ -9,3 +9,4 @@ run                  eol=lf
 build                eol=lf
 prune                eol=lf
 scripts/**           eol=lf
+src/**               eol=lf
