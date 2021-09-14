@@ -6,6 +6,8 @@ This project aims to setup docker containers with all essential binaries to do
 
 - Machine configuration through a terminal
 
+- Set up the essential on bare metal os
+
 ## Pre req
 
 * [Docker](https://docs.docker.com/engine/install/)
