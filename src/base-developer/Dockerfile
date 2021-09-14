@@ -17,6 +17,9 @@ RUN addgroup $DEV_USER \
         --ingroup ${DEV_USER} \
         -u ${DEV_UID} \
         ${DEV_USER}
+RUN addgroup docker -g 1001
+RUN addgroup $DEV_USER docker
+
 
 RUN apk update && \
     apk add --no-cache \
