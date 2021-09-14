@@ -12,6 +12,7 @@ x-nvim-developer:
   &default-nvim-developer
   volumes:
     - nvim-projects-container:/projects:rw
+    - //var/run/docker.sock:/var/run/docker.sock
 
 ## Services
 services:
