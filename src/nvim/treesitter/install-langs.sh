@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 echo_error() {
   RED='\033[0;31m'
@@ -5,7 +6,7 @@ echo_error() {
   >&2 echo -e "$RED$1$NC"
 }
 
-main() {
+install-tree-sitter-langs() {
   local treesitter_languages=($(cat $XDG_CONFIG_HOME/temp/treesitter/active-langs))
   local errors=()
   for language in "${treesitter_languages[@]}"; do
@@ -24,4 +25,4 @@ main() {
   fi
 }
 
-main
+install-tree-sitter-langs
