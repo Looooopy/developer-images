@@ -6,7 +6,7 @@ This project aims to setup docker containers with all essential binaries to do
 
 - Machine configuration through a terminal
 
-- Set up the essential on bare metal os
+- Set up the essential to get up on bare metal OS
 
 ## Pre req
 
@@ -45,6 +45,8 @@ This project aims to setup docker containers with all essential binaries to do
             add these lines under you WSL (example "name": "Ubuntu-20.04",)
                 "fontFace": "JetBrainsMono Nerd Font",
                 "fontWeight": "semi-bold",
+
+    * [Setup SSH Agent](/docs/howto/ssh-agent.md)
 
 * MacOS (bare metal)
 
