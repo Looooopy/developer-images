@@ -47,38 +47,7 @@ Run this script as administrator once to download and install the SSH agent forw
 This utility [npiperelay](https://github.com/jstarks/npiperelay) will be called from Ubuntu in WSL2
 
 ``` powershell
-function Install-SSH-Forwarder {
-    $DestinationFolder= 'C:\ssh-forwarder'
-    $SSHForwarderVersion= 'v0.1.0'
-
-    echo " - Create new folder '$DestinationFolder'"
-    New-Item -Path $DestinationFolder -ItemType Directory | Out-Null
-
-    echo " - Download npiperelay"
-    $Url = "https://github.com/jstarks/npiperelay/releases/download/$SSHForwarderVersion/npiperelay_windows_amd64.zip"
-    $ZipFile = "$env:TEMP\" + $(Split-Path -Path $Url -Leaf)
-    Invoke-WebRequest -Uri $Url -OutFile $ZipFile 
-
-    echo " - Extract npiperelay to '$DestinationFolder'"
-    $ExtractShell = New-Object -ComObject Shell.Application 
-    $Files = $ExtractShell.Namespace($ZipFile).Items() 
-    $ExtractShell.NameSpace($DestinationFolder).CopyHere($Files) 
-
-    echo " - Appending Local Machine Env.Path with $DestinationFolder"
-    $Reg = "Registry::HKLM\System\CurrentControlSet\Control\Session Manager\Environment"
-    setx /M path "$($(Get-ItemProperty -Path "$Reg" -Name PATH).Path);$DestinationFolder" | Out-Null
-
-    echo " - Cleaning up"
-    Remove-Item $ZipFile -Force
-    
-    echo " - Refreshing environment variables from registry (choco)"
-    refreshenv | Out-Null
-
-    echo " - Open the new folder in explorer"
-    Start-Process $DestinationFolder
-}
-
-Install-SSH-Forwarder
+    choco install npiperelay -y
 ```
 In WSL2 run this script once as admin to append it to your .zshrc
 
