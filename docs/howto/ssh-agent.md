@@ -1,61 +1,49 @@
-# SSH Agent
+# Utilize SSH Agent on Windows from WSL2
 
-Describe how to setup SSH Agent.
+How to setup SSH Agent on Windows and use it from WSL2 Ubuntu.
 
-# Prereq
+## Prereq
 
 - Chocolatey
 - Installed Git on windows
 - Generated SSH keys on windows machine default location
-- Installed WLS and running ubuntu bash with zsh
+- Installed WSL2 and running ubuntu bash with zsh
 
-## Windows 10
+## Setup Windows SSH agent and let WSL2 use that agent
 
-Description how to setup the agent and add the keys snippets here are based on these sources
+Its a two step process
 
-- [Microsoft Docs](https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement)
-- [Hack SSH setting up forwarder](https://stuartleeks.com/posts/wsl-ssh-key-forward-to-windows/)
-- [Hack SSH using Git](https://stuartleeks.com/posts/git-for-windows-ssh-key-passphrases/)
+- Windows 10+
+- WSL2 ubuntu
 
-If you need GPG i also found this
-
-- [Hack SSH with GPG](https://blog.nimamoh.net/yubi-key-gpg-wsl2/)
-
-### Start SSH Service
-
-``` powershell
-# Set the sshd service to be started automatically
-Get-Service -Name ssh-agent | Set-Service -StartupType Automatic
-
-# Now start the sshd service
-Start-Service sshd
-```
-
-### Add current SSH keys
-
-If you have generated them before you could simple run this.
-
-``` powershell
-# Add ssh keys
-ssh-add
-```
-
-## Let WSL2 SSH use agent on Windows
-
-Run this script as administrator once to download and install the SSH agent forwarder
+### Windows 10+
+Run this script as administrator once
 
 This utility [npiperelay](https://github.com/jstarks/npiperelay) will be called from Ubuntu in WSL2
 
 ``` powershell
+    # Set the sshd service to be started automatically
+    Get-Service -Name ssh-agent | Set-Service -StartupType Automatic
+
+    # Now start the sshd service
+    Start-Service sshd
+
+    # Add ssh private keys to agent
+    ssh-add
     choco install npiperelay -y
 ```
-In WSL2 run this script once as admin to append it to your .zshrc
+
+### WSL2 ubuntu
+
+Run this script once to install dependencies and append .zshrc
 
 Output shall result in:
 
 [<span style="color:green">Success</span>] - WSL connected to SSH Agent in Windows
 
 ``` bash
+sudo apt install socat
+
 # Add script to ~/.zshrc that redirect ssh connection to ssh agent on windows
 cat >> $HOME/.zshrc <<'EOF'
 # Configure ssh forwarding
@@ -96,3 +84,15 @@ check_ssh() {
 
 check_ssh
 ```
+
+## References
+
+Description how to setup the agent and add the keys snippets here are based on these sources
+
+- [Microsoft Docs](https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement)
+- [Hack SSH setting up forwarder](https://stuartleeks.com/posts/wsl-ssh-key-forward-to-windows/)
+- [Hack SSH using Git](https://stuartleeks.com/posts/git-for-windows-ssh-key-passphrases/)
+
+If you need GPG i also found this
+
+- [Hack SSH with GPG](https://blog.nimamoh.net/yubi-key-gpg-wsl2/)
