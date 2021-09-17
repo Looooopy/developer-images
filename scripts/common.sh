@@ -55,9 +55,7 @@ export_dot_env() {
 prune_volumes() {
   local all_volumes
   all_volumes=${1:-${ALL_VOLUMES:-no}}
-  echo "$all_volumes"
   if [ "$all_volumes" != "no"  ]; then
-    echo "ALl"
     unset ALL_VOLUMES
     export GENERIC_VOLUME_TYPE
     GENERIC_VOLUME_TYPE=container
