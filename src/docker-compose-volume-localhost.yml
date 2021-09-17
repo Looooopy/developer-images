@@ -9,6 +9,7 @@ x-tmux-developer:
   volumes:
     - tmux-projects-localhost:/projects
     - tmux-ressurect-localhost:/home/${DEV_USER}/.tmux/resurrect
+    - //var/run/docker.sock:/var/run/docker.sock
     - ${SSH_AUTH_SOCK}:/agent.sock
 
 x-nvim-developer:
