@@ -114,7 +114,10 @@ RUN mkdir -p $STD_XDG_CONFIG_HOME \
     &&  ln -sf $XDG_CONFIG_HOME/tmux/.tmux.conf /home/${DEV_USER}/.tmux.conf \
 # Copy the .tmux.conf.local fetched from git
     && cp $XDG_CONFIG_HOME/tmux/.tmux.conf.local /home/${DEV_USER}/.tmux.conf.local \
-    && chown -R $DEV_USER:$DEV_USER /home/${DEV_USER}
+    && chown -R $DEV_USER:$DEV_USER /home/${DEV_USER} \
+# Set permissions on WORKDIR /projects
+    && chgrp -R ${DEV_USER} /projects \
+    && chmod -R g=u /projects
 
 USER ${DEV_USER}
 
