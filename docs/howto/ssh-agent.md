@@ -19,7 +19,7 @@ Its a two step process
 ### Windows 10+
 Run this script as administrator once
 
-This utility [npiperelay](https://github.com/jstarks/npiperelay) will be called from Ubuntu in WSL2
+[npiperelay](https://github.com/jstarks/npiperelay) is used in Ubuntu in WSL2 to foward request to windows SSH Agent.
 
 ``` powershell
     # Set the sshd service to be started automatically
