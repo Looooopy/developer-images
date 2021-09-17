@@ -53,12 +53,17 @@ export_dot_env() {
 
 
 prune_volumes() {
-  local volume_names
-  volume_names=()
-  if [ ! -z ${ALL_VOLUMES+x} ]; then
+  local all_volumes
+  all_volumes=${1:-${ALL_VOLUMES:-no}}
+  echo "$all_volumes"
+  if [ "$all_volumes" != "no"  ]; then
+    echo "ALl"
     unset ALL_VOLUMES
-    docker_compose container down --volumes
-    docker_compose localhost down --volumes
+    export GENERIC_VOLUME_TYPE
+    GENERIC_VOLUME_TYPE=container
+    prune_volumes
+    GENERIC_VOLUME_TYPE=localhost
+    prune_volumes
     return 0
   elif [[ "${GENERIC_VOLUME_TYPE:?}" == container ]] ||  [[ "${GENERIC_VOLUME_TYPE:?}" == localhost ]]; then
     docker_compose "${GENERIC_VOLUME_TYPE:?}" down --volumes
