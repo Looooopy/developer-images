@@ -85,6 +85,32 @@ check_ssh() {
 check_ssh
 ```
 
+## SSH agent in Docker
+
+How to configure and reuse SSH agent from windows in a Docker.
+
+### docker
+
+``` bash
+docker run -v ${SSH_AUTH_SOCK}:/agent.sock --env SSH_AUTH_SOCK=/agent.sock
+```
+
+### docker-compose usage
+``` yaml
+version: "3.8"
+
+services:
+  my-service:
+    environment:
+      - SSH_AUTH_SOCK=/agent.sock
+    volumes:
+      - ${SSH_AUTH_SOCK}:/agent.sock
+```
+
+``` bash
+docker-compose run
+```
+
 ## References
 
 Description how to setup the agent and add the keys snippets here are based on these sources
