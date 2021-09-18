@@ -88,6 +88,9 @@ RUN apk add --no-cache \
 # Install docker-cli to let lspcontainers start containers from this image.
         docker-cli
 
+# Adding known hosts: github
+COPY ./nvim/.ssh /home/${DEV_USER}/.ssh
+
 USER ${DEV_USER}
 
 # Install nvim plugins

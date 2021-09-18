@@ -119,6 +119,9 @@ RUN mkdir -p $STD_XDG_CONFIG_HOME \
     && chgrp -R ${DEV_USER} /projects \
     && chmod -R g=u /projects
 
+# Adding known hosts: github
+COPY ./nvim/.ssh /home/${DEV_USER}/.ssh
+
 USER ${DEV_USER}
 
 ## Bash need to be set to 256 colors aswell to get correct fonts
