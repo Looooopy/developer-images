@@ -122,6 +122,9 @@ RUN mkdir -p $STD_XDG_CONFIG_HOME \
 # Adding known hosts: github
 COPY ./nvim/.ssh /home/${DEV_USER}/.ssh
 
+# Adding entrypoint script
+COPY ./tmux/docker-entrypoint.sh /docker-entrypoint.sh
+
 USER ${DEV_USER}
 
 ## Bash need to be set to 256 colors aswell to get correct fonts
@@ -134,4 +137,5 @@ RUN echo "case \$TERM in xterm) TERM=xterm-256color;; esac" >> /$HOME/.bash_prof
 ENV TERM=xterm-256color \
     LC_ALL=en_US.UTF-8
 
- CMD ["tmux"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["tmux"]

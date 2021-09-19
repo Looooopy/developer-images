@@ -11,6 +11,7 @@ x-tmux-developer:
     - tmux-ressurect-container:/home/${DEV_USER}/.tmux/resurrect
     - //var/run/docker.sock:/var/run/docker.sock
     - ${SSH_AUTH_SOCK}:/agent.sock
+  command: clone ${CLONE_PROJECT_1} ${CLONE_PROJECT_2} ${CLONE_PROJECT_3} ${CLONE_PROJECT_4} ${CLONE_PROJECT_5}
 
 x-nvim-developer:
   &default-nvim-developer
