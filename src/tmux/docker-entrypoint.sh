@@ -56,12 +56,19 @@ main() {
   case "$mode" in
     tmux)
       echo "Standard mode"
+      echo " - exec tmux in folder '$PWD'"
+      exec tmux "$@"
+      return;
       ;;
 
     clone)
       echo "Clone mode"
       clone_multiple "$@"
       local project_name="$(get_project_name_if_only_one "$@")"
+      [[ -n "$project_name" ]] && cd "$project_name"
+      echo " - exec tmux in folder '$PWD'"
+      exec "tmux"
+      return;
       ;;
 
     *)
@@ -70,9 +77,6 @@ main() {
       return;
       ;;
   esac
-
-  exec "tmux" "$@"
-
 }
 
 main "$@"

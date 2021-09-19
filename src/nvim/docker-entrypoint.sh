@@ -64,8 +64,9 @@ main() {
       echo "Clone mode"
       clone_multiple "$@"
       local project_name="$(get_project_name_if_only_one "$@")"
-      echo " - exec nvim /projects/$project_name"
-      exec nvim /projects/$project_name
+      [[ -n "$project_name" ]] && cd "$project_name"
+      echo " - exec nvim in folder '$PWD'"
+      exec nvim
       ;;
 
     *)
