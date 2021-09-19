@@ -20,6 +20,7 @@ x-nvim-developer:
     - nvim-projects-container:/projects:rw
     - //var/run/docker.sock:/var/run/docker.sock
     - ${SSH_AUTH_SOCK}:/agent.sock
+  command: clone ${CLONE_PROJECT_1} ${CLONE_PROJECT_2} ${CLONE_PROJECT_3} ${CLONE_PROJECT_4} ${CLONE_PROJECT_5}
 
 ## Services
 services:

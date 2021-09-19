@@ -91,6 +91,9 @@ RUN apk add --no-cache \
 # Adding known hosts: github
 COPY ./nvim/.ssh /home/${DEV_USER}/.ssh
 
+# Adding entrypoint script
+COPY ./nvim/docker-entrypoint.sh /docker-entrypoint.sh
+
 USER ${DEV_USER}
 
 # Install nvim plugins
@@ -107,4 +110,5 @@ COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/config/ $STD_XDG_CONFIG_HOME/nvim/co
 ENV TERM=xterm-256color \
     LC_ALL=en_US.UTF-8
 
-CMD ["nvim","/projects"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["nvim"]
