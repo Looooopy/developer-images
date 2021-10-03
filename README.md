@@ -18,11 +18,11 @@ This project aims to setup docker containers with all essential binaries to do
 
     * Install Chocolatey
 
-        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+            Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
     * Install Git
 
-        choco install git
+            choco install git
 
     * Install Nerd font
 
@@ -36,7 +36,7 @@ This project aims to setup docker containers with all essential binaries to do
 
     * Install Windows Terminal
 
-        choco install microsoft-windows-terminal
+            choco install microsoft-windows-terminal
 
     * Use Nerd font in [Windows Terminal]()
 
