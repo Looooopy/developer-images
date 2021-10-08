@@ -50,7 +50,7 @@ fi
 Run it in bash shell in WSL.
 
 > Note: Remember that you need to reload ```source $HOME/.zshrc``` bash prompt config
->       or start a new one if you havent already to start the code from [Above section](Windows-wsl-bash).
+>       or start a new one if you havent already to start the code from [above section](Windows-wsl-bash).
 
 This write data to windows clipboard:
 
@@ -65,12 +65,12 @@ This read data from windows clipboard:
 ```
 
 
-Result (If you did not copy the obove command):
+Result (If you did not copy the above command):
 ``` bash
     test from docker
 ```
 
-Result (If you copy the obove command):
+Result (If you copy the above command):
 ``` bash
     socat tcp:localhost:8121 -
 ```
@@ -91,12 +91,12 @@ This command read data from windows clipboard:
     socat tcp:host.docker.internal:8121 -
 ```
 
-Result (If you did not copy the obove command):
+Result (If you did not copy the above command):
 ``` bash
     test from docker
 ```
 
-Result (If you copy the obove command):
+Result (If you copy the above command):
 ``` bash
     socat tcp:host.docker.internal:8121 -
 ```
@@ -137,4 +137,8 @@ Neovim you need to do it like this:
 
 ## References
 
-https://stuartleeks.com/posts/vscode-devcontainer-clipboard-forwarding/
+[Forward windows clipboard](https://stuartleeks.com/posts/vscode-devcontainer-clipboard-forwarding/)
+
+[Use socat](https://copyconstruct.medium.com/socat-29453e9fc8a6)
+
+[socat samples](http://www.dest-unreach.org/socat/doc/socat.html)
