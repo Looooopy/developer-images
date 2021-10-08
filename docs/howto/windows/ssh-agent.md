@@ -62,7 +62,7 @@ if [[ $ALREADY_RUNNING != "0" ]]; then
     # set socat to listen on $SSH_AUTH_SOCK and forward to npiperelay which then forwards to openssh-ssh-agent on windows
     (setsid socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:"npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork &) >/dev/null 2>&1
 fi
-}
+
 EOF
 
 source $HOME/.zshrc
@@ -101,6 +101,7 @@ version: "3.8"
 
 services:
   my-service:
+    image: hello-world:
     environment:
       - SSH_AUTH_SOCK=/agent.sock
     volumes:

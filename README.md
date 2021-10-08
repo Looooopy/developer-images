@@ -46,7 +46,9 @@ This project aims to setup docker containers with all essential binaries to do
                 "fontFace": "JetBrainsMono Nerd Font",
                 "fontWeight": "semi-bold",
 
-    * [Setup SSH Agent](/docs/howto/ssh-agent.md)
+    * [Setup SSH Agent](/docs/howto/windows/ssh-agent.md)
+
+    * [Setup Clipboard](/docs/howto/windows/clipboard.md)
 
 * MacOS (bare metal)
 
