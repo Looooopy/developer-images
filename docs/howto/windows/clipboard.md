@@ -7,7 +7,10 @@ We would like to access the windows clipboard from a docker container running in
 ### Windows powershell
 
 Start a powershell terminal and run command below.
+
 It will install [win32yank](https://github.com/equalsraf/win32yank) which will allow us to access the windows clipboard through a command.
+
+> Note: Must be run as adminstrator
 
 ``` powershell
     choco install win32yank

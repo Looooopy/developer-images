@@ -21,6 +21,8 @@ Run this script as administrator once
 
 [npiperelay](https://github.com/jstarks/npiperelay) is used in Ubuntu in WSL2 to foward request to windows SSH Agent.
 
+> Note: Must be run as adminstrator
+
 ``` powershell
     # Set the sshd service to be started automatically
     Get-Service -Name ssh-agent | Set-Service -StartupType Automatic

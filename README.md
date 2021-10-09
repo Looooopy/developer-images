@@ -14,50 +14,25 @@ This project aims to setup docker containers with all essential binaries to do
 
 * Windows (bare metal)
 
-    >TODO: Create a script for this
+    * [Install Chocolatey](docs/howto/windows/chocolatey.md)
 
-    * Install Chocolatey
+    * [Setup Git with SSH](docs/howto/windows/git.md)
 
-            Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-
-    * Install Git
-
-            choco install git
-
-    * Install Nerd font
-
-        Install nerd font 'Jet Brains Mono' (required for Neo Vim Plugin: nvim-tree.lua to show correct symbols for code files and folders)
-
-            git clone --filter=blob:none --sparse git@github.com:ryanoasis/nerd-fonts
-            cd nerd-fonts
-            git sparse-checkout add patched-fonts/JetBrainsMono
-            set-executionpolicy remotesigned
-            .\install.ps1 JetBrainsMono
-
-    * Install Windows Terminal
-
-            choco install microsoft-windows-terminal
-
-    * Use Nerd font in [Windows Terminal]()
-
-            cd C:\Users\%USERNAME%\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState
-            open settings.json in your txt editor
-            add these lines under you WSL (example "name": "Ubuntu-20.04",)
-                "fontFace": "JetBrainsMono Nerd Font",
-                "fontWeight": "semi-bold",
+    * [Setup Windows Terminal](docs/howto/windows/terminal.md)
 
     * [Setup SSH Agent](/docs/howto/windows/ssh-agent.md)
 
     * [Setup Clipboard](/docs/howto/windows/clipboard.md)
 
-* MacOS (bare metal)
+    >TODO: Make a single script to setup everything from scratch.
 
-    >TODO: Create a script for this and document what to do
+* MacOS (bare metal)
 
     * Nerdfonts
 
     * Use Nerd font in iTerm2
 
+    >TODO: Make a single script to setup everything from scratch.
 
 ## Running a container
 
