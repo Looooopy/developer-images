@@ -32,7 +32,30 @@ docker_compose() {
   else
   # Docker dont threat UID and GID as envirnment variables so we have to do it externaly
   DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose  -f "$SRC_ROOT"/docker-compose.yml -f "$SRC_ROOT"/docker-compose-volume-${volume_type}.yml --env-file "$SRC_ROOT"/.env  $@
+
+export_host_os() {
+  export HOST_OS
+  if [[ "$(uname -r)" == *microsoft* ]]; then
+    HOST_OS="wsl2"
+  elif [[ "$(uname -s)" == "Darwin" ]]; then
+    HOST_OS="macos"
+  else
+    HOST_OS="linux"
   fi
+  export_dot_env HOST_OS
+}
+
+export_os_specific() {
+  case "${HOST_OS:?}" in
+    wsl2)
+    ;;
+    macos)
+    ;;
+    linux)
+    ;;
+    default)
+    ;;
+  esac
 }
 
 export_dot_env() {
@@ -46,8 +69,12 @@ export_dot_env() {
     echo "Exporting all from "
     export $(grep -v '^#' "$env_file" | xargs -0)
   else
-    echo "Exporting spcific '$specfic_value'"
-    export $(grep -v '^#' "$env_file" | grep ^"$specfic_value" | xargs -0)
+    if [[ -n "$(grep -v '^#' "$env_file" | grep ^"$specfic_value")" ]]; then
+      echo "Exporting spcific '$specfic_value'"
+      export $(grep -v '^#' "$env_file" | grep ^"$specfic_value" | xargs -0)
+    else
+      echo "'$specfic_value' in '$env_file' do not exist"
+    fi
   fi
 }
 

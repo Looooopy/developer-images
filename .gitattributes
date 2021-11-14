@@ -10,3 +10,5 @@ build                eol=lf
 prune                eol=lf
 scripts/**           eol=lf
 src/**               eol=lf
+src/*yaml            eol=lf
+src/*yml             eol=lf
