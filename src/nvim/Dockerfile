@@ -86,7 +86,12 @@ RUN apk add --no-cache \
         libstdc++ \
         g++ \
 # Install docker-cli to let lspcontainers start containers from this image.
-        docker-cli
+        docker-cli \
+        socat
+
+RUN wget https://github.com/wfxr/code-minimap/releases/download/v0.6.1/code-minimap-v0.6.1-x86_64-unknown-linux-musl.tar.gz \
+         && tar -xzf code-minimap-v0.6.1-x86_64-unknown-linux-musl.tar.gz \
+         && mv code-minimap-v0.6.1-x86_64-unknown-linux-musl/code-minimap /usr/bin/code-minimap
 
 # Adding known hosts: github
 COPY ./nvim/.ssh /home/${DEV_USER}/.ssh

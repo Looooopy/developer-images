@@ -12,6 +12,7 @@ Plug 'ray-x/lsp_signature.nvim'                                     " Handles co
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/vim-vsnip'                                            " used by nvim-cmp (Snippet engine)
 Plug 'hrsh7th/cmp-buffer'                                           " used by nvim-cmp (Buffer completion source)
+Plug 'wfxr/minimap.vim'                                             " Minmap
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'kyazdani42/nvim-web-devicons'                                 " used by nvim-tree for file icons
 Plug 'kyazdani42/nvim-tree.lua'
