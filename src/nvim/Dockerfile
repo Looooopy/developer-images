@@ -111,6 +111,7 @@ RUN bash -c "$XDG_CONFIG_HOME/temp/treesitter/install-langs.sh"
 RUN rm -R ${STD_XDG_CONFIG_HOME:?}/temp/
 
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/config/ $STD_XDG_CONFIG_HOME/nvim/config
+COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/lua/ $STD_XDG_CONFIG_HOME/nvim/lua/
 
 ENV TERM=xterm-256color \
     LC_ALL=en_US.UTF-8

@@ -47,18 +47,16 @@ if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
   luafile $XDG_CONFIG_HOME/nvim/config/lualine.lua
   source $XDG_CONFIG_HOME/nvim/config/nvim.tree.vim
   source $XDG_CONFIG_HOME/nvim/config/vim-better-whitespace.vim
+  luafile $XDG_CONFIG_HOME/nvim/config/nvim-tree.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-colorizer.lua
   luafile $XDG_CONFIG_HOME/nvim/config/cmp.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lsp_signature.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lspconfig.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lspcontainers.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lspkind.lua
+  luafile $XDG_CONFIG_HOME/nvim/config/keymaps.lua
 endif
 
-nnoremap <C-e> NvimTreeToggle<CR>
-nnoremap <leader>r :NvimTreeRefresh<CR>
-nnoremap <leader>n :NvimTreeFindFile<CR>
-" NvimTreeOpen, NvimTreeClose and NvimTreeFocus are also available if you need them
 " highlight NvimTreeFolderIcon guifg=red
 " a list of groups can be found at `:help nvim_tree_highlight`
 " highlight NvimTreeFolderIcon guibg=blue

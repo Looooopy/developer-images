@@ -116,12 +116,12 @@ Neovim you need to do it like this:
     let g:clipboard = {
         \  'name' : 'wsl',
         \  'copy' : {
-        \    '+' : s:read_from_clip..' --crlf',
-        \    '*' : s:read_from_clip..' --crlf',
+        \    '+' : s:write_to_clip,
+        \    '*' : s:write_to_clip,
         \  },
         \  'paste' : {
-        \    '+' : s:write_to_clip..' --lf',
-        \    '*' : s:write_to_clip..' --lf',
+        \    '+' : s:read_from_clip,
+        \    '*' : s:read_from_clip,
         \  },
         \}
     unlet s:write_to_clip
@@ -131,12 +131,13 @@ Neovim you need to do it like this:
 ### Use Neovim to copy
 
 * Open a file ```neovim [filepath]```
+* type :set clipboard+=unnamedplus (This will make default register to be * and + so we dont need to specify it)
 * in normal mode press 'v' for visual mode
 * select something to copy
-* press 'y*' to yank into windows clipboard
+* press 'y' to yank into windows clipboard
 * press esc to escape visual mode
 * go to a line there you would like to paste it
-* press 'p*' to paste from windows clipboard
+* press 'p' to paste from windows clipboard
 
 ## References
 
@@ -145,3 +146,5 @@ Neovim you need to do it like this:
 [Use socat](https://copyconstruct.medium.com/socat-29453e9fc8a6)
 
 [socat samples](http://www.dest-unreach.org/socat/doc/socat.html)
+
+[securing socat with SSL](https://www.hackingarticles.in/socat-for-pentester/)
