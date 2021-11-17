@@ -22,6 +22,8 @@ x-base-developer:
     args:
       << : *default-my-build-args
   image: ${GENERIC_DOCKER_REGISTY_AND_PATH:-}base-developer:latest
+  environment:
+    - HOST_OS
 
 x-tmux-developer:
   &default-tmux-developer
@@ -36,6 +38,8 @@ x-tmux-developer:
       TMUX_RESURRECT_PROCESSES: "${TMUX_RESURRECT_PROCESSES}"
       TMUX_GIT_BRANCH: "${TMUX_GIT_BRANCH}"
       TMUX_DOCKER_TAG: "${TMUX_DOCKER_TAG}"
+  environment:
+    - HOST_OS
   hostname: tmux-docker
   ports:
     - '2022:22'
@@ -52,6 +56,8 @@ x-nvim-developer:
       << : *default-build-args-xdg-x
       NEOVIM_GIT_BRANCH: "${NEOVIM_GIT_BRANCH}"
       NEOVIM_DOCKER_TAG: "${NEOVIM_DOCKER_TAG}"
+  environment:
+    - HOST_OS
 
 ## Services
 services:

@@ -47,6 +47,7 @@ if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
   luafile $XDG_CONFIG_HOME/nvim/config/lualine.lua
   source $XDG_CONFIG_HOME/nvim/config/nvim.tree.vim
   source $XDG_CONFIG_HOME/nvim/config/vim-better-whitespace.vim
+  luafile $XDG_CONFIG_HOME/nvim/config/clipboard.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-tree.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-colorizer.lua
   luafile $XDG_CONFIG_HOME/nvim/config/cmp.lua
@@ -56,9 +57,6 @@ if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
   luafile $XDG_CONFIG_HOME/nvim/config/lspkind.lua
   luafile $XDG_CONFIG_HOME/nvim/config/keymaps.lua
 endif
-
-" Neovim use the system's (i.e Window's) clipboard by default.
-set clipboard=unnamedplus
 
 " highlight NvimTreeFolderIcon guifg=red
 " a list of groups can be found at `:help nvim_tree_highlight`
