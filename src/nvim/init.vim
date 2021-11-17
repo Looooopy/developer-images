@@ -57,6 +57,9 @@ if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
   luafile $XDG_CONFIG_HOME/nvim/config/keymaps.lua
 endif
 
+" Neovim use the system's (i.e Window's) clipboard by default.
+set clipboard=unnamedplus
+
 " highlight NvimTreeFolderIcon guifg=red
 " a list of groups can be found at `:help nvim_tree_highlight`
 " highlight NvimTreeFolderIcon guibg=blue
