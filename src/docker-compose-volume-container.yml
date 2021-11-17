@@ -28,11 +28,11 @@ services:
   nvim-developer_latest:
     << : *default-nvim-developer
   nvim-developer_specific:
-    <<  : *default-nvim-developer
+    << : *default-nvim-developer
   tmux-developer_latest:
     << : *default-tmux-developer
   tmux-developer_specific:
-    <<  : *default-tmux-developer
+    << : *default-tmux-developer
 
 volumes:
   tmux-projects-container: {}

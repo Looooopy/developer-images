@@ -4,5 +4,7 @@ source "$PWD/scripts/common.sh"
 
 export_host_os
 export_dot_env GENERIC_VOLUME_TYPE
+
 prune_volumes "$@"
+
 unset GENERIC_VOLUME_TYPE

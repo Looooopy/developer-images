@@ -7,19 +7,15 @@ echo_docker_compose_config() {
   services=( "$@" )
 
   docker_compose "${GENERIC_VOLUME_TYPE:?}" config > temp.yaml
-
   if [ ${#services[@]} -eq 0 ]; then
-    echo
-    echo "All services"
-    docker run --rm -i -v "${PWD}":/workdir mikefarah/yq e ".services"  temp.yaml
+    docker run --rm -i -v "${PWD}":/workdir mikefarah/yq e ".services" temp.yaml
   fi
 
   for service in "${services[@]}"
   do
-    echo
-    echo "$service service"
-    docker run --rm -i -v "${PWD}":/workdir mikefarah/yq e ".services.$service"  temp.yaml
+    docker run --rm -i -v "${PWD}":/workdir mikefarah/yq e ".services.$service" temp.yaml
   done
+
   rm temp.yaml
 }
 
