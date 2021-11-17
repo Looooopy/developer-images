@@ -29,23 +29,37 @@ It will install socat and append your zsh shell with two new TCP services
 sudo apt install socat
 
 cat >> $HOME/.zshrc <<'EOF'
-if [[ $(command -v socat > /dev/null; echo $?) == 0 ]]; then
-    # Start up the socat forwarder to win32yank.exe
-    COPY_CLIP_ALREADY_RUNNING=$(ps -auxww | grep -q "[l]isten:8121"; echo $?)
-    if [[ $COPY_CLIP_ALREADY_RUNNING != "0" ]]; then
-        echo "Starting COPY clipboard relay..."
-        (setsid socat tcp-listen:8121,fork,bind=0.0.0.0 EXEC:'win32yank.exe -o' &) > /dev/null 2>&1
-    else
-        echo "Copy Clipboard (read data from windows clipboard) relay already running"
+function kill_clipboard_socat() {
+    kill "$(lsof -t -i:8121)"
+    kill "$(lsof -t -i:8122)"
+}
+
+function reload_clipboard_socat() {
+    kill_clipboard_socat
+    start_clipboard_socat
+}
+
+function start_clipboard_socat() {
+    if [[ $(command -v socat > /dev/null; echo $?) == 0 ]]; then
+        # Start up the socat forwarder to clip.exe
+        COPY_CLIP_ALREADY_RUNNING=$(ps -auxww | grep -q "[l]isten:8121"; echo $?)
+        if [[ $COPY_CLIP_ALREADY_RUNNING != "0" ]]; then
+             echo "Starting COPY clipboard relay..."
+             (setsid socat tcp-listen:8121,fork,bind=0.0.0.0 EXEC:'win32yank.exe -o' &) > /dev/null 2>&1
+        else
+             #echo "Copy Clipboard relay already running"
+        fi
+        PASTE_CLIP_ALREADY_RUNNING=$(ps -auxww | grep -q "[l]isten:8122"; echo $?)
+        if [[ $PASTE_CLIP_ALREADY_RUNNING != "0" ]]; then
+            echo "Starting PASTE clipboard relay..."
+            (setsid socat tcp-listen:8122,fork,bind=0.0.0.0 EXEC:'win32yank.exe -i' &) > /dev/null 2>&1
+        else
+            #echo "PASTE Clipboard relay already running"
+        fi
     fi
-    PASTE_CLIP_ALREADY_RUNNING=$(ps -auxww | grep -q "[l]isten:8122"; echo $?)
-    if [[ $PASTE_CLIP_ALREADY_RUNNING != "0" ]]; then
-        echo "Starting PASTE clipboard relay..."
-        (setsid socat tcp-listen:8122,fork,bind=0.0.0.0 EXEC:'win32yank.exe -i' &) > /dev/null 2>&1
-    else
-        echo "PASTE Clipboard (write data to windows clipboard) relay already running"
-    fi
-fi
+}
+
+start_clipboard_socat
 ```
 
 ## WSL
