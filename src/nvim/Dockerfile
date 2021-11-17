@@ -87,7 +87,10 @@ RUN apk add --no-cache \
         g++ \
 # Install docker-cli to let lspcontainers start containers from this image.
         docker-cli \
-        socat
+        socat \
+# Install dependencies to make telescope faster
+        ripgrep \
+        fd
 
 RUN wget https://github.com/wfxr/code-minimap/releases/download/v0.6.1/code-minimap-v0.6.1-x86_64-unknown-linux-musl.tar.gz \
          && tar -xzf code-minimap-v0.6.1-x86_64-unknown-linux-musl.tar.gz \
