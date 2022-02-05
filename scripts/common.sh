@@ -225,7 +225,7 @@ run() {
   local service
 
   case $service_short in
-    tmux | nvim)
+    tmux | nvim | base )
       service="$service_short-developer_$version"
       ;;
     *)
@@ -244,6 +244,7 @@ run() {
 
   case "${GENERIC_VOLUME_TYPE:?}" in
     container | localhost)
+      echo_docker_compose_config "${service}"
       if [[ -z "$start_arg" ]]; then
         docker_compose "${GENERIC_VOLUME_TYPE:?}" run --rm "$service"
       else
