@@ -91,14 +91,104 @@ prune_volumes() {
   fi
 }
 
+function _build_usage() {
+    echo 'Usage: ./build [-hnvs]'
+    echo '------------------------------------------------------------------------------------------------------------------------------------------------'
+    echo '   Switch             Args            Default   Description'
+    echo '   -h --help                                    Prints this usage screen'
+    echo '   -n --no-cache                                Build without docker cache'
+    echo '   -v --version       [arg1]          latest    Build version arg1=latest or specific'
+    echo '   -f --force-plugins                           Rebuild part of image "plugins"'
+    echo '   -s --services      [rest of args]  all       Build services "nvim", "tmux", "base" or "all" services [NOTE: this parameter and args must be last]'
+    echo '------------------------------------------------------------------------------------------------------------------------------------------------'
+}
+
+function _parse_build_options() {
+  local valid_args
+  local short_opts='hnv:fs:'
+  local long_opts='help,no-cache,version:,force-plugins,services:'
+
+  valid_args=$(getopt -o "${short_opts}" --long "${long_opts}" -- "$@" 2>/dev/null)
+  if [[ $? -ne 0 ]]; then
+    local error=$(getopt -o "${short_opts}" --long "${long_opts}" -- "$@" 2>&1 > /dev/null)
+    echo
+    echo "Error: $error"
+    echo
+    _build_usage
+    return 1;
+  fi
+
+  eval set -- "$valid_args"
+  while [ : ]; do
+      case "$1" in
+          -h | --helper)
+              echo "--help"
+              _build_usage
+              return 1
+              break;
+            ;;
+          -n | --no-cache)
+              echo "--no-cache option"
+              no_cache="--no-cache"
+              shift
+              ;;
+          -v | --version)
+              echo "--version option (arg: $2)"
+              version="$2"
+              shift 2
+              ;;
+          -f | --force-plugins)
+              echo "--force-plugins option"
+              forece_plugins=yes
+              shift
+              ;;
+          -s | --services)
+              REST=("${@:4:(($#-3))}")
+              echo "--services option (args: $2 ${REST[@]}, count: $#)"
+              services_short=($2 ${REST[@]})
+              shift $#
+              #push back -- so we exist after services are defined
+              set -- -- "$@"
+              ;;
+          --) shift;
+              break
+              ;;
+      esac
+  done
+}
+
 build() {
-  local version
+  local version='latest'
+  local no_cache=''
   local services_short=()
   local services=()
-  local failed=0
-  version="${1:-latest}"
-  [[ -n "$1" ]] && shift
-  [[ -n "$*" ]] && services_short=( "$@" )
+  local forece_plugins=''
+  local valid_args
+  local force=all
+
+  if ! _parse_build_options "$@"; then
+    return 1
+  fi
+
+  if [[ "$version" != 'latest' ]] && [[ "$version" != 'specific' ]]; then
+     >&2 echo "--version (-v) can only be 'latest' or 'specific' was: $version"
+
+     _build_usage
+     return 1
+  fi
+
+  local build_args=()
+  if [[ -n $forece_plugins ]]; then
+      build_args+=('--build-arg' 'FORCE_UPDATE_PLUGINS=yes' )
+  fi
+
+  if (("${#services_short[@]}" == 0)); then
+    # Default
+    services_short=(all)
+  else
+    # Remove all other services if contains 'all'
+    case "${services_short[@]}" in  *"all"*) services_short=(all);; esac
+  fi
 
   for service in "${services_short[@]}"
   do
@@ -106,17 +196,20 @@ build() {
       tmux | nvim | base )
         services+=("$service-developer_$version")
         ;;
+      all )
+        services=("base-developer_$version" "tmux-developer_$version" "nvim-developer_$version")
+        ;;
       *)
-        >&2 echo "service='$1' not an allowed service, allowed 'tmux', 'nvim'"
-        failed=1
+        >&2 echo "service='$1' not an allowed service, allowed 'tmux', 'nvim' and 'base'"
+        _build_usage
+        return 1
         ;;
     esac
   done
 
-  [[ "$failed" == 1 ]] && return 1
 
   echo_docker_compose_config "${services[@]}"
-  docker_compose "${GENERIC_VOLUME_TYPE:?}" build "${services[@]}"
+  docker_compose "${GENERIC_VOLUME_TYPE:?}" build "${no_cache} ${build_args[@]} ${services[@]}"
 }
 
 run() {
