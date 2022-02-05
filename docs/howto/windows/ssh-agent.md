@@ -76,10 +76,10 @@ check_ssh() {
 
     result="$(ssh -T git@github.com 2>&1)"
     if [[ $? == 1 ]] && [[ "$result" == *"successfully authenticated"* ]]; then
-        echo -e "\[${Green}Success${Color_End}\] - WSL connected to SSH Agent in Windows"
+        echo -e "[${Green}Success${Color_End}] - WSL connected to SSH Agent in Windows"
         return 0
     else
-        echo -e "\[${Red}Failed${Color_End}\] - WSL did not succeed in connecting to SSH Agent in Windows"
+        echo -e "[${Red}Failed${Color_End}] - WSL did not succeed in connecting to SSH Agent in Windows"
         return 1
     fi
 }
