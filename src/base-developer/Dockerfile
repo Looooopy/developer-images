@@ -22,7 +22,7 @@ RUN addgroup $DEV_USER docker
 
 
 RUN apk update && \
-    apk add --no-cache \
+   apk add --no-cache \
         git \
         tar \
         openssh-client \
@@ -30,6 +30,8 @@ RUN apk update && \
         sed \
         jq \
         htop \
+        bash \
+        # neofetch include bash
         neofetch \
         cmatrix
 
