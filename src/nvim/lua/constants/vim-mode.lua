@@ -3,8 +3,8 @@ M = {
     normal = 'n',
     insert = 'i',
     visual = 'v',
-    cmd_edit = 'c'
-    cmd = ':'
+    cmd_edit = 'c',
+    cmd = ':',
     global = '',
 }
 

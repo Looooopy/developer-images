@@ -3,6 +3,7 @@
 "highlight ExtraWhitespace ctermbg=<desired_color>
 " or
 "let g:better_whitespace_ctermcolor='<desired_color>'
+let g:better_whitespace_filetypes_blacklist=['<filetype1>', '<filetype2>', '<etc>','diff', 'git', 'gitcommit', 'unite', 'qf', 'help', 'markdown', 'fugitive']
 
 
 " [[ Available Commands ]]

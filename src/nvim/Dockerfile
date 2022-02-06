@@ -60,15 +60,21 @@ ENV DOTNET_FILE=dotnet-sdk-5.0.404-linux-musl-x64.tar.gz
 RUN curl -L -O "https://download.visualstudio.microsoft.com/download/pr/efedb4fc-acec-4d03-a502-3e1ecc51eb0a/f4ee529ee13dc95bcd9146ca07e9174e/$DOTNET_FILE" && \
     tar zxf "$DOTNET_FILE" -C "$DOTNET_ROOT"
 
-# Install dotnet 3.1.416
+# Install dotnet 3.1
 ENV DOTNET_FILE=dotnet-sdk-3.1.416-linux-musl-x64.tar.gz
 RUN curl -L -O "https://download.visualstudio.microsoft.com/download/pr/1da779d5-0177-4a0c-a439-34f38e1d4761/56649104a169e490e09b5cfc6e4ba26e/$DOTNET_FILE" && \
     tar zxf "$DOTNET_FILE" -C "$DOTNET_ROOT"
 
-# Install dotnet 2.2.207
+# Install dotnet 2.2
 ENV DOTNET_FILE=dotnet-sdk-2.2.207-linux-musl-x64.tar.gz
 RUN curl -L -O "https://download.visualstudio.microsoft.com/download/pr/c72122bd-38f5-4c98-b585-b8aaf57ecc6e/c89d7774a430e163d801753654f33972/$DOTNET_FILE" && \
     tar zxf "$DOTNET_FILE" -C "$DOTNET_ROOT"
+
+# Install netcoredbg 2
+ENV NETCOREDBG_VERSION=2.0.0-880 \
+    NETCOREDBG_FILE=netcoredbg-linux-amd64.tar.gz 
+RUN curl -L -O "https://github.com/Samsung/netcoredbg/releases/download/$NETCOREDBG_VERSION/$NETCOREDBG_FILE" && \
+    tar zxf "$NETCOREDBG_FILE" -C "$DOTNET_ROOT"
 
 # TDOD: Move this when DOTNET is moved somewhere else..
 # To be able to build gRPC (Grpc.Tools)
@@ -142,7 +148,9 @@ COPY ./nvim/docker-entrypoint.sh /docker-entrypoint.sh
 ########################################################################################################################################
 ## Prepare dotnet sdk folder
 ENV DOTNET_ROOT /tmp/dotnet
-ENV PATH="$PATH:$DOTNET_ROOT"
+ENV NETCOREDBG_ROOT=$DOTNET_ROOT/netcoredbg
+ENV PATH "$PATH:$DOTNET_ROOT:$NETCOREDBG_ROOT"
+
 # Set globalization to invariant
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 # Don't send telementry to microsoft
