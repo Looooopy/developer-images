@@ -47,6 +47,8 @@ ENV TMUX_OUTPUT=$TMUX_OUTPUT_DIR \
     XDG_DATA_HOME=$TMUX_XDG_DATA_HOME \
     XDG_CONFIG_HOME=$TMUX_XDG_CONFIG_HOME
 
+ARG FORCE_UPDATE_PLUGINS=no
+
 RUN git clone https://github.com/tmux/tmux.git --branch $TMUX_GIT_BRANCH . \
 ## Git Clone the .tmux config (Should we fork it or create our own?)
     && git clone https://github.com/gpakosz/.tmux.git \
@@ -89,7 +91,7 @@ ENV ENV DEV_USER=$DEV_USER \
 COPY --from=tmux-build /tmux/tmux-install  /tmux
 COPY --from=tmux-build /tmux/.tmux/.tmux.conf  $XDG_CONFIG_HOME/tmux/.tmux.conf
 COPY --from=tmux-build /tmux/.tmux/.tmux.conf.local  $XDG_CONFIG_HOME/tmux/.tmux.conf.local
-COPY ./tmux/plugins.conf $XDG_CONFIG_HOME/tmux/plugins.conf
+#COPY ./tmux/plugins.conf $XDG_CONFIG_HOME/tmux/plugins.conf
 
 ## TMUX binaries
 RUN apk update && \
