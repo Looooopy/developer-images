@@ -64,9 +64,25 @@ Sample:
 Syntax:
 
     developer-images>
-    ./build [latest or specific] [base, tmux and/or nvim]
+    ./build --version (-v)  [latest or specific] --services (-s) [base, tmux and/or nvim]
 
 Sample:
+
+> Build help
+
+    developer-images>
+    ./build --help
+
+    Usage: ./build [-hnvs]
+    ------------------------------------------------------------------------------------------------------------------------------------------------
+    Switch             Args            Default   Description
+    -h --help                                    Prints this usage screen
+    -n --no-cache                                Build without docker cache
+    -v --version       [arg1]          latest    Build version arg1=latest or specific
+    -f --force-plugins                           Rebuild part of image "plugins"
+    -s --services      [rest of args]  all       Build services "nvim", "tmux", "base" or "all" services [NOTE: this parameter and args must be last]
+    ------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 > Build all images versions
 
@@ -76,12 +92,12 @@ Sample:
 > Build tmux and nvim latest and not base image (it still need to be prsent)
 
     developer-images>
-    ./build latest tmux nvim
+    ./build --version latest --services tmux nvim
 
 > Build base and tmux latest
 
     developer-images>
-    ./build latest base tmux
+    ./build --version latest --services base tmux
 
 ### docker-compose instead of script
 
