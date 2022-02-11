@@ -71,33 +71,36 @@ Sample:
 > Build help
 
     developer-images>
-    ./build --help
+    ./build
 
-    Usage: ./build [-hnvs]
-    ------------------------------------------------------------------------------------------------------------------------------------------------
-    Switch             Args            Default   Description
-    -h --help                                    Prints this usage screen
-    -n --no-cache                                Build without docker cache
-    -v --version       [arg1]          latest    Build version arg1=latest or specific
-    -f --force-plugins                           Rebuild part of image "plugins"
-    -s --services      [rest of args]  all       Build services "nvim", "tmux", "base" or "all" services [NOTE: this parameter and args must be last]
-    ------------------------------------------------------------------------------------------------------------------------------------------------
-
+    Usage: ./build [-hnvsa]
+    --------------------------------------------------------------------------------------------------------------
+        Switch             Args            Default   Description
+        -h --help                                    Prints this usage screen
+        -n --no-cache                                Build without docker cache
+        -f --force-plugins                           Rebuild part of image "plugins"
+        -v --version       [arg1]          latest    Build version arg1=latest or specific
+        -s --service       [arg1]                    Build services "nvim", "tmux", "base"
+                                                        - Option can be specified multiple times
+                                                        - Deplicates are removed from tail
+                                                        - Order of options is the build order
+        -a --all-services                            Build all service in following order "base", "nvim", "tmux"
+    --------------------------------------------------------------------------------------------------------------
 
 > Build all images versions
 
     developer-images>
-    ./build
+    ./build --all-services
 
-> Build tmux and nvim latest and not base image (it still need to be prsent)
+> Build tmux and nvim latest and not base image (it still need to be present)
 
     developer-images>
-    ./build --version latest --services tmux nvim
+    ./build --version latest --service tmux --service nvim
 
 > Build base and tmux latest
 
     developer-images>
-    ./build --version latest --services base tmux
+    ./build --version latest --service base --service tmux
 
 ### docker-compose instead of script
 

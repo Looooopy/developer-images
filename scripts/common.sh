@@ -94,25 +94,30 @@ prune_volumes() {
 }
 
 function _build_usage() {
-    echo 'Usage: ./build [-hnvs]'
-    echo '------------------------------------------------------------------------------------------------------------------------------------------------'
+    echo 'Usage: ./build [-hnvsa]'
+    echo '--------------------------------------------------------------------------------------------------------------'
     echo '   Switch             Args            Default   Description'
     echo '   -h --help                                    Prints this usage screen'
     echo '   -n --no-cache                                Build without docker cache'
-    echo '   -v --version       [arg1]          latest    Build version arg1=latest or specific'
     echo '   -f --force-plugins                           Rebuild part of image "plugins"'
-    echo '   -s --services      [rest of args]  all       Build services "nvim", "tmux", "base" or "all" services [NOTE: this parameter and args must be last]'
-    echo '------------------------------------------------------------------------------------------------------------------------------------------------'
+    echo '   -v --version       [arg1]          latest    Build version arg1=latest or specific'
+    echo '   -s --service       [arg1]                    Build services "nvim", "tmux", "base"'
+    echo '                                                 - Option can be specified multiple times'
+    echo '                                                 - Deplicates are removed from tail'
+    echo '                                                 - Order of options is the build order'
+    echo '   -a --all-services                            Build all service in following order "base", "nvim", "tmux"'
+    echo '--------------------------------------------------------------------------------------------------------------'
 }
 
 function _parse_build_options() {
   local valid_args
-  local short_opts='hnv:fs:'
-  local long_opts='help,no-cache,version:,force-plugins,services:'
+  local short_opts='hnv:fs:a'
+  local long_opts='help,no-cache,version:,force-plugins,service:,all-services'
+  local opts_args=(-o "${short_opts}" --long "${long_opts}" -- "$@")
 
-  valid_args=$(getopt -o "${short_opts}" --long "${long_opts}" -- "$@" 2>/dev/null)
+  valid_args=$(getopt "${opts_args[@]}" 2>/dev/null)
   if [[ $? -ne 0 ]]; then
-    local error=$(getopt -o "${short_opts}" --long "${long_opts}" -- "$@" 2>&1 > /dev/null)
+    local error=$(getopt "${opts_args[@]}" 2>&1 > /dev/null)
     echo
     echo "Error: $error"
     echo
@@ -123,34 +128,45 @@ function _parse_build_options() {
   eval set -- "$valid_args"
   while [ : ]; do
       case "$1" in
+          -a | --all-services)
+              #echo "--all-services"
+              all_services='true'
+              shift
+            ;;
           -h | --helper)
-              echo "--help"
+              #echo "--help"
               _build_usage
               return 1
               break;
             ;;
           -n | --no-cache)
-              echo "--no-cache option"
+              #echo "--no-cache option"
               no_cache="--no-cache"
               shift
               ;;
           -v | --version)
-              echo "--version option (arg: $2)"
+              #echo "--version option (arg: $2)"
               version="$2"
               shift 2
               ;;
           -f | --force-plugins)
-              echo "--force-plugins option"
+              #echo "--force-plugins option"
               forece_plugins=yes
               shift
               ;;
-          -s | --services)
-              REST=("${@:4:(($#-3))}")
-              echo "--services option (args: $2 ${REST[@]}, count: $#)"
-              services_short=($2 ${REST[@]})
-              shift $#
-              #push back -- so we exist after services are defined
-              set -- -- "$@"
+          -s | --service)
+              #echo "--service option (args: $2)"
+              # No duplicates allowed
+              case "${services_short[@]}" in
+                *"$2"*)
+                    #echo " ' - $2' service is a duplicate, use only the one from head"
+                    shift 2
+                    ;;
+                *)
+                  services_short+=("$2")
+                  shift 2
+                  ;;
+              esac
               ;;
           --) shift;
               break
@@ -162,6 +178,7 @@ function _parse_build_options() {
 build() {
   local version='latest'
   local no_cache=''
+  local all_services
   local services_short=()
   local services=()
   local forece_plugins=''
@@ -184,8 +201,12 @@ build() {
       build_args+=('--build-arg' 'FORCE_UPDATE_PLUGINS=yes' )
   fi
 
-  if (("${#services_short[@]}" == 0)); then
+  if (("${#services_short[@]}" == 0)) && [[ -z "$all_services" ]]; then
     # Default
+    >&2 echo "You must specify either option --service or --all-services"
+    >&2 echo
+    _build_usage
+  elif [[ -n "$all_services" ]]; then
     services_short=(all)
   else
     # Remove all other services if contains 'all'
@@ -208,7 +229,6 @@ build() {
         ;;
     esac
   done
-
 
   echo_docker_compose_config "${services[@]}"
   docker_compose "${GENERIC_VOLUME_TYPE:?}" build "${no_cache} ${build_args[@]} ${services[@]}"
