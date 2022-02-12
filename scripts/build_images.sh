@@ -7,7 +7,7 @@
 
 function _build_usage() {
   echo 'Usage: ./build [-hnvsa]'
-  echo '--------------------------------------------------------------------------------------------------------------'
+  echo '------------------------------------------------------------------------------------------------------------'
   echo '   Switch             Args            Default   Description'
   echo '   -h --help                                    Prints this usage screen'
   echo '   -n --no-cache                                Build without docker cache'
@@ -18,7 +18,7 @@ function _build_usage() {
   echo '                                                 - Deplicates are removed from tail'
   echo '                                                 - Order of options is the build order'
   echo "   -a --all-services                            Build all service in following order ${__services}"
-  echo '--------------------------------------------------------------------------------------------------------------'
+  echo '------------------------------------------------------------------------------------------------------------'
 }
 
 function _parse_build_options() {

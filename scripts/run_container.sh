@@ -8,14 +8,14 @@
 
 function _run_usage() {
   echo 'Usage: ./run [-hrvs]'
-  echo '--------------------------------------------------------------------------------------------------------------'
+  echo '------------------------------------------------------------------------------------------------------------'
   echo '   Switch             Args            Default   Description'
   echo '   -h --help                                    Prints this usage screen'
   echo '   -r --run-arg       [arg1]                    Argument should be passed to docker run'
   echo '                                                  - Option can be specified multiple times'
   echo '   -v --version       [arg1]          latest    Run version arg1=latest or specific'
   echo "   -s --service       [arg1]                    Run service ( ${__services} )"
-  echo '--------------------------------------------------------------------------------------------------------------'
+  echo '------------------------------------------------------------------------------------------------------------'
 }
 
 function _parse_run_options() {

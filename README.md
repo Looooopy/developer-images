@@ -59,14 +59,14 @@ Sample:
     ./run
 
     Usage: ./run [-hrvs]
-    --------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------
     Switch             Args            Default   Description
     -h --help                                    Prints this usage screen
     -r --run-arg       [arg1]                    Argument should be passed to docker run
                                                     - Option can be specified multiple times
     -v --version       [arg1]          latest    Run version arg1=latest or specific
     -s --service       [arg1]                    Run service ( "base", "tmux", "nvim" )
-    --------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------
 
     Error: Required option --service
 
@@ -96,7 +96,7 @@ Sample:
     ./build
 
     Usage: ./build [-hnvsa]
-    --------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------
     Switch             Args            Default   Description
     -h --help                                    Prints this usage screen
     -n --no-cache                                Build without docker cache
@@ -107,7 +107,7 @@ Sample:
                                                     - Deplicates are removed from tail
                                                     - Order of options is the build order
     -a --all-services                            Build all service in following order "base", "tmux", "nvim"
-    --------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------
 
     Error: Required option --service or --all-services
 
