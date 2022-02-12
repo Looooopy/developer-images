@@ -2,7 +2,7 @@
 
 > Note
 >
-> This is not updated because I use my own script commands that do this in the background
+> This is not updated because I use my own command scripts that do this in the background
 >
 > I will probably update this documentation later and remove this note.
 

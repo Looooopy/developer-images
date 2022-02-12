@@ -36,15 +36,9 @@ This project aims to setup docker containers with all essential binaries to do
 
 ## Build images or run a container
 
-[Commmands](/docs/commands/README.md)
+[Command scripts](/docs/commands/README.md)
 
 ### docker-compose instead of script
-
-> Note
->
-> This is not recommended way it was my old way of doing things.
->
-> Left it here in case of refrence.
 
 [docker-compose commands](/docs/docker/docker-compose.md)
 
