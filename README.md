@@ -45,19 +45,37 @@ Collection of scripts to make it more convient to build and run.
 Syntax:
 
     developer-images>
-    ./run [tmux or nvim] [latest or specific] [sh]
+    ./run -s [tmux or nvim] -v [latest or specific] -r [sh]
 
 Sample:
+
+> Run help
+
+    developer-images>
+    ./run
+
+    Usage: ./run [-hrvs]
+    --------------------------------------------------------------------------------------------------------------
+    Switch             Args            Default   Description
+    -h --help                                    Prints this usage screen
+    -r --run-arg       [arg1]                    Argument should be passed to docker run
+                                                    - Option can be specified multiple times
+    -v --version       [arg1]          latest    Run version arg1=latest or specific
+    -s --service       [arg1]                    Run service ( "base", "tmux", "nvim" )
+    --------------------------------------------------------------------------------------------------------------
+
+    Error: Required option --service
+
 
 > Run tmux latest
 
     developer-images>
-    ./run tmux
+    ./run -s tmux
 
 > Run tmux specific version and bypass start of tmux and just login to shell
 
     developer-images>
-    ./run tmux specific sh
+    ./run --service tmux --version specific --run-arg sh
 
 ### Build
 
@@ -75,17 +93,19 @@ Sample:
 
     Usage: ./build [-hnvsa]
     --------------------------------------------------------------------------------------------------------------
-        Switch             Args            Default   Description
-        -h --help                                    Prints this usage screen
-        -n --no-cache                                Build without docker cache
-        -f --force-plugins                           Rebuild part of image "plugins"
-        -v --version       [arg1]          latest    Build version arg1=latest or specific
-        -s --service       [arg1]                    Build services "nvim", "tmux", "base"
-                                                        - Option can be specified multiple times
-                                                        - Deplicates are removed from tail
-                                                        - Order of options is the build order
-        -a --all-services                            Build all service in following order "base", "nvim", "tmux"
+    Switch             Args            Default   Description
+    -h --help                                    Prints this usage screen
+    -n --no-cache                                Build without docker cache
+    -f --force-plugins                           Rebuild part of image "plugins"
+    -v --version       [arg1]          latest    Build version arg1=latest or specific
+    -s --service       [arg1]                    Build services "base", "tmux", "nvim"
+                                                    - Option can be specified multiple times
+                                                    - Deplicates are removed from tail
+                                                    - Order of options is the build order
+    -a --all-services                            Build all service in following order "base", "tmux", "nvim"
     --------------------------------------------------------------------------------------------------------------
+
+    Error: Required option --service or --all-services
 
 > Build all images versions
 
