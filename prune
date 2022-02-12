@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source "$PWD/scripts/common.sh"
+source "$PWD/scripts/prune_volumes.sh"
 
 export_host_os
 export_dot_env GENERIC_VOLUME_TYPE
