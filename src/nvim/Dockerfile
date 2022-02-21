@@ -70,12 +70,6 @@ ENV DOTNET_FILE=dotnet-sdk-2.2.207-linux-musl-x64.tar.gz
 RUN curl -L -O "https://download.visualstudio.microsoft.com/download/pr/c72122bd-38f5-4c98-b585-b8aaf57ecc6e/c89d7774a430e163d801753654f33972/$DOTNET_FILE" && \
     tar zxf "$DOTNET_FILE" -C "$DOTNET_ROOT"
 
-# Install netcoredbg 2
-ENV NETCOREDBG_VERSION=2.0.0-880 \
-    NETCOREDBG_FILE=netcoredbg-linux-amd64.tar.gz 
-RUN curl -L -O "https://github.com/Samsung/netcoredbg/releases/download/$NETCOREDBG_VERSION/$NETCOREDBG_FILE" && \
-    tar zxf "$NETCOREDBG_FILE" -C "$DOTNET_ROOT"
-
 # TDOD: Move this when DOTNET is moved somewhere else..
 # To be able to build gRPC (Grpc.Tools)
 RUN curl -L -O "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
@@ -85,7 +79,27 @@ RUN curl -L -O "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
 RUN sh -c "$(curl -fsSL https://aka.ms/install-artifacts-credprovider.sh)" 
 RUN mkdir -p /tmp/NuGet/plugins && mv "$HOME/.nuget/plugins/" /tmp/NuGet
 
-########## FINAL IMAGE ##########
+########## netcoredbg-build ##########
+FROM dotnetsdks as netcoredbg-build
+WORKDIR /tmp
+
+RUN apk update && apk add --no-cache \
+        clang \
+        icu-dev \
+        linux-headers
+
+ENV NETCOREDBG_VERSION=2.0.0-880
+RUN curl -L -O "https://github.com/Samsung/netcoredbg/archive/refs/tags/$NETCOREDBG_VERSION.tar.gz" && \
+    tar zxf "$NETCOREDBG_VERSION.tar.gz" && \
+    cd "netcoredbg-$NETCOREDBG_VERSION" && \
+    mkdir ./build && \
+    cd build && \
+    CC=clang CXX=clang++ cmake .. -DDOTNET_DIR=/tmp/dotnet -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/../bin && \
+    make && \
+    make install
+
+
+# ########## FINAL IMAGE ##########
 FROM base-developer:$ALPINE_TAG as final-image
 WORKDIR /projects
 
@@ -182,6 +196,16 @@ RUN apk add /tmp/glibc-2.34-r0.apk && rm /tmp/glibc-2.34-r0.apk
 # Install Azure Artifacts Credential Provider (Use for getting private nuget feeds)
 COPY --from=dotnetsdks --chown=${DEV_USER}:${DEV_USER} "/tmp/NuGet/plugins/" "/tmp/NuGet/plugins"
 
+
+COPY --from=netcoredbg-build --chown=${DEV_USER}:${DEV_USER} \
+    /tmp/netcoredbg-2.0.0-880/bin/netcoredbg \
+    /tmp/netcoredbg-2.0.0-880/bin/libdbgshim.so \
+    /tmp/netcoredbg-2.0.0-880/bin/ManagedPart.dll \
+    /tmp/netcoredbg-2.0.0-880/bin/Microsoft.CodeAnalysis.dll \
+    /tmp/netcoredbg-2.0.0-880/bin/Microsoft.CodeAnalysis.CSharp.dll \
+    /tmp/netcoredbg-2.0.0-880/bin/Microsoft.CodeAnalysis.Scripting.dll \
+    /tmp/netcoredbg-2.0.0-880/bin/Microsoft.CodeAnalysis.CSharp.Scripting.dll \
+    /tmp/dotnet/netcoredbg/
 
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/msbuild/Custom.Before.Microsoft.Common.props $DOTNET_ROOT/sdk/6.0.101/Current/Custom.Before.Microsoft.Common.props
 ########################################################################################################################################
