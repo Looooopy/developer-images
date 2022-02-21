@@ -61,10 +61,10 @@ let mapleader =" "
 " Configurate and initialize our plugins
 " check if docker build has copied the files to config folder
 if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
+  luafile $XDG_CONFIG_HOME/nvim/config/which-key.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lsp_signature.lua
   luafile $XDG_CONFIG_HOME/nvim/config/gitsigns.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-treesitter.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/which-key.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lualine.lua
   source $XDG_CONFIG_HOME/nvim/config/nvim.tree.vim
   source $XDG_CONFIG_HOME/nvim/config/vim-better-whitespace.vim
@@ -78,6 +78,7 @@ if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
   luafile $XDG_CONFIG_HOME/nvim/config/lspcontainers.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lspkind.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-dap.lua
+  luafile $XDG_CONFIG_HOME/nvim/config/toggleterm.nvim.lua
   luafile $XDG_CONFIG_HOME/nvim/config/keymap/keymaps.lua
   luafile $XDG_CONFIG_HOME/nvim/config/neoclip.lua
 endif
