@@ -141,6 +141,7 @@ RUN apk add --no-cache \
         gcc \
         libstdc++ \
         g++ \
+        icu-libs \
 # Install docker-cli to let lspcontainers start containers from this image.
         docker-cli \
         socat \
@@ -165,8 +166,6 @@ ENV DOTNET_ROOT /tmp/dotnet
 ENV NETCOREDBG_ROOT=$DOTNET_ROOT/netcoredbg
 ENV PATH "$PATH:$DOTNET_ROOT:$NETCOREDBG_ROOT"
 
-# Set globalization to invariant
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 # Don't send telementry to microsoft
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 # NUGET list all paths

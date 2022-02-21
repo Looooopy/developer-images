@@ -17,10 +17,12 @@ Plug 'hrsh7th/nvim-lsp'                                                     " Au
 Plug 'hrsh7th/cmp-nvim-lsp'                                                 " Handle LPS capabilities
 Plug 'hrsh7th/cmp-path'                                                     " Get workingdir for a buffer use
 Plug 'mfussenegger/nvim-dap'                                                " Debugger: Handles debugging of program languages
+Plug 'rcarriga/nvim-dap-ui'                                                 " Debugger: Handles ui for stack and so on.
 Plug 'theHamsta/nvim-dap-virtual-text'                                      " Debugger Extension: Inlines the values for variables as virtual text using treesitter.
 Plug 'nvim-telescope/telescope-dap.nvim'                                    " Debugger Extension: Overriding dap internal ui and use telescope instead.
 Plug 'jbyuki/one-small-step-for-vimkind'                                    " Debugger Language: lua
-Plug 'Pocco81/DAPInstall.nvim'                                              " Debugger Installer
+
+"Plug 'Pocco81/DAPInstall.nvim'                                              " [NOT IN_USE] Debugger Installer
 Plug 'windwp/nvim-autopairs'                                                " Should add pairs automagically, you type '{' and you get the end '}'
 Plug 'lukas-reineke/indent-blankline.nvim'                                  " Show indentation and and whitespaces line feed (LF)
 Plug 'editorconfig/editorconfig-vim'                                        " Add editorconfig support
@@ -72,12 +74,17 @@ if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
   luafile $XDG_CONFIG_HOME/nvim/config/clipboard.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-tree.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-colorizer.lua
+  " Language Server Protocol (LSP)
   luafile $XDG_CONFIG_HOME/nvim/config/cmp.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lsp_signature.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lspconfig.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lspcontainers.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lspkind.lua
+  " Debug Adapter Protocol (DAP)
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-dap.lua
+  luafile $XDG_CONFIG_HOME/nvim/config/nvim-dap-ui.lua
+  luafile $XDG_CONFIG_HOME/nvim/config/nvim-dap-virtual-text.lua
+  " Terminal
   luafile $XDG_CONFIG_HOME/nvim/config/toggleterm.nvim.lua
   luafile $XDG_CONFIG_HOME/nvim/config/keymap/keymaps.lua
   luafile $XDG_CONFIG_HOME/nvim/config/neoclip.lua
