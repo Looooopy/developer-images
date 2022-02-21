@@ -12,6 +12,7 @@ It includes these standard packages
 | ----------------------------------------------------- | ----------------- |
 | [git](https://git-scm.com/download/linux)             | Fetch code        |
 | [openssh-client](https://www.openssh.com/manual.html) | Git               |
+| [iputils](https://github.com/iputils/iputils/)        | Ping none root    |
 | [curl](https://curl.se/docs/)                         | Fetch code/config |
 | [sed](https://www.gnu.org/software/sed/)              | Parse config      |
 | [jq](https://stedolan.github.io/jq/manual/)           | Parse config      |

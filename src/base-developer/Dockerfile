@@ -22,7 +22,7 @@ RUN addgroup $DEV_USER docker
 
 
 RUN apk update && \
-   apk add --no-cache \
+    apk add --no-cache \
         git \
         tar \
         openssh-client \
@@ -33,7 +33,8 @@ RUN apk update && \
         bash \
         # neofetch include bash
         neofetch \
-        cmatrix
+        cmatrix && \
+    echo "net.ipv4.ping_group_range = 0 1000" >> /etc/sysctl.conf
 
 # Setup git with your credentials
 # Required input Github Personal access tokens
