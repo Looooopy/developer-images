@@ -19,7 +19,29 @@
 -- # Install:
 --    Plug 'jbyuki/one-small-step-for-vimkind'
 
-local dap = require"dap"
+local dap = require('dap')
+
+local wk = require('which-key')
+local b = require('constants.buffer')
+local m = require('constants.vim-mode')
+
+wk.register(
+  {
+    d = {
+      name = 'Debug',
+      d = { '<cmd>lua require("dap").continue()<cr>', 'launch/resume' },
+      b = { '<cmd>lua require("dap").toggle_breakpoint()<cr>', 'Toggle breakpoint' },
+      h = { '<cmd>lua require("dap").step_over()<cr>', 'Step over' },
+      l = { '<cmd>lua require("dap").step_into()<cr>', 'Step into' },
+      g = { '<cmd>lua require("dap").repl.open()<cr>', 'Open Repl (type exit to close)' },
+    },
+  },
+  {
+      prefix = '<leader>',
+      mode = m.normal,
+      buffer = nil,
+  }
+);
 
 vim.fn.sign_define('DapBreakpoint', {text='', texthl='', linehl='', numhl=''})
 vim.fn.sign_define('DapBreakpointCondition', {text='', texthl='', linehl='', numhl=''})
@@ -58,27 +80,38 @@ dap.configurations.lua = {
 ------------------------------------------------------------------------------------------------
 -- # https://github.com/Samsung/netcoredbg
 -- Install:
---  Your package manager
---  Downloading it from the release page and extracting it to a folder
+--  Had to build it from source beacuse they dont distribute it with musl build for alpine linux.
 
 -- # Add Adapter
--- dap.adapters.netcoredbg = {
---     type = 'executable',
---     command = '/path/to/dotnet/netcoredbg/netcoredbg',
---     args = {'--interpreter=vscode'}
--- }
+dap.adapters.netcoredbg = {
+    type = 'executable',
+    command = '/tmp/dotnet/netcoredbg/netcoredbg',
+    args = {'--interpreter=vscode', '--engineLogging=/tmp/netcoredbg.log'},
+    options = {
+      env = {
+        ASPNETCORE_ENVIRONMENT = 'Development',
+      },
+    },
+}
 
 -- # Add Config
--- dap.configurations.cs = {
---     {
---       type = "netcoredbg",
---       name = "launch - netcoredbg",
---       request = "launch",
---       program = function()
---           return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
---       end,
---     },
--- }
+dap.configurations.cs = {
+  {
+    type = 'netcoredbg',
+    name = 'launch - netcoredbg',
+    request = 'launch',
+    program = function()
+      -- TODO: fix better function how to find dll's
+      return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/bin/Debug/net6.0', 'file')
+    end,
+  },
+  {
+    type = 'netcoredbg',
+    name = 'attach - netcoredbg',
+    request = 'attach',
+    processId = require("dap.utils").pick_process,
+  },
+}
 
 -- # chrome javascript/typescript
 ------------------------------------------------------------------------------------------------
