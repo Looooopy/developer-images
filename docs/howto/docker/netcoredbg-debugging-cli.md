@@ -6,11 +6,13 @@ This is used for debugging dotnet application and dll's through command line int
 
 ### Enable vebose logging
 
-You can enable more verbose logging on DAP
+You can enable more verbose logging on Debug Adapter Protocol (DAP)
 
 ```nvim command
 :lua require("dap").set_log_level('TRACE')
 ```
+
+DAP log location: `/home/dev_user/.cache/nvim/dap.log`
 
 ### Attach to running process
 
