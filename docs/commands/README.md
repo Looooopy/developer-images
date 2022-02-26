@@ -2,6 +2,22 @@
 
 Collection of scripts to make it more convient to build, run and prune.
 
+## Prereq
+
+### MacOS
+
+    MacOS do not support long option as --service and so on so we need to install gnu-getopts
+
+    brew install gnu-getopt
+
+Zsh:
+    sudo echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc
+    sudo echo 'export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"' >> ~/.zshrc
+
+bash
+    sudo echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.bash_rpofile
+    sudo echo 'export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"' >> ~/.bash_rpofile
+
 ## Commands
 
 Desciption of available commands
