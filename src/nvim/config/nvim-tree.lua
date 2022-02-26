@@ -30,5 +30,43 @@ require'nvim-tree'.setup {
             "node_modules",
             ".cache"
         }
+    },
+    actions = {
+        open_file = {
+            window_picker = {
+                exclude = {
+                    filetype = {
+                        "notify",
+                        "packer",
+                        "qf",
+                        "minimap"
+                    }
+                }
+            }
+        }
     }
 }
+
+local wk = require('which-key')
+local m = require('constants.vim-mode')
+
+-- Leader commands
+wk.register(
+  {
+    t = {
+        -- name = 'Gui toggle',
+        t = { '<cmd>NvimTreeToggle<cr>', 'Filetree (toggle)' },
+        t = { '<cmd>NvimTreeToggle<cr>', 'Filetree (toggle)' },
+    },
+    f = {
+        -- name = 'Files',
+        h = { '<cmd>NvimTreeFocus<cr>', 'Focus (NvimTree)' },
+        j = { '<cmd>NvimTreeFindFile<cr>', 'Find (NvimTree)' },
+    },
+  },
+  {
+      prefix = '<leader>',
+      mode = m.normal,
+      buffer = nil,
+  }
+);
