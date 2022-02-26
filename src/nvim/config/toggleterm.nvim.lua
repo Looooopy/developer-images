@@ -1,21 +1,60 @@
 -- https://github.com/akinsho/toggleterm.nvim
 -- TODO: 
 --      * Add Lazyguit https://github.com/akinsho/toggleterm.nvim#custom-terminals
---      * Fix opening_mapping to use to :ToggleTermToggleAll after opening the first one.
-
 
 require("toggleterm").setup{
-    open_mapping = [[<c-a>]],
+    -- open_mapping = [[<c-a>]],
 }
 
 function _G.set_terminal_keymaps()
-    local opts = {noremap = true}
-    vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)          -- escape out from terminal (good for scrolling the window or just issues vim commands)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)    -- Left (Switch buffer)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)    -- Up (Switch buffer)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)    -- Down (Switch buffer)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)    -- Right (Switch buffer)
-  end
+    local m = require('constants.vim-mode')
+    local b = require('constants.buffer')
+    local wk = require('which-key')
+
+    local function t(str)
+        return vim.api.nvim_replace_termcodes(str, true, true, true)
+    end
+
+    -- Leader commands
+    wk.register(
+        {
+            ["<C-h>"]   = { t('<C-\\><C-n><C-W>h'), 'Move: Left (terminal)' },
+            ["<C-j>"]   = { t('<C-\\><C-n><C-W>j'), 'Move: Down (terminal)' },
+            ["<C-k>"]   = { t('<C-\\><C-n><C-W>k'), 'Move: Up (terminal)' },
+            ["<C-l>"]   = { t('<C-\\><C-n><C-W>l'), 'Move: Right (terminal)' },
+            ["<Esc>"]   = { t('<C-\\><C-n>'),       'Escape (terminal)'},
+            ["<C-Z>"]   = { t('<C-\\><C-n>')..'<cmd>ToggleTermToggleAll<cr>',  'Toggle (terminal)'},
+        },
+        {
+            mode = m.terminal,
+            noremap = true,
+            silent = true,
+            buffer = b.active_buffer,
+        }
+    );
+
+end
   
-  -- if you only want these mappings for toggle term use term://*toggleterm#* instead
-  vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+local register_global_keymaps = function()
+    local m = require('constants.vim-mode')
+    local b = require('constants.buffer')
+    local wk = require('which-key')
+
+    wk.register(
+        {
+            ["<C-A>"] = { '<cmd>ToggleTerm<cr><cmd>2ToggleTerm<cr>',    'Two terminals' },
+            ["<C-Z>"] = { '<cmd>ToggleTermToggleAll<cr>',               'Toggle terminal' },
+        },
+        {
+            mode = m.normal,
+            noremap = true,
+            silent = true,
+            buffer = b.all_buffers
+        }
+    );
+end
+
+register_global_keymaps()
