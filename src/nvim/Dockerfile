@@ -224,7 +224,7 @@ RUN nvim --headless +PlugInstall +qall
 # Install tresitter languages
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/treesitter/ $STD_XDG_CONFIG_HOME/temp/treesitter
 RUN "$XDG_CONFIG_HOME/temp/treesitter/install-langs.sh" && \
-    rm -R ${STD_XDG_CONFIG_HOME:?}/temp
+    [[ -d $STD_XDG_CONFIG_HOME/temp ]] && rm -R $STD_XDG_CONFIG_HOME/temp
 
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/config/ $STD_XDG_CONFIG_HOME/nvim/config
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/lua/ $STD_XDG_CONFIG_HOME/nvim/lua/
