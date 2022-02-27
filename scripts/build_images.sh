@@ -25,11 +25,10 @@ function _parse_build_options() {
   local valid_args
   local short_opts='hnv:fs:a'
   local long_opts='help,no-cache,version:,force-plugins,service:,all-services'
-  local opts_args=(-o "${short_opts}" --long "${long_opts}" -- "$@")
 
-  valid_args=$(getopt "${opts_args[@]}" 2>/dev/null)
+  valid_args=$(_getopt "${short_opts}" "${long_opts}" "$@"  2>/dev/null)
   if [[ $? -ne 0 ]]; then
-    local error=$(getopt "${opts_args[@]}" 2>&1 > /dev/null)
+    local error=$(_getopt "${short_opts}" "${long_opts}" "$@"  2>&1 > /dev/null)
 
     _build_usage
     >&2 echo
@@ -39,7 +38,7 @@ function _parse_build_options() {
     return 1;
   fi
 
-  eval set -- "$valid_args"
+  eval  set -- "$valid_args"
   while [ : ]; do
     case "$1" in
       -a | --all-services)
@@ -127,6 +126,7 @@ build() {
   fi
 
   if ! _validate_build_parse_result; then
+    echo "-----------------------------------------here"
     return 1
   fi
 

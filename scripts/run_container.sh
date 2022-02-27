@@ -22,11 +22,10 @@ function _parse_run_options() {
   local valid_args
   local short_opts='hr:v:s:'
   local long_opts='help,run-arg:,version:,service:'
-  local opts_args=(-o "${short_opts}" --long "${long_opts}" -- "$@")
 
-  valid_args=$(getopt "${opts_args[@]}" 2>/dev/null)
+  valid_args=$(_getopt "${short_opts}" "${long_opts}" "$@" 2>/dev/null)
   if [[ $? -ne 0 ]]; then
-    local error=$(getopt "${opts_args[@]}" 2>&1 > /dev/null)
+    local error=$(_getopt "${short_opts}" "${long_opts}" "$@" 2>&1 > /dev/null)
 
     _run_usage
 

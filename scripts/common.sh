@@ -36,6 +36,40 @@ docker_compose() {
   #fi
 }
 
+function _getopt_docker() {
+  local short_opts="${1:?}"
+  local long_opts="${2:?}"
+  shift 2
+
+  local opt_command='getopt $@'
+  local command_string="set -- -o '${short_opts}' --long '${long_opts}' -- ${@} && ${opt_command}"
+
+  docker run --rm -it alpine:latest sh -c "$command_string"
+}
+
+function _getopt_host() {
+  local short_opts="${1:?}"
+  local long_opts="${2:?}"
+  shift 2
+
+  local opts_args=(-o "${short_opts}" --long "${long_opts}" -- "${@}")
+
+  getopt "${opts_args[@]}"
+  return $?
+}
+
+function _getopt() {
+  if [[ $HOST_OS == "macos" ]]; then
+    if [[ "$(getopt -V)" == " --" ]]; then
+      _getopt_docker "${@}"
+      return $?
+    fi
+  fi
+
+  _getopt_host "${@}"
+  return $?
+}
+
 export_host_os() {
   export HOST_OS
   if [[ "$(uname -r)" == *microsoft* ]]; then

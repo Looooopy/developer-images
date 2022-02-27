@@ -6,15 +6,19 @@ Collection of scripts to make it more convient to build, run and prune.
 
 ### MacOS
 
-    MacOS do not support long option as --service and so on so we need to install gnu-getopts
+MacOS do not support long option as --service and so on so we need to install gnu-getopts.
+
+> Note: it's not necessary beacuse we use a docker image if it gnu-getopt is missing but you gain 10-15s boot time to run/build.
 
     brew install gnu-getopt
 
-Zsh:
+Zsh
+
     sudo echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc
     sudo echo 'export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"' >> ~/.zshrc
 
 bash
+
     sudo echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.bash_rpofile
     sudo echo 'export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"' >> ~/.bash_rpofile
 
