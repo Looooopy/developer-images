@@ -14,5 +14,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: ./build -a 
+    - name: Build base image
+      run: ./build -s base 
+    - name: Build nvim image
+      run: ./build -s nvim 
+    - name: Build tmux image
+      run: ./build -s tmux 
