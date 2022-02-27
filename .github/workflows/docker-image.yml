@@ -14,11 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build base image
+    - name: Build all latest image
       run: ./build --all-services
-    - name: Build base image
-      run: ./build --service base --version specific
-    - name: Build nvim image
-      run: ./build --service nvim --version specific
-    - name: Build tmux image
-      run: ./build --service tmux --version specific
+    - name: Build all latest image
+      run: ./build --version specific

@@ -129,8 +129,8 @@ run() {
 
   case "${GENERIC_VOLUME_TYPE:?}" in
     container | localhost)
-      [[ -n "${VERBOSE}" ]] && echo_docker_compose_config "${service}"
-      docker_compose "${GENERIC_VOLUME_TYPE:?}" run --rm "$service" "${run_args[@]}"
+      [[ -n "${VERBOSE}" ]] && echo_docker_compose_config "${version}" "${GENERIC_VOLUME_TYPE:?}" "${service}"
+      docker_compose "${version}" "${GENERIC_VOLUME_TYPE:?}" run --rm "$service" "${run_args[@]}"
     ;;
     *)
       >&2 echo 'Unknown Volume type must be either "container" or "localhost"'

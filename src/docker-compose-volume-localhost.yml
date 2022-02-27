@@ -23,6 +23,8 @@ x-nvim-developer:
 
 ## Services
 services:
+  base-developer_latest:
+  base-developer_specific:
   nvim-developer_latest:
     << : *default-nvim-developer
   nvim-developer_specific:

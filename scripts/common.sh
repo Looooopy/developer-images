@@ -8,17 +8,26 @@ __services='"base", "tmux", "nvim"'
 # VERBOSE=yes
 
 echo_docker_compose_config() {
+  local volume_type
+  local version
   local services=()
+
+  version="${1:?}"
+  volume_type="${2:?}"
+  shift 2
   services=( "$@" )
 
-  docker_compose "${GENERIC_VOLUME_TYPE:?}" config > temp.yaml
+  docker_compose "${version}" "${GENERIC_VOLUME_TYPE:?}" config > temp.yaml
   if [ ${#services[@]} -eq 0 ]; then
     docker run --rm -i -v "${PWD}":/workdir mikefarah/yq e ".services" temp.yaml
   fi
 
   for service in "${services[@]}"
   do
+    echo "------ '$service'  --------"
     docker run --rm -i -v "${PWD}":/workdir mikefarah/yq e ".services.$service" temp.yaml
+    echo "---------------------------"
+    echo
   done
 
   rm temp.yaml
@@ -26,13 +35,34 @@ echo_docker_compose_config() {
 
 docker_compose() {
   local volume_type
-  volume_type="${1:?}"
-  shift
+  local version
+  local services=()
+  version="${1}"
+  volume_type="${2:?}"
+  shift 2
+  services=( "$@" )
+
   #if [[ "$(uname)" == 'Darwin' ]]; then
-    DEV_UID=1000 DEV_GID=1000 docker-compose -f "$SRC_ROOT"/docker-compose.yml -f "$SRC_ROOT"/docker-compose-volume-${volume_type}.yml --env-file "$SRC_ROOT"/.env  $@
+    if [[ "$version" == "latest" ]]; then
+      grep -v '^ALPINE_TAG=' "$SRC_ROOT/.env" > "$SRC_ROOT/.env-temp" # Remove ALPINE_TAG= line in .env
+      echo 'ALPINE_TAG=latest' >> "$SRC_ROOT/.env-temp"
+      DEV_UID=1000 DEV_GID=1000 docker-compose \
+        -f "$SRC_ROOT/docker-compose.yml" \
+        -f "$SRC_ROOT/docker-compose-volume-${volume_type}.yml" \
+        --env-file "$SRC_ROOT/.env-temp" ${services[@]}
+      # rm "$SRC_ROOT/.env-temp"
+    else
+      DEV_UID=1000 DEV_GID=1000 docker-compose \
+        -f "$SRC_ROOT/docker-compose.yml" \
+        -f "$SRC_ROOT/docker-compose-volume-${volume_type}.yml" \
+        --env-file "$SRC_ROOT/.env" ${services[@]}
+    fi
   #else
   # Docker dont threat UID and GID as envirnment variables so we have to do it externaly
-  #DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose  -f "$SRC_ROOT"/docker-compose.yml -f "$SRC_ROOT"/docker-compose-volume-${volume_type}.yml --env-file "$SRC_ROOT"/.env  $@
+  # DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose \
+  #       -f "$SRC_ROOT/docker-compose.yml" \
+  #       -f "$SRC_ROOT/docker-compose-volume-${volume_type}.yml" \
+  #       --env-file "$SRC_ROOT/.env" ${services[@]}
   #fi
 }
 

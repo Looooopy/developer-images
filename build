@@ -3,9 +3,12 @@
 source "$PWD/scripts/common.sh"
 source "$PWD/scripts/build_images.sh"
 
-export_host_os
-export_dot_env GENERIC_VOLUME_TYPE
+main() {
+  export_host_os
+  export_dot_env GENERIC_VOLUME_TYPE
+  echo "Active host os '${HOST_OS}'"
+  build "$@"
+  unset GENERIC_VOLUME_TYPE
+}
 
-build "$@"
-
-unset GENERIC_VOLUME_TYPE
+main "$@"

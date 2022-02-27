@@ -161,6 +161,6 @@ build() {
     esac
   done
 
-  [[ -n "${VERBOSE}" ]] && echo_docker_compose_config "${services[@]}"
-  docker_compose "${GENERIC_VOLUME_TYPE:?}" build "${no_cache} ${build_args[@]} ${services[@]}"
+  [[ -n "${VERBOSE}" ]] && echo_docker_compose_config "${version}" "${GENERIC_VOLUME_TYPE:?}" "${services[@]}"
+  docker_compose "${version}" "${GENERIC_VOLUME_TYPE:?}" build "${no_cache} ${build_args[@]} ${services[@]}"
 }

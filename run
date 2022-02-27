@@ -3,6 +3,9 @@
 source "$PWD/scripts/common.sh"
 source "$PWD/scripts/run_container.sh"
 
-export_host_os
+main() {
+  export_host_os
+  run "$@"
+}
 
-run "$@"
+main "$@"
