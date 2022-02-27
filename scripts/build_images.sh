@@ -126,7 +126,6 @@ build() {
   fi
 
   if ! _validate_build_parse_result; then
-    echo "-----------------------------------------here"
     return 1
   fi
 
@@ -162,5 +161,7 @@ build() {
   done
 
   [[ -n "${VERBOSE}" ]] && echo_docker_compose_config "${version}" "${GENERIC_VOLUME_TYPE:?}" "${services[@]}"
-  docker_compose "${version}" "${GENERIC_VOLUME_TYPE:?}" build "${no_cache} ${build_args[@]} ${services[@]}"
+  for service in "${services[@]}"; do
+    docker_compose "${version}" "${GENERIC_VOLUME_TYPE:?}" build "${no_cache} ${build_args[@]} ${service}"
+  done
 }

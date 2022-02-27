@@ -50,7 +50,7 @@ docker_compose() {
         -f "$SRC_ROOT/docker-compose.yml" \
         -f "$SRC_ROOT/docker-compose-volume-${volume_type}.yml" \
         --env-file "$SRC_ROOT/.env-temp" ${services[@]}
-      # rm "$SRC_ROOT/.env-temp"
+      rm "$SRC_ROOT/.env-temp"
     else
       DEV_UID=1000 DEV_GID=1000 docker-compose \
         -f "$SRC_ROOT/docker-compose.yml" \
