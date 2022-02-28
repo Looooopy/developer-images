@@ -159,6 +159,8 @@ COPY ./nvim/.ssh /home/${DEV_USER}/.ssh
 # Adding entrypoint script
 COPY ./nvim/docker-entrypoint.sh /docker-entrypoint.sh
 
+RUN chmod 755 /docker-entrypoint.sh
+
 # TDOD: Move DOTNET somewhere else..
 ########################################################################################################################################
 ## Prepare dotnet sdk folder
