@@ -4,11 +4,18 @@ source "$PWD/scripts/common.sh"
 source "$PWD/scripts/build_images.sh"
 
 main() {
+  local failed=0
   export_host_os
+  export_dot_env VERBOSE
   export_dot_env GENERIC_VOLUME_TYPE
   echo "Active host os '${HOST_OS}'"
-  build "$@"
+  if ! build "$@"; then
+    failed=1
+  fi
   unset GENERIC_VOLUME_TYPE
+  unset VERBOSE
+
+  return $failed
 }
 
 main "$@"
