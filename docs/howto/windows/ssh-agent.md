@@ -1,4 +1,4 @@
-# Utilize SSH Agent on Windows from WSL2
+# SSH Agent Forwarding on Windows to WSL2
 
 How to setup SSH Agent on Windows and use it from WSL2 Ubuntu.
 

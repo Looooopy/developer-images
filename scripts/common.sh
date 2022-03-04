@@ -42,28 +42,22 @@ docker_compose() {
   shift 2
   services=( "$@" )
 
-  #if [[ "$(uname)" == 'Darwin' ]]; then
-    if [[ "$version" == "latest" ]]; then
-      grep -v '^ALPINE_TAG=' "$SRC_ROOT/.env" > "$SRC_ROOT/.env-temp" # Remove ALPINE_TAG= line in .env
-      echo 'ALPINE_TAG=latest' >> "$SRC_ROOT/.env-temp"
-      DEV_UID=1000 DEV_GID=1000 docker-compose \
-        -f "$SRC_ROOT/docker-compose.yml" \
-        -f "$SRC_ROOT/docker-compose-volume-${volume_type}.yml" \
-        --env-file "$SRC_ROOT/.env-temp" ${services[@]}
-      rm "$SRC_ROOT/.env-temp"
-    else
-      DEV_UID=1000 DEV_GID=1000 docker-compose \
-        -f "$SRC_ROOT/docker-compose.yml" \
-        -f "$SRC_ROOT/docker-compose-volume-${volume_type}.yml" \
-        --env-file "$SRC_ROOT/.env" ${services[@]}
-    fi
-  #else
-  # Docker dont threat UID and GID as envirnment variables so we have to do it externaly
-  # DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose \
-  #       -f "$SRC_ROOT/docker-compose.yml" \
-  #       -f "$SRC_ROOT/docker-compose-volume-${volume_type}.yml" \
-  #       --env-file "$SRC_ROOT/.env" ${services[@]}
-  #fi
+  if [[ "$version" == "latest" ]]; then
+    # Remove ALPINE_TAG= line in .env
+    grep -v '^ALPINE_TAG=' "$SRC_ROOT/.env" > "$SRC_ROOT/.env-temp"
+    echo 'ALPINE_TAG=latest' >> "$SRC_ROOT/.env-temp"
+    DEV_UID=1000 DEV_GID=1000 docker-compose \
+      -f "$SRC_ROOT/docker-compose.yml" \
+      -f "$SRC_ROOT/docker-compose-volume-${volume_type}-${HOST_OS}.yml" \
+      --env-file "$SRC_ROOT/.env-temp" ${services[@]}
+    rm "$SRC_ROOT/.env-temp"
+  else
+    DEV_UID=1000 DEV_GID=1000 docker-compose \
+      -f "$SRC_ROOT/docker-compose.yml" \
+      -f "$SRC_ROOT/docker-compose-volume-${volume_type}-${HOST_OS}.yml" \
+      --env-file "$SRC_ROOT/.env" ${services[@]}
+  fi
+
 }
 
 function _getopt_docker() {

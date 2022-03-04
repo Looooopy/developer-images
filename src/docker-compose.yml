@@ -26,10 +26,9 @@ x-base-developer:
   &default-base-developer
   build:
     context: .
-    dockerfile: base-developer/Dockerfile
+    dockerfile: ./base-developer/Dockerfile
     args:
       << : *default-build-args
-  image: ${GENERIC_DOCKER_REGISTY_AND_PATH:-}base-developer:latest
   << : *default-run-props
 
 x-tmux-developer:
@@ -68,7 +67,8 @@ x-nvim-developer:
 ## Services
 services:
   base-developer_latest:
-    *default-base-developer
+    << : *default-base-developer
+    image: ${GENERIC_DOCKER_REGISTY_AND_PATH:-}base-developer:latest
   base-developer_specific:
     << : *default-base-developer
     image: ${GENERIC_DOCKER_REGISTY_AND_PATH:-}base-developer:${ALPINE_TAG}
