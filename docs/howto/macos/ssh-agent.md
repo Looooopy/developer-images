@@ -59,16 +59,16 @@ Now it get a bit more trickier.
         &
 
         # switch user and run you script
-        su-exec ${USER} bash -c "run_as_non_root $@"
+        su-exec ${USER} bash -c "run_as_none_root $@"
     }
 
-    run_as_non_root() {
+    run_as_none_root() {
         # This script will run and terminate after everything has run
         # If you wish to start a terminal you should do it here.
         # bash -l # start bash and login to shell.
     }
 
-    export -f run_as_non_root
+    export -f run_as_none_root
     run_as_root_user "$@"
     ```
 
