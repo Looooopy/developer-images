@@ -36,6 +36,7 @@ RUN apk update && \
     echo "net.ipv4.ping_group_range = 0 1000" >> /etc/sysctl.conf
 
 COPY ./base-developer/docker-entrypoint.sh /docker-entrypoint.sh
+COPY ./run-scripts/docker-entrypoint-helper.sh /docker-entrypoint-helper.sh
 
 # Socat used to access SSH Agent forwarding.
 # su-exec is used to switch to none root in docker-entrypoint.sh
