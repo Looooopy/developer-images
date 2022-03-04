@@ -18,7 +18,8 @@ run_setup_as_root() {
 }
 
 run_as_none_root() {
-  su-exec "${DEV_USER}:${DEV_USER}" bash -c "source /docker-entrypoint-helper.sh; main $@"
+  cmd_string="echo '$@'; source /docker-entrypoint-helper.sh; main $@"
+  su-exec "${DEV_USER}:${DEV_USER}" bash -c "$cmd_string"
 }
 
 run_setup_as_root

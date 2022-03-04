@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 clone_multiple() {
   if (($# == 0)); then
     >&2 echo " - No project(s) was defined to be clone look into .env CLONE_PROJECT_{X} to set a valid path"

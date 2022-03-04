@@ -50,4 +50,6 @@ RUN mkdir -p /projects && chown ${DEV_UID}:${DEV_GID} /projects
 
 WORKDIR /projects
 
+CMD ["bypass"]
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
