@@ -17,10 +17,17 @@ run_setup_as_root() {
   fi
 }
 
-run_as_none_root() {
-  cmd_string="echo '$@'; source /docker-entrypoint-helper.sh; main $@"
-  su-exec "${DEV_USER}:${DEV_USER}" bash -c "$cmd_string"
+main_as_none_root() {
+    cmd_string="source /docker-entrypoint-helper.sh; main $@"
+    if ! su-exec "${DEV_UID}:${DEV_GID}" bash -c "$cmd_string"; then
+      su-exec "${DEV_UID}:${DEV_GID}" bash -l
+    fi
 }
 
 run_setup_as_root
-run_as_none_root "$@"
+
+if [[ -z "${RUN_AS_ROOT}" ]]; then
+  main_as_none_root "$@"
+else
+  main $@
+fi

@@ -153,14 +153,6 @@ RUN wget https://github.com/wfxr/code-minimap/releases/download/v0.6.1/code-mini
          && tar -xzf code-minimap-v0.6.1-x86_64-unknown-linux-musl.tar.gz \
          && mv code-minimap-v0.6.1-x86_64-unknown-linux-musl/code-minimap /usr/bin/code-minimap
 
-# Adding known hosts: github
-COPY ./nvim/.ssh /home/${DEV_USER}/.ssh
-
-# Adding entrypoint script
-COPY ./nvim/docker-entrypoint.sh /docker-entrypoint.sh
-
-RUN chmod 755 /docker-entrypoint.sh
-
 # TDOD: Move DOTNET somewhere else..
 ########################################################################################################################################
 ## Prepare dotnet sdk folder
@@ -235,7 +227,8 @@ COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/init_migrate.lua $STD_XDG_CONFIG_HOM
 ENV TERM=xterm-256color \
     LC_ALL=en_US.UTF-8
 
-#USER root
+USER root
 
+# Use docker-entrypoint.sh from base-developer.
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nvim"]

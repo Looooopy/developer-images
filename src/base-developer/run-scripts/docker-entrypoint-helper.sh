@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# NOTE:
+# All these scripts run in the context of user and not root
+
 clone_multiple() {
   if (($# == 0)); then
     >&2 echo " - No project(s) was defined to be clone look into .env CLONE_PROJECT_{X} to set a valid path"
@@ -49,24 +52,41 @@ main() {
 
   if (($# >= 1)); then
     [[ "$1" == "clone" ]] && shift
+    [[ "$1" == "standard" ]] && shift
   fi
 
   case "$mode" in
+    standard)
+      echo "Standard mode"
+    ;;
     clone)
       local project_name
       echo "Clone mode"
       clone_multiple "$@"
       project_name="$(get_project_name_if_only_one "$@")"
       [[ -n "$project_name" ]] && [[ -d "/projects/$project_name" ]] && cd "$project_name"
-      bash -l
-      ;;
-
+    ;;
     *)
       echo "Bypass mode"
       # bash
       bash -l
 
       return;
-      ;;
+    ;;
   esac
+
+  if [[ -n "${EXECUTE_PROCESS}" ]]; then
+    local extra_args=()
+    if [[ -n "${EXECUTE_PROCESS_EXTRA_ARGS}" ]]; then
+      extra_args=(${EXECUTE_PROCESS_EXTRA_ARGS})
+    fi
+
+    if [[ -z "${EXECUTE_PROCESS_NO_ARGS}" ]]; then
+      [[ -n "${VERBOSE}" ]] && echo "executing command: ${EXECUTE_PROCESS} ${extra_args[@]} $@"
+      ${EXECUTE_PROCESS} "${extra_args[@]}" "$@"
+    else
+      [[ -n "${VERBOSE}" ]] && echo "executing command: ${EXECUTE_PROCESS} ${extra_args[@]}"
+      ${EXECUTE_PROCESS} "${extra_args[@]}"
+    fi
+  fi
 }

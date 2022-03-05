@@ -86,3 +86,10 @@ Now it get a bit more trickier.
 5. Check that you have a running ssh-agent or run `eval "$(ssh-agent -s)"`
 6. Check that it works on MacOS host machine `ssh-add -l`
 7. Run you container and test with `ssh-add -l` to check if it works in container.
+
+## References
+
+Description how to setup the agent and add the keys snippets here are based on these source
+
+- [Docker SSH forwarding](https://docs.docker.com/desktop/mac/networking/#ssh-agent-forwarding)
+- [Gist None root SSH forwarding](https://gist.github.com/d11wtq/8699521?permalink_comment_id=3878388#gistcomment-3878388)

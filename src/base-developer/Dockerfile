@@ -7,20 +7,23 @@ ARG DEV_GID
 
 ENV DEV_USER=$DEV_USER \
     DEV_UID=$DEV_UID \
-    DEV_GID=$DEV_GID
+    DEV_GID=$DEV_GID \
+    SSH_AUTH_SOCK=/home/${DEV_USER}/.ssh/socket
 
-RUN addgroup $DEV_USER \
+RUN \
+    # Create user and group
+    addgroup $DEV_USER \
     && adduser \
     --shell /bin/bash \
     --disabled-password \
     --gecos "${DEV_USER}" \
     --ingroup ${DEV_USER} \
     -u ${DEV_UID} \
-    ${DEV_USER}
-RUN addgroup docker -g 1001
-RUN addgroup $DEV_USER docker
-
-RUN apk update && \
+    ${DEV_USER} \
+    # Setup the user to be able to access docker
+    && addgroup docker -g 1001 \
+    && addgroup $DEV_USER docker \
+    && apk update && \
     apk add --no-cache \
     git \
     tar \
@@ -32,24 +35,24 @@ RUN apk update && \
     bash \
     # neofetch includes bash
     neofetch \
-    cmatrix && \
-    echo "net.ipv4.ping_group_range = 0 1000" >> /etc/sysctl.conf
+    cmatrix \
+    # required: socat for ssh agent forawrding
+    socat \
+    # required: su-exec is used to switch to none root in docker-entrypoint.sh
+    su-exec \
+    && echo "net.ipv4.ping_group_range = 0 $DEV_GID" >> /etc/sysctl.conf
 
-COPY ./base-developer/docker-entrypoint.sh /docker-entrypoint.sh
-COPY ./run-scripts/docker-entrypoint-helper.sh /docker-entrypoint-helper.sh
+COPY ./base-developer/run-scripts/docker-entrypoint*.sh /
 
-# Socat used to access SSH Agent forwarding.
-# su-exec is used to switch to none root in docker-entrypoint.sh
-ENV SSH_AUTH_SOCK=/home/${DEV_USER}/.ssh/socket
-RUN apk add --no-cache \
-        socat su-exec && \
-    mkdir -p /home/${DEV_USER}/.ssh && \
-    chown ${DEV_UID}:${DEV_GID} /home/${DEV_USER}/.ssh/
+# Adding known hosts: github
+COPY ./base-developer/.ssh /home/${DEV_USER}/.ssh
 
-RUN mkdir -p /projects && chown ${DEV_UID}:${DEV_GID} /projects
-
+# Workdir needs to be ser before chown
 WORKDIR /projects
 
-CMD ["bypass"]
+# Fix permissions so its owned by DEV_USER
+RUN chown ${DEV_UID}:${DEV_GID} /home/${DEV_USER} \
+    && chown ${DEV_UID}:${DEV_GID} /projects
 
+CMD ["bypass"]
 ENTRYPOINT ["/docker-entrypoint.sh"]

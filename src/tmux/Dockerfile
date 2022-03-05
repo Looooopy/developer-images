@@ -82,16 +82,17 @@ ARG DEV_GID
 ARG STD_XDG_DATA_HOME=/home/$DEV_USER/.local/share
 ARG STD_XDG_CONFIG_HOME=/home/$DEV_USER/.local/share
 
-ENV ENV DEV_USER=$DEV_USER \
+ENV DEV_USER=$DEV_USER \
     DEV_UID=$DEV_UID \
     DEV_GID=$DEV_GID \
     XDG_CONFIG_HOME=$STD_XDG_CONFIG_HOME \
-    XDG_DATA_HOME=$STD_XDG_DATA_HOME
+    XDG_DATA_HOME=$STD_XDG_DATA_HOME \
+    TMUX_PLUGIN_MANAGER_PATH=$STD_XDG_DATA_HOME/.tmux/plugins \
+    TMUX_TMPDIR=/tmp/tmux
 
 COPY --from=tmux-build /tmux/tmux-install  /tmux
 COPY --from=tmux-build /tmux/.tmux/.tmux.conf  $XDG_CONFIG_HOME/tmux/.tmux.conf
 COPY --from=tmux-build /tmux/.tmux/.tmux.conf.local  $XDG_CONFIG_HOME/tmux/.tmux.conf.local
-#COPY ./tmux/plugins.conf $XDG_CONFIG_HOME/tmux/plugins.conf
 
 ## TMUX binaries
 RUN apk update && \
@@ -116,28 +117,22 @@ RUN mkdir -p $STD_XDG_CONFIG_HOME \
     &&  ln -sf $XDG_CONFIG_HOME/tmux/.tmux.conf /home/${DEV_USER}/.tmux.conf \
 # Copy the .tmux.conf.local fetched from git
     && cp $XDG_CONFIG_HOME/tmux/.tmux.conf.local /home/${DEV_USER}/.tmux.conf.local \
-    && chown -R $DEV_USER:$DEV_USER /home/${DEV_USER} \
 # Set permissions on WORKDIR /projects
     && chgrp -R ${DEV_USER} /projects \
     && chmod -R g=u /projects
 
-# Adding known hosts: github
-COPY ./nvim/.ssh /home/${DEV_USER}/.ssh
-
-# Adding entrypoint script
-COPY ./tmux/docker-entrypoint.sh /docker-entrypoint.sh
-
-USER ${DEV_USER}
 
 ## Bash need to be set to 256 colors aswell to get correct fonts
 ## We also need to turn of flow control beacuse otherwise when pressing "Ctrl + a + d" it will detach from docker instead of detach from session
-RUN echo "case \$TERM in xterm) TERM=xterm-256color;; esac" >> /$HOME/.bash_profile \
-    && echo "export USERNAME=\$(whoami)" >> /$HOME/.bash_profile \
-    && echo "stty -ixoff" > /$HOME/.profile
+RUN echo "case \$TERM in xterm) TERM=xterm-256color;; esac" >> $HOME/.bash_profile \
+    && echo "export USERNAME=\$(whoami)" >> $HOME/.bash_profile \
+    && echo "stty -ixoff" > $HOME/.profile
+
 
 ## tmux need to be set to 256 color and use the correct fonts
 ENV TERM=xterm-256color \
     LC_ALL=en_US.UTF-8
 
+# Use docker-entrypoint.sh from base-developer.
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["tmux"]
