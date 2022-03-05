@@ -5,7 +5,16 @@ set -e
 source /docker-entrypoint-helper.sh
 
 run_setup_as_root() {
-  if [[ ${HOST_OS} == 'macos' ]] && [[ -z ${RUN_AS_ROOT} ]]; then
+  if [[ -n ${RUN_AS_ROOT} ]]; then
+    echo
+    echo 'Warning: Running all processes as ROOT user'
+    echo
+    return 0
+  fi
+
+  # wsl2 using a solution there we need to do things on the host instead of docker
+  # https://github.com/Looooopy/developer-images/blob/master/docs/howto/windows/ssh-agent.md
+  if [[ ${HOST_OS} == 'macos' ]]; then
     # Note:
     #   Setup a socket through socat to communicate through ssh agent forwarding
     #   via the magic /run/host-services/ssh-auth.sock that is used in MacOS
@@ -15,7 +24,9 @@ run_setup_as_root() {
       &
 
     export SSH_AUTH_SOCK=/home/${DEV_USER}/.ssh/socket
+  fi
 
+  if [ ${HOST_OS} == 'macos' ]] || [[ ${HOST_OS} == 'wsl2' ]]; then
     # Note:
     #   Setup a socket through socat to communicate with docker
     echo "Setting up relay for Docker"
@@ -25,19 +36,13 @@ run_setup_as_root() {
 
     export DOCKER_HOST=unix:///home/${DEV_USER}/.docker/docker_socket
   fi
-
-  if [[ -n ${RUN_AS_ROOT} ]]; then
-    echo
-    echo 'Warning: Running all aps as ROOT'
-    echo
-  fi
 }
 
 main_as_none_root() {
-    cmd_string="source /docker-entrypoint-helper.sh; main $@"
-    if ! su-exec "${DEV_UID}:${DEV_GID}" bash -c "$cmd_string"; then
-      su-exec "${DEV_UID}:${DEV_GID}" bash -l
-    fi
+  cmd_string="source /docker-entrypoint-helper.sh; main $@"
+  if ! su-exec "${DEV_UID}:${DEV_GID}" bash -c "$cmd_string"; then
+    su-exec "${DEV_UID}:${DEV_GID}" bash -l
+  fi
 }
 
 run_setup_as_root
