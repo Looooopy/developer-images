@@ -1,0 +1,52 @@
+version: "3.8"
+## See https://github.com/compose-spec/compose-spec/blob/master/spec.md
+
+## Templates
+x-base-developer:
+  &default-base-developer
+  environment:
+    - SSH_AUTH_SOCK=/agent.sock
+  volumes:
+    - ${SSH_AUTH_SOCK}:/agent.sock
+    - //var/run/docker.sock:/var/run/docker.sock
+  command: clone ${CLONE_PROJECT_1} ${CLONE_PROJECT_2} ${CLONE_PROJECT_3} ${CLONE_PROJECT_4} ${CLONE_PROJECT_5}
+
+x-tmux-developer:
+  &default-tmux-developer
+  environment:
+    - SSH_AUTH_SOCK=/agent.sock
+  volumes:
+    - tmux-projects-container:/projects
+    - tmux-ressurect-container:/home/${DEV_USER}/.tmux/resurrect
+  command: clone ${CLONE_PROJECT_1} ${CLONE_PROJECT_2} ${CLONE_PROJECT_3} ${CLONE_PROJECT_4} ${CLONE_PROJECT_5}
+
+x-nvim-developer:
+  &default-nvim-developer
+  volumes:
+    - nvim-projects-container:/projects:rw
+  command: clone ${CLONE_PROJECT_1} ${CLONE_PROJECT_2} ${CLONE_PROJECT_3} ${CLONE_PROJECT_4} ${CLONE_PROJECT_5}
+
+## Services
+services:
+  base-developer_latest:
+    << : *default-base-developer
+  base-developer_specific:
+    << : *default-base-developer
+  nvim-developer_latest:
+    << : *default-base-developer
+    << : *default-nvim-developer
+  nvim-developer_specific:
+    << : *default-base-developer
+    << : *default-nvim-developer
+  tmux-developer_latest:
+    << : *default-base-developer
+    << : *default-tmux-developer
+  tmux-developer_specific:
+    << : *default-base-developer
+    << : *default-tmux-developer
+
+volumes:
+  base-projects-container: {}
+  tmux-projects-container: {}
+  tmux-ressurect-container: {}
+  nvim-projects-container: {}
