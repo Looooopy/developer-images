@@ -26,15 +26,15 @@ let g:nvim_tree_width = 40 "30 by default, can be width_in_columns or 'width_in_
 let g:nvim_tree_symlink_arrow = ' >> ' " defaults to ' ➛ '. used as a separator between symlinks' source and target.
 let g:nvim_tree_respect_buf_cwd = 1 "0 by default, will change cwd of nvim-tree to that of new buffer's when opening nvim-tree.
 let g:nvim_tree_refresh_wait = 500 "1000 by default, control how often the tree can be refreshed, 1000 means the tree can be refresh once per 1000ms.
-let g:nvim_tree_window_picker_exclude = {
-    \   'filetype': [
-    \     'packer',
-    \     'qf'
-    \   ],
-    \   'buftype': [
-    \     'terminal'
-    \   ]
-    \ }
+"let g:nvim_tree_window_picker_exclude = {
+"    \   'filetype': [
+"    \     'packer',
+"    \     'qf'
+"    \   ],
+"    \   'buftype': [
+"    \     'terminal'
+"    \   ]
+"    \ }
 " Dictionary of buffer option names mapped to a list of option values that
 " indicates to the window picker that the buffer's window should not be
 " selectable.
