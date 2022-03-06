@@ -52,6 +52,8 @@ RUN \
     cmatrix \
     # Docker-cli to access docker host [41.17 MB]
     docker-cli \
+    # Strace can be useful when checking file permission [1.63 MB]
+    strace \
     # Socat for ssh agent forawrding [208.51 kB]
     socat \
     # Su-exec is used to switch to none root in docker-entrypoint.sh [16 kB]
