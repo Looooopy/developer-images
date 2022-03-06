@@ -15,6 +15,6 @@ prune_volumes() {
     prune_volumes
     return 0
   elif [[ "${GENERIC_VOLUME_TYPE:?}" == container ]] ||  [[ "${GENERIC_VOLUME_TYPE:?}" == localhost ]]; then
-    docker_compose ${version} "${GENERIC_VOLUME_TYPE:?}" down --volumes
+    docker_compose down "${version}" "${GENERIC_VOLUME_TYPE:?}" --volumes
   fi
 }

@@ -14,10 +14,8 @@ x-build-args-xdg-x:
   STD_XDG_DATA_HOME:
   STD_XDG_CONFIG_HOME:
 
-x-run-props:
-  &default-run-props
-  environment:
-    - HOST_OS
+x-run-common-props:
+  &default-run-common-props
   sysctls:
     # Enable to use ping (Error: "ping: permission denied (are you root?)")
     - "net.ipv4.ping_group_range=0 ${DEV_GID}"
@@ -26,11 +24,17 @@ x-base-developer:
   &default-base-developer
   build:
     context: .
-    dockerfile: base-developer/Dockerfile
+    dockerfile: ./base-developer/Dockerfile
     args:
       << : *default-build-args
-  image: ${GENERIC_DOCKER_REGISTY_AND_PATH:-}base-developer:latest
-  << : *default-run-props
+  environment:
+    - HOST_OS
+    - RUN_AS_ROOT=${RUN_AS_ROOT}
+    - EXECUTE_PROCESS=${BASE_EXECUTE_PROCESS}
+    - EXECUTE_PROCESS_EXTRA_ARGS=${BASE_EXECUTE_PROCESS_EXTRA_ARGS}
+    - EXECUTE_PROCESS_NO_ARGS=${BASE_EXECUTE_PROCESS_NO_ARGS}
+  << : *default-run-common-props
+  hostname: base-dev-docker
 
 x-tmux-developer:
   &default-tmux-developer
@@ -48,7 +52,14 @@ x-tmux-developer:
   hostname: tmux-docker
   ports:
     - '2022:22'
-  << : *default-run-props
+  environment:
+    - HOST_OS
+    - RUN_AS_ROOT=${RUN_AS_ROOT}
+    - TMUX_PLUGIN_MANAGER_PATH
+    - EXECUTE_PROCESS=${TMUX_EXECUTE_PROCESS}
+    - EXECUTE_PROCESS_EXTRA_ARGS=${TMUX_EXECUTE_PROCESS_EXTRA_ARGS}
+    - EXECUTE_PROCESS_NO_ARGS=${TMUX_EXECUTE_PROCESS_NO_ARGS}
+  << : *default-run-common-props
 
 x-nvim-developer:
   &default-nvim-developer
@@ -62,13 +73,20 @@ x-nvim-developer:
       << : *default-build-args-xdg-x
       NEOVIM_GIT_BRANCH: "${NEOVIM_GIT_BRANCH}"
       NEOVIM_DOCKER_TAG: "${NEOVIM_DOCKER_TAG}"
-  << : *default-run-props
+  << : *default-run-common-props
+  environment:
+    - HOST_OS
+    - RUN_AS_ROOT=${RUN_AS_ROOT}
+    - EXECUTE_PROCESS=nvim
+    # - EXECUTE_PROCESS_EXTRA_ARGS=
+    # - EXECUTE_PROCESS_NO_ARGS=yes
   hostname: nvim-docker
 
 ## Services
 services:
   base-developer_latest:
-    *default-base-developer
+    << : *default-base-developer
+    image: ${GENERIC_DOCKER_REGISTY_AND_PATH:-}base-developer:latest
   base-developer_specific:
     << : *default-base-developer
     image: ${GENERIC_DOCKER_REGISTY_AND_PATH:-}base-developer:${ALPINE_TAG}

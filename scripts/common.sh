@@ -17,7 +17,7 @@ echo_docker_compose_config() {
   shift 2
   services=( "$@" )
 
-  docker_compose "${version}" "${GENERIC_VOLUME_TYPE:?}" config > temp.yaml
+  docker_compose config "${version}" "${GENERIC_VOLUME_TYPE:?}" > temp.yaml
   if [ ${#services[@]} -eq 0 ]; then
     docker run --rm -i -v "${PWD}":/workdir mikefarah/yq e ".services" temp.yaml
   fi
@@ -36,34 +36,31 @@ echo_docker_compose_config() {
 docker_compose() {
   local volume_type
   local version
-  local services=()
-  version="${1}"
-  volume_type="${2:?}"
-  shift 2
-  services=( "$@" )
+  local compose_cmd
+  local compose_cmd_args
 
-  #if [[ "$(uname)" == 'Darwin' ]]; then
-    if [[ "$version" == "latest" ]]; then
-      grep -v '^ALPINE_TAG=' "$SRC_ROOT/.env" > "$SRC_ROOT/.env-temp" # Remove ALPINE_TAG= line in .env
-      echo 'ALPINE_TAG=latest' >> "$SRC_ROOT/.env-temp"
-      DEV_UID=1000 DEV_GID=1000 docker-compose \
-        -f "$SRC_ROOT/docker-compose.yml" \
-        -f "$SRC_ROOT/docker-compose-volume-${volume_type}.yml" \
-        --env-file "$SRC_ROOT/.env-temp" ${services[@]}
-      rm "$SRC_ROOT/.env-temp"
-    else
-      DEV_UID=1000 DEV_GID=1000 docker-compose \
-        -f "$SRC_ROOT/docker-compose.yml" \
-        -f "$SRC_ROOT/docker-compose-volume-${volume_type}.yml" \
-        --env-file "$SRC_ROOT/.env" ${services[@]}
-    fi
-  #else
-  # Docker dont threat UID and GID as envirnment variables so we have to do it externaly
-  # DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose \
-  #       -f "$SRC_ROOT/docker-compose.yml" \
-  #       -f "$SRC_ROOT/docker-compose-volume-${volume_type}.yml" \
-  #       --env-file "$SRC_ROOT/.env" ${services[@]}
-  #fi
+  compose_cmd="${1:?'Missing docker-compose command'}"
+  version="${2:?'Missing version (latest or specifc)'}"
+  volume_type="${3:?'Missing volume type'}"
+  shift 3
+  compose_cmd_args=( "$@" )
+
+  if [[ "$version" == "latest" ]]; then
+    # Remove ALPINE_TAG= line in .env
+    grep -v '^ALPINE_TAG=' "$SRC_ROOT/.env" > "$SRC_ROOT/.env-temp"
+    echo 'ALPINE_TAG=latest' >> "$SRC_ROOT/.env-temp"
+    DEV_UID=1000 DEV_GID=1000 docker-compose \
+      -f "$SRC_ROOT/docker-compose.yml" \
+      -f "$SRC_ROOT/docker-compose-volume-${volume_type}-${HOST_OS}.yml" \
+      --env-file "$SRC_ROOT/.env-temp" "${compose_cmd}" ${compose_cmd_args[@]}
+    rm "$SRC_ROOT/.env-temp"
+  else
+    DEV_UID=1000 DEV_GID=1000 docker-compose \
+      -f "$SRC_ROOT/docker-compose.yml" \
+      -f "$SRC_ROOT/docker-compose-volume-${volume_type}-${HOST_OS}.yml" \
+      --env-file "$SRC_ROOT/.env" "${compose_cmd}" ${compose_cmd_args[@]}
+  fi
+
 }
 
 function _getopt_docker() {
