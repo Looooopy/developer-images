@@ -6,15 +6,16 @@ local wk = require('which-key')
 wk.register(
   {
     t = {
-      name = 'Gui toggle',
-      h = {'<cmd>NvimTreeToggle<cr>', 'Hide all'},
-      s = {'<cmd>NvimTreeClose<cr>', 'Show all'},
+      name = 'Tui toggle',
+      -- see terminal-user-interface/tui.lua
     },
     d = {
       name = 'Debug',
+      -- see config/nvim-dap.lua
     },
     f = {
       name = 'Files',
+      -- see config/telescope.lua
     },
   },
   {

@@ -1,3 +1,4 @@
 vim.cmd [[silent! colorscheme purify]]
 
-require('list-chars').setup()
+require('terminal-user-interface.list-chars').setup()
+require('terminal-user-interface.tui').setup()

@@ -53,11 +53,6 @@ local m = require('constants.vim-mode')
 -- Leader commands
 wk.register(
   {
-    t = {
-        -- name = 'Gui toggle',
-        t = { '<cmd>NvimTreeToggle<cr>', 'Filetree (toggle)' },
-        t = { '<cmd>NvimTreeToggle<cr>', 'Filetree (toggle)' },
-    },
     f = {
         -- name = 'Files',
         h = { '<cmd>NvimTreeFocus<cr>', 'Focus (NvimTree)' },

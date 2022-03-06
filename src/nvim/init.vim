@@ -71,9 +71,6 @@ set nowrap        " Use extends and precedes when line does not fit on screen in
 let mapleader =" "
 
 " Start migration to lua instad script instad of having it in vimscripts
-if filereadable(expand("$XDG_CONFIG_HOME/nvim/init_migrate.lua"))
-  luafile $XDG_CONFIG_HOME/nvim/init_migrate.lua
-endif
 
 " Done in lua script
 " set listchars=eol:↵,nbsp:␣,tab:<->,trail:·,extends:▶,precedes:◀,space:·
@@ -120,6 +117,10 @@ if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
   luafile $XDG_CONFIG_HOME/nvim/config/toggleterm.nvim.lua
   luafile $XDG_CONFIG_HOME/nvim/config/keymap/keymaps.lua
   luafile $XDG_CONFIG_HOME/nvim/config/neoclip.lua
+endif
+
+if filereadable(expand("$XDG_CONFIG_HOME/nvim/init_migrate.lua"))
+  luafile $XDG_CONFIG_HOME/nvim/init_migrate.lua
 endif
 
 " highlight NvimTreeFolderIcon guifg=red

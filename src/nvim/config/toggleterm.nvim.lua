@@ -23,7 +23,7 @@ function _G.set_terminal_keymaps()
             ["<C-k>"]   = { t('<C-\\><C-n><C-W>k'), 'Move: Up (terminal)' },
             ["<C-l>"]   = { t('<C-\\><C-n><C-W>l'), 'Move: Right (terminal)' },
             ["<Esc>"]   = { t('<C-\\><C-n>'),       'Escape (terminal)'},
-            ["<C-Z>"]   = { t('<C-\\><C-n>')..'<cmd>ToggleTermToggleAll<cr>',  'Toggle (terminal)'},
+            ["<C-Z>"]   = { t('<C-\\><C-n>')..'<cmd>TuiToggleTerminals<cr>',  'Toggle (terminal)'},
         },
         {
             mode = m.terminal,
@@ -45,8 +45,8 @@ local register_global_keymaps = function()
 
     wk.register(
         {
-            ["<C-A>"] = { '<cmd>ToggleTerm<cr><cmd>2ToggleTerm<cr>',    'Two terminals' },
-            ["<C-Z>"] = { '<cmd>ToggleTermToggleAll<cr>',               'Toggle terminal' },
+            ["<C-A>"] = { '<cmd>TuiShowTerminals<cr>',    'Show terminals' },
+            ["<C-Z>"] = { '<cmd>TuiToggleTerminals<cr>',  'Toggle terminals' },
         },
         {
             mode = m.normal,
