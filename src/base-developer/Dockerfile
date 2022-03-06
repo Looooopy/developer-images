@@ -57,8 +57,7 @@ RUN \
     # Socat for ssh agent forawrding [208.51 kB]
     socat \
     # Su-exec is used to switch to none root in docker-entrypoint.sh [16 kB]
-    su-exec \
-    && echo "net.ipv4.ping_group_range = 0 $DEV_GID" >> /etc/sysctl.conf
+    su-exec
 
 ## Files and folders
 ######################
@@ -67,8 +66,12 @@ RUN \
 COPY ./base-developer/run-scripts/docker-entrypoint*.sh /
 # Copy ssh known hosts for github
 COPY ./base-developer/.ssh /home/${DEV_USER}/.ssh
-#  Folder to store docker sock that is used by socat
-RUN mkdir -p /home/${DEV_USER}/.docker/
+
+RUN \
+    # Create folder to store docker sock that is used by socat
+    mkdir -p /home/${DEV_USER}/.docker/ \
+    # Enable to use ping for dev_user (append file)
+    && echo "net.ipv4.ping_group_range = 0 $DEV_GID" >> /etc/sysctl.conf
 
 ## Permissions
 ######################
