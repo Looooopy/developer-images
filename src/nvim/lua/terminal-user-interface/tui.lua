@@ -3,38 +3,38 @@ local M = {}
 
 function M.toggleAll(excludeDapValue)
     if not excludeDapValue then
-        toggleDebug()
+        M.toggleDebug()
     end
 
-    toggleVirtualText()
-    toggleFileTree()
-    toggleTerminals()
-    toggleMinimap()
+    M.toggleVirtualText()
+    M.toggleFileTree()
+    M.toggleTerminals()
+    M.toggleMinimap()
 end
 
 function M.hideAll(excludeDapValue)
     if not excludeDapValue then
-        hideDebug()
+        M.hideDebug()
     end
 
-    hideVirtualText()
-    hideFileTree()
-    hideTerminals()
-    hideMinimap()
+    M.hideVirtualText()
+    M.hideFileTree()
+    M.hideTerminals()
+    M.hideMinimap()
 end
 
 function M.showAll(excludeDapValue)
     if not excludeDapValue then
-        showDebug()
+        M.showDebug()
     end
-    showVirtualText()
-    showFileTree()
-    showTerminals()
-    showMinimap()
+    M.showVirtualText()
+    M.showFileTree()
+    M.showTerminals()
+    M.showMinimap()
 end
 
 function M.toggleTerminals()
-    vim.api.cmd('<cmd>ToggleTermToggleAll<cr>')
+    vim.cmd('ToggleTermToggleAll')
 end
 
 function M.showTerminals()
