@@ -55,8 +55,8 @@ wk.register(
   {
     f = {
         -- name = 'Files',
-        h = { '<cmd>NvimTreeFocus<cr>', 'Focus (NvimTree)' },
-        j = { '<cmd>NvimTreeFindFile<cr>', 'Find (NvimTree)' },
+        h = { '<cmd>NvimTreeFocus<cr>', '🍃 Focus (NvimTree)' },
+        j = { '<cmd>NvimTreeFindFile<cr>', '🍃 Find (NvimTree)' },
     },
   },
   {

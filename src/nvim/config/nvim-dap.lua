@@ -29,12 +29,12 @@ wk.register(
   {
     d = {
       name = 'Debug',
-      d = { '<cmd>lua require("dap").continue()<cr>', 'launch/resume' },
-      b = { '<cmd>lua require("dap").toggle_breakpoint()<cr>', 'Toggle breakpoint' },
-      h = { '<cmd>lua require("dap").step_over()<cr>', 'Step over' },
-      l = { '<cmd>lua require("dap").step_into()<cr>', 'Step into' },
-      g = { '<cmd>lua require("dap").repl.open()<cr>', 'Open Repl (type exit to close)' },
-      t = { '<cmd>lua require("dapui").toggle()<cr>', 'Toggle Debug console' },
+      d = { '<cmd>lua require("dap").continue()<cr>', '🍃 launch/resume' },
+      b = { '<cmd>lua require("dap").toggle_breakpoint()<cr>', '🍃 Toggle breakpoint' },
+      h = { '<cmd>lua require("dap").step_over()<cr>', '🍃 Step over' },
+      l = { '<cmd>lua require("dap").step_into()<cr>', '🍃 Step into' },
+      g = { '<cmd>lua require("dap").repl.open()<cr>', '🍃 Open Repl (type exit to close)' },
+      t = { '<cmd>lua require("dapui").toggle()<cr>', '🍃 Toggle Debug console' },
     },
   },
   {

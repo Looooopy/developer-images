@@ -17,22 +17,22 @@ local lsp_shortcuts = function()
         {
             g = {
                 name = 'Goto',
-                d = { vim.lsp.buf.definition, 'Definition (Goto)' },
-                T = { vim.lsp.buf.type_definition, 'Type definition (Goto)' },
-                i = { vim.lsp.buf.implementation, 'Implementation (Goto)' },
-                r = { vim.lsp.buf.references, 'References (Goto)' },
-                l = { '<cmd>Telescope lsp_references<cr>', 'List References (Goto)' },
+                d = { vim.lsp.buf.definition, '🍃 Definition (Goto)' },
+                T = { vim.lsp.buf.type_definition, '🍃 Type definition (Goto)' },
+                i = { vim.lsp.buf.implementation, '🍃 Implementation (Goto)' },
+                r = { vim.lsp.buf.references, '🍃 References (Goto)' },
+                l = { '<cmd>Telescope lsp_references<cr>', '🍃 List References (Goto)' },
             },
             d = {
                 name = 'Diagnostics',
-                j = { vim.diagnostic.goto_next, 'Next (Diagnostics)' },
-                k = { vim.diagnostic.goto_pre, 'Prev (Diagnostics)' },
-                l = { '<cmd>Telescope diagnostics<cr>', 'List (Diagnostics)' },
+                j = { vim.diagnostic.goto_next, '🍃 Next (Diagnostics)' },
+                k = { vim.diagnostic.goto_pre, '🍃 Prev (Diagnostics)' },
+                l = { '<cmd>Telescope diagnostics<cr>', '🍃 List (Diagnostics)' },
             },
             r = {
                 name = 'Refactor',
-                r = { vim.lsp.buf.rename, 'Rename (Refactor)' },
-                f = { vim.lsp.buf.code_action, 'Code Action (Refactor)' },
+                r = { vim.lsp.buf.rename, '🍃 Rename (Refactor)' },
+                f = { vim.lsp.buf.code_action, '🍃 Code Action (Refactor)' },
             }
         },
         {
