@@ -96,12 +96,10 @@ if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
   luafile $XDG_CONFIG_HOME/nvim/config/lsp_signature.lua
   luafile $XDG_CONFIG_HOME/nvim/config/gitsigns.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-treesitter.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/lualine.lua
+  source $XDG_CONFIG_HOME/nvim/config/minimap.vim
   source $XDG_CONFIG_HOME/nvim/config/nvim.tree.vim
   source $XDG_CONFIG_HOME/nvim/config/vim-better-whitespace.vim
-  source $XDG_CONFIG_HOME/nvim/config/minimap.vim
   luafile $XDG_CONFIG_HOME/nvim/config/clipboard.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/nvim-tree.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-colorizer.lua
   " Language Server Protocol (LSP)
   luafile $XDG_CONFIG_HOME/nvim/config/cmp.lua
@@ -111,11 +109,7 @@ if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
   luafile $XDG_CONFIG_HOME/nvim/config/lspkind.lua
   " Debug Adapter Protocol (DAP)
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-dap.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/nvim-dap-ui.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/nvim-dap-virtual-text.lua
   " Terminal
-  luafile $XDG_CONFIG_HOME/nvim/config/toggleterm.nvim.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/keymap/keymaps.lua
   luafile $XDG_CONFIG_HOME/nvim/config/neoclip.lua
 endif
 

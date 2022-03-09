@@ -19,41 +19,7 @@
 -- # Install:
 --    Plug 'jbyuki/one-small-step-for-vimkind'
 
-local dap = require('dap')
-
-local wk = require('which-key')
-local b = require('constants.buffer')
-local m = require('constants.vim-mode')
-
-wk.register(
-  {
-    d = {
-      name = 'Debug',
-      d = { '<cmd>lua require("dap").continue()<cr>', '🍃 launch/resume' },
-      b = { '<cmd>lua require("dap").toggle_breakpoint()<cr>', '🍃 Toggle breakpoint' },
-      h = { '<cmd>lua require("dap").step_over()<cr>', '🍃 Step over' },
-      l = { '<cmd>lua require("dap").step_into()<cr>', '🍃 Step into' },
-      g = { '<cmd>lua require("dap").repl.open()<cr>', '🍃 Open Repl (type exit to close)' },
-      t = { '<cmd>lua require("dapui").toggle()<cr>', '🍃 Toggle Debug console' },
-    },
-  },
-  {
-      prefix = '<leader>',
-      mode = m.normal,
-      buffer = nil,
-  }
-);
-
-vim.highlight.create('DapBreakpoint', { ctermbg=0, guifg='#993939', guibg='#31353f' }, false)
-vim.highlight.create('DapLogPoint', { ctermbg=0, guifg='#61afef', guibg='#31353f' }, false)
-vim.highlight.create('DapStopped', { ctermbg=0, guifg='#98c379', guibg='#31353f' }, false)
-
-vim.fn.sign_define('DapBreakpoint', { text='', texthl='DapBreakpoint', linehl='DapBreakpoint', numhl='DapBreakpoint' })
-vim.fn.sign_define('DapBreakpointCondition', { text='ﳁ', texthl='DapBreakpoint', linehl='DapBreakpoint', numhl='DapBreakpoint' })
-vim.fn.sign_define('DapBreakpointRejected', { text='', texthl='DapBreakpoint', linehl='DapBreakpoint', numhl= 'DapBreakpoint' })
-vim.fn.sign_define('DapLogPoint', { text='', texthl='DapLogPoint', linehl='DapLogPoint', numhl= 'DapLogPoint' })
-vim.fn.sign_define('DapStopped', { text='', texthl='DapStopped', linehl='DapStopped', numhl= 'DapStopped' })
-
+local dap =  require("dap")
 -- # Add Adapter
 dap.adapters.nlua = function(callback, config)
   callback({ type = 'server', host = config.host, port = config.port })

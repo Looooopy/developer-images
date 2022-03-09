@@ -7,13 +7,4 @@ let g:minimap_close_filetypes = ['startify', 'netrw', 'vim-plug']
 let g:minimap_highlight_search = 1
 let g:minimap_git_colors = 1
 
-" [[ Available Commands ]]
-" :h minimap-commands
-
-" Minimap                   Show minimap window
-" MinimapClose              Close minimap window
-" MinimapToggle             Toggle minimap window
-" MinimapRefresh            Force refresh minimap window
-" MinimapUpdateHighlight	Force update minimap highlight
-" MinimapRescan	            Force recalculation of minimap scaling ratio
 

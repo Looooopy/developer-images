@@ -86,7 +86,6 @@ require'lspconfig'.omnisharp.setup {
     capabilities = capabilities, -- get capabilities from cmp.lua
     on_new_config = function(new_config, new_root_dir)
         if new_root_dir then
-          print('on_new_config'..new_root_dir)
           table.insert(new_config.cmd, '//usr/run')
           table.insert(new_config.cmd, '--languageserver')
           table.insert(new_config.cmd, '-s')
