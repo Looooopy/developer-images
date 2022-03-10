@@ -97,12 +97,10 @@ if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
   luafile $XDG_CONFIG_HOME/nvim/config/which-key.lua
   luafile $XDG_CONFIG_HOME/nvim/config/telescope.lua
   luafile $XDG_CONFIG_HOME/nvim/config/lsp_signature.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/gitsigns.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-treesitter.lua
   source $XDG_CONFIG_HOME/nvim/config/minimap.vim
   source $XDG_CONFIG_HOME/nvim/config/nvim.tree.vim
   source $XDG_CONFIG_HOME/nvim/config/vim-better-whitespace.vim
-  luafile $XDG_CONFIG_HOME/nvim/config/clipboard.lua
   luafile $XDG_CONFIG_HOME/nvim/config/nvim-colorizer.lua
   " Language Server Protocol (LSP)
   luafile $XDG_CONFIG_HOME/nvim/config/cmp.lua
