@@ -18,7 +18,7 @@ local register_commands
 ----------------------------
 -- Public function interface
 ----------------------------
-function M.default()
+function M.default_config()
     return {
         enabled = true,
         register = {
@@ -37,7 +37,7 @@ function M.default()
 end
 
 function M.setup(config)
-    config = vim.tbl_deep_extend("force", M.default(), config or {})
+    config = vim.tbl_deep_extend("force", M.default_config(), config or {})
 
     if config.enabled then
         if config.register.commands.enabled then
@@ -78,9 +78,9 @@ end
 --------------------
 register_commands = function()
     vim.cmd [[
-        command! TuiToggleTerminals lua require('tui.ui.terminal').toggle()
-        command! TuiShowTerminals lua require('tui.ui.terminal').show()
-        command! TuiHideTerminals lua require('tui.ui.terminal').hide()
+        command! TuiToggleTerminals lua require('tui.ui.visibility.terminal').toggle()
+        command! TuiShowTerminals lua require('tui.ui.visibility.terminal').show()
+        command! TuiHideTerminals lua require('tui.ui.visibility.terminal').hide()
     ]]
 
     -- if you only want these mappings for toggle term use term://*toggleterm#* instead

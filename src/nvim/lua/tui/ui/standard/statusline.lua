@@ -28,7 +28,7 @@ local set_highlighs_icons_chars_dap_ui
 ----------------------------
 -- Public function interface
 ----------------------------
-function M.default()
+function M.default_config()
     return {
         enabled = true,
         register = {
@@ -77,7 +77,7 @@ function M.default()
 end
 
 function M.setup(config)
-    config = vim.tbl_deep_extend("force", M.default(), config or {})
+    config = vim.tbl_deep_extend("force", M.default_config(), config or {})
 
     if config.enabled then
         -- if config.register.commands.enabled then
@@ -90,29 +90,6 @@ function M.setup(config)
 
         applyConfig(config.applyConfig)
     end
-end
-
-function M.toggle()
-    -- require("dapui").toggle()
-end
-
-function M.show()
-    -- require('dapui').open()
-end
-
-function M.hide()
-    -- require('dapui').close()
-end
-
---------------------
--- Private functions
---------------------
-register_commands = function()
-    vim.cmd [[
-      command! TuiToggleStatusline lua require('tui.ui.statusline').toggle()
-      command! TuiShowStatusline lua require('tui.ui.statusline').show()
-      command! TuiHideStatusline lua require('tui.ui.statusline').hide()
-    ]]
 end
 
 bind_keys = function()

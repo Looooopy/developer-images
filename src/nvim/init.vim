@@ -13,13 +13,14 @@ Plug 'neovim/nvim-lspconfig'                                                " Se
 Plug 'Looooopy/lspcontainers.nvim', {'branch':'feature/use-docker-volumes'} " Dockerized Server side to given code language suggestion and refactoring
 Plug 'onsails/lspkind-nvim'                                                 " Adds LSP Kind as VSCode (e.g. Class Interface and so on)
 Plug 'ray-x/lsp_signature.nvim'                                             " Handles code languages suggestion and refactoring
-"Plug 'folke/trouble.nvim'                                                  " Display a list from LSP when you got issue in your code.
+Plug 'folke/trouble.nvim'                                                  " Display a list from LSP when you got issue in your code.
 Plug 'hrsh7th/nvim-cmp'                                                     " Autocomplete engine
 Plug 'hrsh7th/vim-vsnip'                                                    " used by nvim-cmp (Snippet engine)
 Plug 'hrsh7th/cmp-buffer'                                                   " used by nvim-cmp (Buffer completion source)
 Plug 'hrsh7th/nvim-lsp'                                                     " Autocomplete integrates with LSP
 Plug 'hrsh7th/cmp-nvim-lsp'                                                 " Handle LPS capabilities
 Plug 'hrsh7th/cmp-path'                                                     " Get workingdir for a buffer use
+Plug 'ose-elias-alvarez/null-ls.nvim'                                       "
 
 " Debugger Adapter Protocol (DAP) plugins
 Plug 'mfussenegger/nvim-dap'                                                " Debugger: Handles debugging of program languages
@@ -33,6 +34,8 @@ Plug 'jbyuki/one-small-step-for-vimkind'                                    " De
 "   Color scheme
 Plug 'kyoz/purify', { 'rtp': 'vim' }                                        " Vim (vivid colors)                                  - :colorschema purify
 Plug 'marko-cerovac/material.nvim'                                          " Nvim port from Material (more colors for keywords)  - :colorschema material
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }                          "
+
 "   Misc
 Plug 'norcalli/nvim-colorizer.lua'                                          " Display colors on RGB codes (#FFFFFF)
 Plug 'wfxr/minimap.vim'                                                     " Minmap, display a minmap of the buffer

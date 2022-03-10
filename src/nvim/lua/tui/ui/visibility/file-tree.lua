@@ -12,7 +12,7 @@ local register_commands
 -- Public function interface
 ----------------------------
 function M.setup(config)
-    config = vim.tbl_deep_extend("force", M.default(), config or {})
+    config = vim.tbl_deep_extend("force", M.default_config(), config or {})
 
     if config.enabled then
         if config.register.commands.enabled then
@@ -27,7 +27,7 @@ function M.setup(config)
     end
 end
 
-function M.default()
+function M.default_config()
     return  {
         enabled = true,
         register = {
@@ -109,9 +109,9 @@ end
 --------------------
 register_commands = function()
     vim.cmd [[
-      command! TuiToggleFileTree lua require'tui.ui.file-tree'.toggle()
-      command! TuiShowFileTree lua require'tui.ui.file-tree'.show()
-      command! TuiHideFileTree lua require'tui.ui.file-tree'.hide()
+      command! TuiToggleFileTree lua require'tui.ui.visibility.file-tree'.toggle()
+      command! TuiShowFileTree lua require'tui.ui.visibility.file-tree'.show()
+      command! TuiHideFileTree lua require'tui.ui.visibility.file-tree'.hide()
     ]]
 end
 

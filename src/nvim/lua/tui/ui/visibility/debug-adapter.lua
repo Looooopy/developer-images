@@ -15,7 +15,7 @@ local set_highlighs_icons_chars_dap_ui
 ----------------------------
 -- Public function interface
 ----------------------------
-function M.default()
+function M.default_config()
     return {
         enabled = true,
         register = {
@@ -42,7 +42,7 @@ function M.default()
 end
 
 function M.setup(config)
-    config = vim.tbl_deep_extend("force", M.default(), config or {})
+    config = vim.tbl_deep_extend("force", M.default_config(), config or {})
 
     if config.enabled then
         if config.register.commands.enabled then
@@ -74,9 +74,9 @@ end
 --------------------
 register_commands = function()
     vim.cmd [[
-      command! TuiToggleDebug lua require('tui.ui.debug-adapter').toggle()
-      command! TuiShowDebug lua require('tui.ui.debug-adapter').show()
-      command! TuiHideDebug lua require('tui.ui.debug-adapter').hide()
+      command! TuiToggleDebug lua require('tui.ui.visibility.debug-adapter').toggle()
+      command! TuiShowDebug lua require('tui.ui.visibility.debug-adapter').show()
+      command! TuiHideDebug lua require('tui.ui.visibility.debug-adapter').hide()
     ]]
 end
 

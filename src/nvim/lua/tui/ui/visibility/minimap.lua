@@ -1,19 +1,27 @@
 -- Module
 local M = {}
 
+-- [[ Available Commands ]]
+-- :h minimap-commands
+
+-- Minimap                   Show minimap window [We are using it]
+-- MinimapClose              Close minimap window [We are using it]
+-- MinimapToggle             Toggle minimap window [We are using it]
+-- MinimapRefresh            Force refresh minimap window
+-- MinimapUpdateHighlight    Force update minimap highlight
+-- MinimapRescan             Force recalculation of minimap scaling ratio
+
 --------------------------------
 -- Forward function declarations
 --------------------------------
-local applyConfig
-local bind_keys
 local register_commands
+local bind_keys
 
 ----------------------------
 -- Public function interface
 ----------------------------
--- http://www.unicode.org/charts/
-function M.default()
-    return  {
+function M.default_config()
+    return {
         enabled = true,
         register = {
             commands = {
@@ -25,24 +33,11 @@ function M.default()
                 on_bind = bind_keys,
             },
         },
-        applyConfig = {
-            list = true,
-            listchars = {
-                eol = '↵',
-                nbsp = '␣',
-                tab = '⎯⎯⮞',
-                trail = '·',
-                extends = '▶',
-                precedes = '◀',
-                space = '·',
-            },
-            fillchars = 'eob: ',
-        },
-    }
+    };
 end
 
 function M.setup(config)
-    config = vim.tbl_deep_extend("force", M.default(), config or {})
+    config = vim.tbl_deep_extend("force", M.default_config(), config or {})
 
     if config.enabled then
         if config.register.commands.enabled then
@@ -52,37 +47,30 @@ function M.setup(config)
         if config.register.key_binds.enabled then
            config.register.key_binds.on_bind()
         end
-
-        applyConfig(config.applyConfig)
     end
 end
 
+
 function M.toggle()
-    vim.opt.list = not vim.opt.list:get()
+    vim.cmd('MinimapToggle')
 end
 
 function M.show()
-    vim.opt.list = true
+    vim.cmd('Minimap')
 end
 
 function M.hide()
-    vim.opt.list = false
+    vim.cmd('MinimapClose')
 end
 
 --------------------
 -- Private functions
 --------------------
-applyConfig = function(config)
-    vim.opt.list = config.list
-    vim.opt.listchars = config.listchars
-    vim.wo.fillchars= config.fillchars
-end
-
 register_commands = function()
     vim.cmd [[
-        command! TuiToggleVirtualText lua require'tui.ui.virtual-text'.toggle()
-        command! TuiShowVirtualText lua require'tui.ui.virtual-text'.show()
-        command! TuiHideVirtualText lua require'tui.ui.virtual-text'.hide()
+        command! TuiToggleMinimap lua require('tui.ui.visibility.minimap').toggle()
+        command! TuiShowMinimap lua require('tui.ui.visibility.minimap').show()
+        command! TuiHideMinimap lua require('tui.ui.visibility.minimap').hide()
     ]]
 end
 
@@ -94,10 +82,10 @@ bind_keys = function()
     -- toggle group minimap (toggle, show, hide)
     wk.register(
         {
-            ['tgv'] = {
-                t =  {'<cmd>TuiToggleVirtualText<cr>', '🍃 Toggle Virtual Text'},
-                s =  {'<cmd>TuiShowVirtualText<cr>', '🍃 Show Virtual Text'},
-                h =  {'<cmd>TuiHideVirtualText<cr>', '🍃 Hide Virtual Text'},
+            ['tgm'] = {
+                ['t'] = {'<cmd>TuiToggleMinimap<cr>',   '🍃 Toggle Minimap' },
+                ['s'] = {'<cmd>TuiShowMinimap<cr>',     '🍃 Show Minimap' },
+                ['h'] = {'<cmd>TuiHideMinimap<cr>',     '🍃 Hide Minimap' },
             },
         },
         {
@@ -109,4 +97,4 @@ bind_keys = function()
 end
 
 -- Return Module
-return M 
+return M
