@@ -38,6 +38,7 @@ docker_compose() {
   local version
   local compose_cmd
   local compose_cmd_args
+  local runtime_compose=''
 
   compose_cmd="${1:?'Missing docker-compose command'}"
   version="${2:?'Missing version (latest or specifc)'}"
@@ -45,19 +46,24 @@ docker_compose() {
   shift 3
   compose_cmd_args=( "$@" )
 
+
+  if [[ "${compose_cmd}" != 'build' ]]; then
+    runtime_compose=(-f "$SRC_ROOT/docker-compose-volume-${volume_type}-${HOST_OS}.yml")
+  fi
+
   if [[ "$version" == "latest" ]]; then
     # Remove ALPINE_TAG= line in .env
     grep -v '^ALPINE_TAG=' "$SRC_ROOT/.env" > "$SRC_ROOT/.env-temp"
     echo 'ALPINE_TAG=latest' >> "$SRC_ROOT/.env-temp"
     DEV_UID=1000 DEV_GID=1000 docker-compose \
       -f "$SRC_ROOT/docker-compose.yml" \
-      -f "$SRC_ROOT/docker-compose-volume-${volume_type}-${HOST_OS}.yml" \
+      ${runtime_compose[@]} \
       --env-file "$SRC_ROOT/.env-temp" "${compose_cmd}" ${compose_cmd_args[@]}
     rm "$SRC_ROOT/.env-temp"
   else
     DEV_UID=1000 DEV_GID=1000 docker-compose \
       -f "$SRC_ROOT/docker-compose.yml" \
-      -f "$SRC_ROOT/docker-compose-volume-${volume_type}-${HOST_OS}.yml" \
+      ${runtime_compose[@]} \
       --env-file "$SRC_ROOT/.env" "${compose_cmd}" ${compose_cmd_args[@]}
   fi
 
