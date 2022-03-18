@@ -75,13 +75,13 @@ function M.default_config()
             },
             diagnostics = {
                 enable = true,
-                -- -- default
-                -- icons = {
-                --   hint = "",
-                --   info = "",
-                --   warning = "",
-                --   error = "",
-                -- },
+                -- Same icons as in Trouble
+                icons = {
+                  hint = "",
+                  info = "",
+                  warning = "",
+                  error = "",
+                },
             },
             open_on_setup = true,
             update_to_buf_dir   = {
