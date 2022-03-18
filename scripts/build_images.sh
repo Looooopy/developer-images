@@ -162,6 +162,8 @@ build() {
 
   [[ -n "${VERBOSE}" ]] && echo_docker_compose_config "${version}" "${GENERIC_VOLUME_TYPE:?}" "${services[@]}"
   for service in "${services[@]}"; do
-    docker_compose build "${version}" "${GENERIC_VOLUME_TYPE:?}" "${no_cache}" "${build_args[@]}" "${service}"
+    if ! docker_compose build "${version}" "${GENERIC_VOLUME_TYPE:?}" "${no_cache}" "${build_args[@]}" "${service}"; then
+      return 1;
+    fi
   done
 }
