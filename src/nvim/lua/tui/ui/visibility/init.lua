@@ -85,14 +85,12 @@ end
 -- Private functions
 --------------------
 register_commands = function()
-    vim.cmd [[
-      command! TuiHideAll lua require'tui.ui.visibility.all'.hideAll(false)
-      command! TuiShowAll lua require'tui.ui.visibility.all'.showAll(false)
-      command! TuiToggleAll lua require'tui.ui.visibility.all'.toggleAll(false)
-      command! TuiHideAllButDap lua require'tui.ui.visibility.all'.hideAll(true)
-      command! TuiShowAllButDap lua require'tui.ui.visibility.all'.showAll(true)
-      command! TuiToggleAllButDap lua require'tui.ui.visibility.all'.toggleAll(true)
-    ]]
+    vim.api.nvim_add_user_command('TuiHideAll', 'lua require("tui.ui.visibility").hideAll(false)', {})
+    vim.api.nvim_add_user_command('TuiShowAll', 'lua require("tui.ui.visibility").showAll(false)', {})
+    vim.api.nvim_add_user_command('TuiToggleAll', 'lua require("tui.ui.visibility").toggleAll(false)', {})
+    vim.api.nvim_add_user_command('TuiHideAllButDap', 'lua require("tui.ui.visibility").hideAll(true)', {})
+    vim.api.nvim_add_user_command('TuiShowAllButDap', 'lua require("tui.ui.visibility").showAll(true)', {})
+    vim.api.nvim_add_user_command('TuiToggleAllButDap', 'lua require("tui.ui.visibility").toggleAll(true)', {})
 end
 
 register_keys = function()
@@ -103,13 +101,19 @@ register_keys = function()
     -- Register Names
     wk.register(
         {
+            --c = {
+                -- name = 'Clipboard',
+            --},
             d = {
                 name = 'Debug',
                  -- see lua/tui/ui/debug-adapter.lua
             },
             f = {
                 name = 'Files',
-                -- see config/telescope.lua
+                f = { '<cmd>lua require("telescope.builtin").find_files()<cr>', '🍃 Find files (Telescope)' },
+                g = { '<cmd>lua require("telescope.builtin").live_grep()<cr>', '🍃 Live grep (Telescope)' },
+                b = { '<cmd>lua require("telescope.builtin").buffers()<cr>', '🍃 Find buffer (Telescope)' },
+                b = { '<cmd>lua require("telescope.builtin").help_tags()<cr>', '🍃 Find helptags (Telescope)' },
             },
             t = {
                 name = 'Tui toggle',
@@ -123,6 +127,12 @@ register_keys = function()
                     },
                     f = {
                         name = 'File Tree',
+                    },
+                    s = {
+                        name = 'Statusline',
+                    },
+                    h = {
+                        name = 'Syntax Highlighting',
                     },
                     t = {
                         name = 'Terminal',

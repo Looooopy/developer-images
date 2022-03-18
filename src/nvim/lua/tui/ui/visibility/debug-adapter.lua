@@ -73,11 +73,9 @@ end
 -- Private functions
 --------------------
 register_commands = function()
-    vim.cmd [[
-      command! TuiToggleDebug lua require('tui.ui.visibility.debug-adapter').toggle()
-      command! TuiShowDebug lua require('tui.ui.visibility.debug-adapter').show()
-      command! TuiHideDebug lua require('tui.ui.visibility.debug-adapter').hide()
-    ]]
+    vim.api.nvim_add_user_command('TuiToggleDebug', 'lua require("tui.ui.visibility.debug-adapter").toggle()', {})
+    vim.api.nvim_add_user_command('TuiShowDebug', 'lua require("tui.ui.visibility.debug-adapter").show()', {})
+    vim.api.nvim_add_user_command('TuiHideDebug', 'lua require("tui.ui.visibility.debug-adapter").hide()', {})
 end
 
 bind_keys = function()

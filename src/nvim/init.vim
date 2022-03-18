@@ -13,14 +13,14 @@ Plug 'neovim/nvim-lspconfig'                                                " Se
 Plug 'Looooopy/lspcontainers.nvim', {'branch':'feature/use-docker-volumes'} " Dockerized Server side to given code language suggestion and refactoring
 Plug 'onsails/lspkind-nvim'                                                 " Adds LSP Kind as VSCode (e.g. Class Interface and so on)
 Plug 'ray-x/lsp_signature.nvim'                                             " Handles code languages suggestion and refactoring
-Plug 'folke/trouble.nvim'                                                  " Display a list from LSP when you got issue in your code.
+Plug 'folke/trouble.nvim'                                                   " Display a list from LSP when you got issue in your code.
 Plug 'hrsh7th/nvim-cmp'                                                     " Autocomplete engine
 Plug 'hrsh7th/vim-vsnip'                                                    " used by nvim-cmp (Snippet engine)
 Plug 'hrsh7th/cmp-buffer'                                                   " used by nvim-cmp (Buffer completion source)
-Plug 'hrsh7th/nvim-lsp'                                                     " Autocomplete integrates with LSP
-Plug 'hrsh7th/cmp-nvim-lsp'                                                 " Handle LPS capabilities
+Plug 'hrsh7th/cmp-nvim-lsp'                                                 " Autocomplete integrates with LSP
 Plug 'hrsh7th/cmp-path'                                                     " Get workingdir for a buffer use
-Plug 'ose-elias-alvarez/null-ls.nvim'                                       "
+Plug 'jose-elias-alvarez/null-ls.nvim'                                      " Hook into LSP to support things like formatting where it is missing
+Plug 'L3MON4D3/LuaSnip'                                                     " used by nvim-cmp (Snippet engine)
 
 " Debugger Adapter Protocol (DAP) plugins
 Plug 'mfussenegger/nvim-dap'                                                " Debugger: Handles debugging of program languages
@@ -34,10 +34,11 @@ Plug 'jbyuki/one-small-step-for-vimkind'                                    " De
 "   Color scheme
 Plug 'kyoz/purify', { 'rtp': 'vim' }                                        " Vim (vivid colors)                                  - :colorschema purify
 Plug 'marko-cerovac/material.nvim'                                          " Nvim port from Material (more colors for keywords)  - :colorschema material
-Plug 'folke/tokyonight.nvim', { 'branch': 'main' }                          "
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }                          " Nvim color scheme                                   - :colorschema tokyonight
 
 "   Misc
 Plug 'norcalli/nvim-colorizer.lua'                                          " Display colors on RGB codes (#FFFFFF)
+Plug 'akinsho/bufferline.nvim'                                              " Show a line at top with open buffers
 Plug 'wfxr/minimap.vim'                                                     " Minmap, display a minmap of the buffer
 Plug 'Xuyuanp/scrollbar.nvim'                                               " Scrollbar, display a scrollbar
 Plug 'lewis6991/gitsigns.nvim'                                              " Add git decorations to the buffer
@@ -65,60 +66,3 @@ Plug 'akinsho/toggleterm.nvim'                                              " Ha
 Plug 'jeffkreeftmeijer/vim-numbertoggle'                                    " Toggle line numbers
 "Plug 'glacambre/firenvim'                                                  " Cool plugin that takes over text areas in brower with a Neovim instance
 call plug#end()
-
-" standard vim settings
-set number
-set termguicolors " this variable must be enabled for colors to be applied properly
-set mouse=a       " Set use mouse on 'a'll modes (n=normal, v=visual,i=insert, c=command, h=allprevious in help)
-set nowrap        " Use extends and precedes when line does not fit on screen instead of wrapping to next line (defualt: wrap)
-let mapleader =" "
-
-" Start migration to lua instad script instad of having it in vimscripts
-
-" Done in lua script
-" set listchars=eol:↵,nbsp:␣,tab:<->,trail:·,extends:▶,precedes:◀,space:·
-" set list
-
-" Svae just to know howto...
-" set fillchars+=vert:\ " Change verical split symbol (default: │ )
-
-" TODO: remove
-" map <c-j> <c-w>j
-" map <c-k> <c-w>k
-" map <c-l> <c-w>l
-" map <c-h> <c-w>h
-
-"map <C-Tab> :bnext<CR>
-"map <C-S-Tab> :bprevious<CR>
-
-" Configurate and initialize our plugins
-" check if docker build has copied the files to config folder
-if isdirectory(expand("$XDG_CONFIG_HOME/nvim/config"))
-  luafile $XDG_CONFIG_HOME/nvim/config/which-key.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/telescope.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/lsp_signature.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/nvim-treesitter.lua
-  source $XDG_CONFIG_HOME/nvim/config/minimap.vim
-  source $XDG_CONFIG_HOME/nvim/config/nvim.tree.vim
-  source $XDG_CONFIG_HOME/nvim/config/vim-better-whitespace.vim
-  luafile $XDG_CONFIG_HOME/nvim/config/nvim-colorizer.lua
-  " Language Server Protocol (LSP)
-  luafile $XDG_CONFIG_HOME/nvim/config/cmp.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/lsp_signature.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/lspconfig.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/lspcontainers.lua
-  luafile $XDG_CONFIG_HOME/nvim/config/lspkind.lua
-  " Debug Adapter Protocol (DAP)
-  luafile $XDG_CONFIG_HOME/nvim/config/nvim-dap.lua
-  " Terminal
-  luafile $XDG_CONFIG_HOME/nvim/config/neoclip.lua
-endif
-
-if filereadable(expand("$XDG_CONFIG_HOME/nvim/init_migrate.lua"))
-  luafile $XDG_CONFIG_HOME/nvim/init_migrate.lua
-endif
-
-" highlight NvimTreeFolderIcon guifg=red
-" a list of groups can be found at `:help nvim_tree_highlight`
-" highlight NvimTreeFolderIcon guibg=blue
-

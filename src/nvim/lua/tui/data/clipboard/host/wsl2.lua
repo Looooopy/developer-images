@@ -20,7 +20,7 @@ M.setup = function(config)
     config = vim.tbl_deep_extend("force", M.default_config(), config or {})
 
     local write_to_clip = 'socat - tcp:'..config.host..':'..config.write_port
-    local read_from_clip = 'socat -u tcp:'..config.host..':'..config.write_port..' -'
+    local read_from_clip = 'socat -u tcp:'..config.host..':'..config.read_port..' -'
 
     vim.o.clipboard = config.clipboard
     vim.g.clipboard = {

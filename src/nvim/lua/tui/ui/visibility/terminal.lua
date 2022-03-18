@@ -77,11 +77,9 @@ end
 -- Private functions
 --------------------
 register_commands = function()
-    vim.cmd [[
-        command! TuiToggleTerminals lua require('tui.ui.visibility.terminal').toggle()
-        command! TuiShowTerminals lua require('tui.ui.visibility.terminal').show()
-        command! TuiHideTerminals lua require('tui.ui.visibility.terminal').hide()
-    ]]
+    vim.api.nvim_add_user_command('TuiToggleTerminals', 'lua require("tui.ui.visibility.terminal").toggle()', {})
+    vim.api.nvim_add_user_command('TuiShowTerminals', 'lua require("tui.ui.visibility.terminal").show()', {})
+    vim.api.nvim_add_user_command('TuiHideTerminals', 'lua require("tui.ui.visibility.terminal").hide()', {})
 
     -- if you only want these mappings for toggle term use term://*toggleterm#* instead
     vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')

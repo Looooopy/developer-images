@@ -26,7 +26,7 @@ run_setup_as_root() {
     export SSH_AUTH_SOCK=/home/${DEV_USER}/.ssh/socket
   fi
 
-  if [ ${HOST_OS} == 'macos' ]] || [[ ${HOST_OS} == 'wsl2' ]]; then
+  if [[ ${HOST_OS} == 'macos' ]] || [[ ${HOST_OS} == 'wsl2' ]]; then
     # Note:
     #   Setup a socket through socat to communicate with docker
     echo "Setting up relay for Docker"

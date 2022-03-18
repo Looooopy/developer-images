@@ -16,6 +16,7 @@ local M = {}
 -- Read more about it
 -- :help lualine
 
+local _config
 --------------------------------
 -- Forward function declarations
 --------------------------------
@@ -50,7 +51,12 @@ function M.default_config()
                         icons_enabled = true,
                         component_separators = {'', ''},
                         section_separators = {'', ''},
-                        disabled_filetypes = {}
+                        disabled_filetypes = {
+                            'NvimTree',
+                            -- Empty buffer
+                            '',
+                            'minimap',
+                        }
                     },
                     sections = {
                         lualine_a = {'mode'},
@@ -77,19 +83,44 @@ function M.default_config()
 end
 
 function M.setup(config)
-    config = vim.tbl_deep_extend("force", M.default_config(), config or {})
+    _config = vim.tbl_deep_extend("force", M.default_config(), config or {})
 
     if config.enabled then
-        -- if config.register.commands.enabled then
-        --     config.register.commands.on_register()
-        -- end
+        if config.register.commands.enabled then
+            config.register.commands.on_register()
+        end
 
-        -- if config.register.key_binds.enabled then
-        --    config.register.key_binds.on_bind()
-        -- end
+        if config.register.key_binds.enabled then
+           config.register.key_binds.on_bind()
+        end
 
-        applyConfig(config.applyConfig)
+        applyConfig(_config.applyConfig)
     end
+end
+
+
+function M.toggle()
+    if next(_config.applyConfig.ui.config.options.disabled_filetypes) == nil then
+        M.show()
+    else
+        M.hide()
+    end
+end
+
+function M.show()
+    _config.applyConfig.ui.config.options.disabled_filetypes = {'*'}
+    M.setup( _config)
+end
+
+function M.hide()
+    _config.applyConfig.ui.config.options.disabled_filetypes = {}
+    M.setup( _config)
+end
+
+register_commands = function()
+    vim.api.nvim_add_user_command('TuiToggleStatusline', 'lua require("tui.ui.standard.statusline").toggle()', {})
+    vim.api.nvim_add_user_command('TuiShowStatusline', 'lua require("tui.ui.standard.statusline").show()', {})
+    vim.api.nvim_add_user_command('TuiHideStatusline', 'lua require("tui.ui.standard.statusline").hide()', {})
 end
 
 bind_keys = function()
@@ -109,7 +140,7 @@ bind_keys = function()
         {
             prefix = '<leader>',
             mode = m.normal,
-            buffer = nil,
+            buffer = b.all_buffers,
         }
     );
 end

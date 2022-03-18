@@ -4,6 +4,7 @@ local M = {}
 M.default_config = function()
   return {
     wsl2 = require('tui.data.clipboard.host.wsl2').default_config(),
+    manager = require('tui.data.clipboard.manager').default_config(),
   }
 end
 
@@ -15,6 +16,8 @@ M.setup = function(config)
   else
     print('May have to setup clipboard')
   end
+
+  require('tui.data.clipboard.manager').setup(config.manager)
 end
 
 -- Return Module
