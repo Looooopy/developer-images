@@ -72,7 +72,6 @@ x-nvim-developer:
       << : *default-build-args
       << : *default-build-args-xdg-x
       NEOVIM_GIT_BRANCH: "${NEOVIM_GIT_BRANCH}"
-      NEOVIM_DOCKER_TAG: "${NEOVIM_DOCKER_TAG}"
   << : *default-run-common-props
   environment:
     - HOST_OS
@@ -95,7 +94,7 @@ services:
     image: ${GENERIC_DOCKER_REGISTY_AND_PATH}nvim-developer:latest
   nvim-developer_specific:
     <<  : *default-nvim-developer
-    image: ${GENERIC_DOCKER_REGISTY_AND_PATH}nvim-developer:${NEOVIM_DOCKER_TAG}
+    image: ${GENERIC_DOCKER_REGISTY_AND_PATH}nvim-developer:${NEOVIM_GIT_BRANCH}
   tmux-developer_latest:
     << : *default-tmux-developer
     image: ${GENERIC_DOCKER_REGISTY_AND_PATH}tmux-developer:latest

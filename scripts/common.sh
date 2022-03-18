@@ -55,16 +55,23 @@ docker_compose() {
     # Remove ALPINE_TAG= line in .env
     grep -v '^ALPINE_TAG=' "$SRC_ROOT/.env" > "$SRC_ROOT/.env-temp"
     echo 'ALPINE_TAG=latest' >> "$SRC_ROOT/.env-temp"
-    DEV_UID=1000 DEV_GID=1000 docker-compose \
+    if ! DEV_UID=1000 DEV_GID=1000 docker-compose \
       -f "$SRC_ROOT/docker-compose.yml" \
       ${runtime_compose[@]} \
-      --env-file "$SRC_ROOT/.env-temp" "${compose_cmd}" ${compose_cmd_args[@]}
+      --env-file "$SRC_ROOT/.env-temp" "${compose_cmd}" ${compose_cmd_args[@]};
+    then
+      rm "$SRC_ROOT/.env-temp"
+      return 1;
+    fi
     rm "$SRC_ROOT/.env-temp"
   else
-    DEV_UID=1000 DEV_GID=1000 docker-compose \
+    if ! DEV_UID=1000 DEV_GID=1000 docker-compose \
       -f "$SRC_ROOT/docker-compose.yml" \
       ${runtime_compose[@]} \
-      --env-file "$SRC_ROOT/.env" "${compose_cmd}" ${compose_cmd_args[@]}
+      --env-file "$SRC_ROOT/.env" "${compose_cmd}" ${compose_cmd_args[@]};
+    then
+      return 1;
+    fi
   fi
 
 }
