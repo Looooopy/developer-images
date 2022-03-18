@@ -73,10 +73,10 @@ RUN curl -L -O "https://download.visualstudio.microsoft.com/download/pr/c72122bd
 # TDOD: Move this when DOTNET is moved somewhere else..
 # To be able to build gRPC (Grpc.Tools)
 RUN curl -L -O "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
-    curl -L -O "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk" 
+    curl -L -O "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk"
 
 # Azure Artifacts Credential Provider (Use for getting private nuget feeds)
-RUN sh -c "$(curl -fsSL https://aka.ms/install-artifacts-credprovider.sh)" 
+RUN sh -c "$(curl -fsSL https://aka.ms/install-artifacts-credprovider.sh)"
 RUN mkdir -p /tmp/NuGet/plugins && mv "$HOME/.nuget/plugins/" /tmp/NuGet
 
 ########## netcoredbg-build ##########
@@ -118,9 +118,13 @@ ENV DEV_USER=$DEV_USER \
 
 COPY --from=neovim-build /neovim/nvim-install /neovim
 
-# Install plugin manager for vim
-RUN curl -fLo "${STD_XDG_DATA_HOME:?}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# # Install plugin manager for vim
+# RUN curl -fLo "${STD_XDG_DATA_HOME:?}"/nvim/site/autoload/plug.vim --create-dirs \
+#         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# Install plugin manager for nvim
+RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim  \
+        "${STD_XDG_DATA_HOME:?}"/nvim/site/pack/packer/start/packer.nvim
 
 # nvim: Install and update the binary we built
 RUN apk update && \
@@ -211,9 +215,14 @@ RUN dotnet tool install --global dotnet-script
 # Dont move/remove this argument is here only to force rebuild plugins if all is cached
 ARG FORCE_UPDATE_PLUGINS=no
 
-# Install nvim plugins
-COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/init.vim $STD_XDG_CONFIG_HOME/nvim/init.vim
-RUN nvim --headless +PlugInstall +qall
+# # Install nvim plugins with VimPlug
+# COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/init.vim $STD_XDG_CONFIG_HOME/nvim/init.vim
+# RUN nvim --headless +PlugInstall +qall
+
+# Install nvim plugins with packer
+COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/lua/plugins.lua $STD_XDG_CONFIG_HOME/nvim/lua/plugins.lua
+COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/init_pluginstall.lua $STD_XDG_CONFIG_HOME/nvim/init.lua
+RUN  nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 # Install tresitter languages
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/treesitter/ $STD_XDG_CONFIG_HOME/temp/treesitter
@@ -222,7 +231,7 @@ RUN "$XDG_CONFIG_HOME/temp/treesitter/install-langs.sh" && \
 
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/config/ $STD_XDG_CONFIG_HOME/nvim/config
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/lua/ $STD_XDG_CONFIG_HOME/nvim/lua/
-COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/init_migrate.lua $STD_XDG_CONFIG_HOME/nvim/init_migrate.lua
+COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/init.lua $STD_XDG_CONFIG_HOME/nvim/init.lua
 
 ENV TERM=xterm-256color \
     LC_ALL=en_US.UTF-8
