@@ -226,8 +226,7 @@ RUN  nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 # Install tresitter languages
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/treesitter/ $STD_XDG_CONFIG_HOME/temp/treesitter
-RUN "$XDG_CONFIG_HOME/temp/treesitter/install-langs.sh" && \
-    [[ -d $STD_XDG_CONFIG_HOME/temp ]] && rm -R $STD_XDG_CONFIG_HOME/temp
+RUN "$XDG_CONFIG_HOME/temp/treesitter/install-langs.sh"
 
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/config/ $STD_XDG_CONFIG_HOME/nvim/config
 COPY --chown=${DEV_USER}:${DEV_USER} ./nvim/lua/ $STD_XDG_CONFIG_HOME/nvim/lua/
@@ -237,6 +236,8 @@ ENV TERM=xterm-256color \
     LC_ALL=en_US.UTF-8
 
 USER root
+
+RUN [[ -d $STD_XDG_CONFIG_HOME/temp ]] && rm -R $STD_XDG_CONFIG_HOME/temp
 
 # Use docker-entrypoint.sh from base-developer.
 ENTRYPOINT ["/docker-entrypoint.sh"]
