@@ -81,13 +81,14 @@ This read data from windows clipboard:
     socat tcp:localhost:8121 -
 ```
 
-
 Result (If you did not copy the above command):
+
 ``` bash
     test from docker
 ```
 
 Result (If you copy the above command):
+
 ``` bash
     socat tcp:localhost:8121 -
 ```
@@ -109,11 +110,13 @@ This command read data from windows clipboard:
 ```
 
 Result (If you did not copy the above command):
+
 ``` bash
     test from docker
 ```
 
 Result (If you copy the above command):
+
 ``` bash
     socat tcp:host.docker.internal:8121 -
 ```
@@ -144,14 +147,14 @@ Neovim you need to do it like this:
 
 ### Use Neovim to copy
 
-* Open a file ```neovim [filepath]```
-* type :set clipboard+=unnamedplus (This will make default register to be * and + so we dont need to specify it)
-* in normal mode press 'v' for visual mode
-* select something to copy
-* press 'y' to yank into windows clipboard
-* press esc to escape visual mode
-* go to a line there you would like to paste it
-* press 'p' to paste from windows clipboard
+- Open a file ```neovim [filepath]```
+- type :set clipboard+=unnamedplus (This will make default register to be * and + so we dont need to specify it)
+- in normal mode press 'v' for visual mode
+- select something to copy
+- press 'y' to yank into windows clipboard
+- press esc to escape visual mode
+- go to a line there you would like to paste it
+- press 'p' to paste from windows clipboard
 
 ## References
 

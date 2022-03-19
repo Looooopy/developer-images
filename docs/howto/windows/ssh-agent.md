@@ -98,6 +98,7 @@ docker run -v ${SSH_AUTH_SOCK}:/agent.sock --env SSH_AUTH_SOCK=/agent.sock
 ```
 
 ### docker-compose usage
+
 ``` yaml
 version: "3.8"
 

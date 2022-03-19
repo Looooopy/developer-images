@@ -13,7 +13,7 @@ Install WSL Ubuntu (latest)
 
 ## Install
 
-This script will install 
+This script will install
 
 * Windows Terminal
 * JetBrains Nerdfont
