@@ -38,13 +38,27 @@ M.setup = function(config)
     vim.fn.sign_define('DiagnosticSignWarn', { text = "", texthl = "DiagnosticSignWarn" })
     vim.fn.sign_define('DiagnosticSignInfo', { text = "", texthl = "DiagnosticSignInfo" })
     vim.fn.sign_define('DiagnosticSignHint', { text = "", texthl = "DiagnosticSignHint" })
+
+    vim.diagnostic.config(_config.diagnostic);
+
     require('trouble').setup()
+
     -- Hook up completion engine with language server
     M.capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 end
 
 M.default_config = function()
-    return {}
+    return {
+        -- https://github.com/neovim/neovim/blob/master/runtime/lua/vim/diagnostic.lua#L555-L597
+        diagnostic = {
+            update_in_insert = true,
+            severity_sort = false,
+            underline = true,
+            virtual_text = true,
+            signs = true,
+            float = { border = "rounded" }
+        }
+    }
 end
 
 M.attach = function(client, bufnr)
@@ -82,15 +96,17 @@ bind_keys = function(bufnr)
             },
             d = {
                 name = 'Diagnostics',
-                j = { vim.diagnostic.goto_next, '🍃 Next (Diagnostics)' },
-                k = { vim.diagnostic.goto_pre, '🍃 Prev (Diagnostics)' },
-                l = { '<cmd>Telescope diagnostics<cr>', '🍃 List (Diagnostics)' },
-                h = { '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({ border = "rounded" })<cr>', '🍃 Line (Diagnostics)' },
+                j = { '<cmd>lua vim.diagnostic.goto_next()<cr>','🍃 Next Diagnostics' },
+                k = { '<cmd>lua vim.diagnostic.goto_prev()<cr>', '🍃 Prev diagnostics' },
+                h = { '<cmd>lua vim.diagnostic.open_float()<cr>', '🍃 Line diagnostic' },
+                l = { '<cmd>Telescope diagnostics<cr>', '🍃 Full, List diagnostic in project' },
+                t = { '<cmd>TroubleToggle<cr>', '🍃 Qfix, List diagnostic in project' },
             },
             r = {
                 name = 'Refactor',
                 r = { vim.lsp.buf.rename, '🍃 Rename (Refactor)' },
-                f = { vim.lsp.buf.code_action, '🍃 Code Action (Refactor)' },
+                c = { vim.lsp.buf.code_action, '🍃 Code Action (Refactor)' },
+                f = { vim.lsp.buf.formatting, '🍃 Format (Refactor)' },
             }
         },
         {

@@ -22,6 +22,7 @@ M.random = function(config)
 
     math.randomseed(os.time())
     local index = math.random(1, #(config.colorschemes))
+
     local colorscheme = config.colorschemes[index]
     if colorscheme == 'tokyonight' then
         local t = os.date ("*t")
@@ -35,6 +36,12 @@ M.random = function(config)
     end
 
     vim.cmd('colorscheme '..colorscheme)
+    if colorscheme == 'purify' then
+        -- Add missing highlights for gitsigns
+        vim.cmd [[hi GitSignsAdd guifg=#5FFF87]]
+        vim.cmd [[hi GitSignsChange guifg=#FFFF87]]
+        vim.cmd [[hi GitSignsDelete guifg=#FF875F]]
+    end
 end
 
 -- Return Module
