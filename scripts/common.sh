@@ -2,7 +2,7 @@
 
 export SRC_ROOT=./src
 
-__services='"base", "tmux", "nvim"'
+export AVAILABLE_SERVICES='"base", "tmux", "nvim"'
 
 # Remove comment below if you wish to se more verbose logging
 # VERBOSE=yes
@@ -30,7 +30,7 @@ echo_docker_compose_config() {
     echo
   done
 
-  rm temp.yaml
+  [[ -f temp.yaml ]] && rm temp.yaml
 }
 
 docker_compose() {
@@ -46,7 +46,6 @@ docker_compose() {
   shift 3
   compose_cmd_args=( "$@" )
 
-
   if [[ "${compose_cmd}" != 'build' ]]; then
     runtime_compose=(-f "$SRC_ROOT/docker-compose-volume-${volume_type}-${HOST_OS}.yml")
   fi
@@ -55,16 +54,20 @@ docker_compose() {
     # Remove ALPINE_TAG= line in .env
     grep -v '^ALPINE_TAG=' "$SRC_ROOT/.env" > "$SRC_ROOT/.env-temp"
     echo 'ALPINE_TAG=latest' >> "$SRC_ROOT/.env-temp"
+
+    # shellcheck disable=SC2068
     if ! DEV_UID=1000 DEV_GID=1000 docker-compose \
       -f "$SRC_ROOT/docker-compose.yml" \
       ${runtime_compose[@]} \
       --env-file "$SRC_ROOT/.env-temp" "${compose_cmd}" ${compose_cmd_args[@]};
     then
-      rm "$SRC_ROOT/.env-temp"
+      [[ -f "$SRC_ROOT/.env-temp" ]] && rm "$SRC_ROOT/.env-temp"
       return 1;
     fi
-    rm "$SRC_ROOT/.env-temp"
+    [[ -f "$SRC_ROOT/.env-temp" ]] && rm "$SRC_ROOT/.env-temp"
+    return 0
   else
+    # shellcheck disable=SC2068
     if ! DEV_UID=1000 DEV_GID=1000 docker-compose \
       -f "$SRC_ROOT/docker-compose.yml" \
       ${runtime_compose[@]} \
@@ -72,8 +75,8 @@ docker_compose() {
     then
       return 1;
     fi
+    return 0
   fi
-
 }
 
 function _getopt_docker() {
@@ -82,6 +85,7 @@ function _getopt_docker() {
   shift 2
 
   local opt_command='getopt $@'
+  # shellcheck disable=SC2124
   local command_string="set -- -o '${short_opts}' --long '${long_opts}' -- ${@} && ${opt_command}"
 
   docker run --rm -it alpine:latest sh -c "$command_string"
@@ -155,11 +159,13 @@ export_dot_env() {
 
   if [ -z ${specfic_value+x} ]; then
     [[ -n "${VERBOSE}" ]] && echo "Exporting all from $env_file"
+    # shellcheck disable=SC2046
     export $(grep -v '^#' "$env_file" | xargs -0)
   else
-    if [[ -n "$(grep -v '^#' "$env_file" | grep ^"$specfic_value")" ]]; then
+    if grep --invert-match '^#' "$env_file" | grep --quiet ^"$specfic_value"; then
       [[ -n "${VERBOSE}" ]] && echo "Exporting spcific '$specfic_value'"
-      export $(grep -v '^#' "$env_file" | grep ^"$specfic_value" | xargs -0)
+      # shellcheck disable=SC2046
+      export $(grep --invert-match '^#' "$env_file" | grep ^"$specfic_value" | xargs -0)
     else
       [[ -n "${VERBOSE}" ]] && echo "'$specfic_value' in '$env_file' do not exist"
       return 1

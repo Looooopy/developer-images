@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 
 # Declared in common.sh
-# __services
+# AVAILABLE_SERVICES
 # export_dot_env
 # echo_docker_compose_config
 # docker_compose
 
 function _run_usage() {
   echo 'Usage: ./run [-hrvs]'
-  echo '------------------------------------------------------------------------------------------------------------'
-  echo '   Switch             Args            Default   Description'
-  echo '   -h --help                                    Prints this usage screen'
-  echo '   -r --run-arg       [arg1]                    Argument should be passed to docker run'
-  echo '                                                  - Option can be specified multiple times'
-  echo '   -v --version       [arg1]          latest    Run version arg1=latest or specific'
-  echo "   -s --service       [arg1]                    Run service ( ${__services} )"
-  echo '------------------------------------------------------------------------------------------------------------'
+  echo '╔══════════════════╤═════════════╤═════════════╤════════════════════════════════════════════════════════════╗'
+  echo '║ Switch           │ Args        │ Default     │ Description                                                ║'
+  echo '║ -h --help        │             │             │ Prints this usage screen                                   ║'
+  echo '║ -r --run-arg     │ [arg1]      │             │ Argument should be passed to docker run                    ║'
+  echo '║                  │             │             │   - Option can be specified multiple times                 ║'
+  echo '║ -v --version     │ [arg1]      │ latest      │ Run version arg1=latest or specific                        ║'
+  echo "║ -s --service     │ [arg1]      │             │ Run service ( ${AVAILABLE_SERVICES:?} )                     ║"
+  echo '╚══════════════════╧═════════════╧═════════════╧════════════════════════════════════════════════════════════╝'
 }
 
 function _parse_run_options() {
@@ -23,9 +23,9 @@ function _parse_run_options() {
   local short_opts='hr:v:s:'
   local long_opts='help,run-arg:,version:,service:'
 
-  valid_args=$(_getopt "${short_opts}" "${long_opts}" "$@" 2>/dev/null)
-  if [[ $? -ne 0 ]]; then
-    local error=$(_getopt "${short_opts}" "${long_opts}" "$@" 2>&1 > /dev/null)
+  if ! valid_args="$(_getopt "${short_opts}" "${long_opts}" "$@" 2>/dev/null)"; then
+    local error
+    error=$(_getopt "${short_opts}" "${long_opts}" "$@" 2>&1 > /dev/null)
 
     _run_usage
 
@@ -38,7 +38,7 @@ function _parse_run_options() {
 
   [[ -n "${VERBOSE}" ]] && echo "Parsing options"
   eval set -- "$valid_args"
-  while [ : ]; do
+  while true; do
     case "$1" in
       -h | --helper)
         [[ -n "${VERBOSE}" ]] && echo "  --help"
@@ -76,7 +76,7 @@ _validate_run_parse_result() {
 
     if (("${#services_short[@]}" > 1)); then
       >&2 echo
-      >&2 echo "Error: You should only define a single service (${services_short[@]})"
+      >&2 echo "Error: You should only define a single service (${services_short[*]})"
       >&2 echo
     fi
 

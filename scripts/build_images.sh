@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
 
 # Declared in common.sh
-# __services
+# AVAILABLE_SERVICES
 # echo_docker_compose_config
 # docker_compose
 
 function _build_usage() {
   echo 'Usage: ./build [-hnvsa]'
-  echo '------------------------------------------------------------------------------------------------------------'
-  echo '   Switch             Args            Default   Description'
-  echo '   -h --help                                    Prints this usage screen'
-  echo '   -n --no-cache                                Build without docker cache'
-  echo '   -f --force-plugins                           Rebuild part of image "plugins"'
-  echo '   -v --version       [arg1]          latest    Build version arg1=latest or specific'
-  echo "   -s --service       [arg1]                    Build services ${__services}"
-  echo '                                                 - Option can be specified multiple times'
-  echo '                                                 - Deplicates are removed from tail'
-  echo '                                                 - Order of options is the build order'
-  echo "   -a --all-services                            Build all service in following order ${__services}"
-  echo '------------------------------------------------------------------------------------------------------------'
+  echo '╔══════════════════════╤══════════╤═══════════╤═════════════════════════════════════════════════════════════╗'
+  echo '║ Switch               │ Args     │ Default   │ Description                                                 ║'
+  echo '║ -h --help            │          │           │ Prints this usage screen                                    ║'
+  echo '║ -n --no-cache        │          │           │ Build without docker cache                                  ║'
+  echo '║ -f --force-plugins   │          │           │ Rebuild part of image "plugins"                             ║'
+  echo '║ -v --version         │ [arg1]   │ latest    │ Build version arg1=latest or specific                       ║'
+  echo "║ -s --service         │ [arg1]   │           │ Build services ${AVAILABLE_SERVICES:?}                       ║"
+  echo '║                      │          │           │   - Option can be specified multiple times                  ║'
+  echo '║                      │          │           │   - Deplicates are removed from tail                        ║'
+  echo '║                      │          │           │   - Order of options is the build order                     ║'
+  echo "║ -a --all-services    │          │           │ Build all service in following order ${AVAILABLE_SERVICES:?} ║"
+  echo '╚══════════════════════╧══════════╧═══════════╧═════════════════════════════════════════════════════════════╝'
 }
 
 function _parse_build_options() {
@@ -26,9 +26,9 @@ function _parse_build_options() {
   local short_opts='hnv:fs:a'
   local long_opts='help,no-cache,version:,force-plugins,service:,all-services'
 
-  valid_args=$(_getopt "${short_opts}" "${long_opts}" "$@"  2>/dev/null)
-  if [[ $? -ne 0 ]]; then
-    local error=$(_getopt "${short_opts}" "${long_opts}" "$@"  2>&1 > /dev/null)
+  if ! valid_args="$(_getopt "${short_opts}" "${long_opts}" "$@" 2>/dev/null)"; then
+    local error
+    error=$(_getopt "${short_opts}" "${long_opts}" "$@"  2>&1 > /dev/null)
 
     _build_usage
     >&2 echo
@@ -39,7 +39,7 @@ function _parse_build_options() {
   fi
 
   eval  set -- "$valid_args"
-  while [ : ]; do
+  while true; do
     case "$1" in
       -a | --all-services)
         [[ -n "${VERBOSE}" ]] && echo "  --all-services (-a)"
@@ -119,7 +119,6 @@ build() {
   local build_args=()
   local forece_plugins=''
   local valid_args
-  local force=all
 
   if ! _parse_build_options "$@"; then
     return 1
@@ -153,7 +152,7 @@ build() {
       *)
         _build_usage
         >&2 echo
-        >&2 echo "service='$1' not an allowed service, use one of these ${__services}"
+        >&2 echo "service='$1' not an allowed service, use one of these ${AVAILABLE_SERVICES:?}"
         >&2 echo
         return 1
       ;;
