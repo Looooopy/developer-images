@@ -21,14 +21,28 @@ x-base-developer:
 
 x-tmux-developer:
   &default-tmux-developer
+  environment:
+    - SSH_AUTH_SOCK=${SSH_AUTH_SOCK}
   volumes:
+    - type: bind
+      source: /run/host-services/ssh-auth.sock
+      target: /run/host-services/ssh-auth.sock
     - tmux-projects-container:/projects
+    - /var/run/docker.sock:/var/run/docker.sock
     - tmux-ressurect-container:/home/${DEV_USER}/.tmux/resurrect
+  command: clone ${CLONE_PROJECT_1} ${CLONE_PROJECT_2} ${CLONE_PROJECT_3} ${CLONE_PROJECT_4} ${CLONE_PROJECT_5}
 
 x-nvim-developer:
   &default-nvim-developer
   environment:
     - SSH_AUTH_SOCK=${SSH_AUTH_SOCK}
+  volumes:
+    - type: bind
+      source: /run/host-services/ssh-auth.sock
+      target: /run/host-services/ssh-auth.sock
+    - /var/run/docker.sock:/var/run/docker.sock
+    - nvim-projects-container:/projects:rw
+  command: clone ${CLONE_PROJECT_1} ${CLONE_PROJECT_2} ${CLONE_PROJECT_3} ${CLONE_PROJECT_4} ${CLONE_PROJECT_5}
 
 ## Services
 services:
@@ -37,16 +51,12 @@ services:
   base-developer_specific:
     << : *default-base-developer
   nvim-developer_latest:
-    << : *default-base-developer
     << : *default-nvim-developer
   nvim-developer_specific:
-    << : *default-base-developer
     << : *default-nvim-developer
   tmux-developer_latest:
-    << : *default-base-developer
     << : *default-tmux-developer
   tmux-developer_specific:
-    << : *default-base-developer
     << : *default-tmux-developer
 
 volumes:

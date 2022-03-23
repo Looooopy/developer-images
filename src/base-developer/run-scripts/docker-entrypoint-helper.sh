@@ -8,17 +8,23 @@ clone_multiple() {
     >&2 echo " - No project(s) was defined to be clone look into .env CLONE_PROJECT_{X} to set a valid path"
   fi
 
+  local all_errors=1
+
   for url in "$@"
   do
     local project_name="$(get_project_name "$url")"
     if [[ -d "$project_name" ]]; then
       >&2 echo " - Project '$url' already cloned"
+      all_errors=0
     elif cloning "$url"; then
       echo " - Project '$url' cloned"
+      all_errors=0
     else
       >&2 echo " - Project '$url' failed"
     fi
   done
+
+  return ${all_errors}
 }
 
 cloning() {
@@ -35,15 +41,12 @@ cloning() {
 }
 
 get_project_name() {
-    local res_and_project_match='^.*\/([A-Za-z0-9.\-]+)\.git{1}$'
-    if [[ $1 =~ $res_and_project_match ]]; then
-      echo "${BASH_REMATCH[1]}"
-    fi
+    echo "${1}" | sed -r 's/.+\/([^.]+)(\.git)?/\1/'
 }
 
 get_project_name_if_only_one () {
   if (($# == 1)); then
-    get_project_name "$1"
+    get_project_name "${1}"
   fi
 }
 
@@ -62,9 +65,10 @@ main() {
     clone)
       local project_name
       echo "Clone mode"
-      clone_multiple "$@"
-      project_name="$(get_project_name_if_only_one "$@")"
-      [[ -n "$project_name" ]] && [[ -d "/projects/$project_name" ]] && cd "$project_name"
+      if clone_multiple "$@"; then
+        project_name="$(get_project_name_if_only_one "$@")"
+        [[ -n "$project_name" ]] && [[ -d "/projects/$project_name" ]] && cd "$project_name"
+      fi
     ;;
     *)
       echo "Bypass mode"

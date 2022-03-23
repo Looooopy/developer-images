@@ -15,6 +15,7 @@ prune_volumes() {
   if [ "$all_volumes" != "no"  ]; then
     unset ALL_VOLUMES
     export GENERIC_VOLUME_TYPE
+    version=specific
     GENERIC_VOLUME_TYPE=container
     prune_volumes
     GENERIC_VOLUME_TYPE=localhost
