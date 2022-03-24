@@ -41,7 +41,7 @@ RUN curl -L -O "https://download.visualstudio.microsoft.com/download/pr/022d9abf
     tar zxf "$DOTNET_FILE" -C "$DOTNET_ROOT"
 
 ENV NETCOREDBG_VERSION=2.0.0-880 \
-    NETCOREDBG_FILE=netcoredbg-linux-amd64.tar.gz 
+    NETCOREDBG_FILE=netcoredbg-linux-amd64.tar.gz
 RUN curl -L -O "https://github.com/Samsung/netcoredbg/releases/download/$NETCOREDBG_VERSION/$NETCOREDBG_FILE" && \
     tar zxf "$NETCOREDBG_FILE" -C "$DOTNET_ROOT"
 
@@ -53,8 +53,8 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 # Don't send telementry to microsoft
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-# NUGET list all paths 
-#   CMD's: 
+# NUGET list all paths
+#   CMD's:
 #       dotnet nuget locals all --list
 #       dotnet nuget locals all --clear
 #       Note: https://docs.microsoft.com/en-us/nuget/Consume-Packages/managing-the-global-packages-and-cache-folders

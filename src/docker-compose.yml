@@ -81,6 +81,12 @@ x-nvim-developer:
     # - EXECUTE_PROCESS_NO_ARGS=yes
   hostname: nvim-docker
 
+x-nvim-omnisharp:
+  &default-nvim-omnisharp
+  build:
+    context: .
+    dockerfile: ./dotnetsdk-omnisharp/Dockerfile
+
 ## Services
 services:
   base-developer_latest:
@@ -101,6 +107,9 @@ services:
   tmux-developer_specific:
     <<  : *default-tmux-developer
     image: ${GENERIC_DOCKER_REGISTY_AND_PATH}tmux-developer:${TMUX_DOCKER_TAG}
+  nvim-omnisharp:
+    <<  : *default-nvim-omnisharp
+    image: ${GENERIC_DOCKER_REGISTY_AND_PATH}lspcontainers/omnisharp:latest
   # vscode-developer:
   #     build:
   #         context: .

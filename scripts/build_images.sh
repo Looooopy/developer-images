@@ -13,9 +13,9 @@ function _build_usage() {
   echo '║ -n --no-cache        │          │           │ Build without docker cache                                  ║'
   echo '║ -f --force-plugins   │          │           │ Rebuild part of image "plugins"                             ║'
   echo '║ -v --version         │ [arg1]   │ latest    │ Build version arg1=latest or specific                       ║'
-  echo "║ -s --service         │ [arg1]   │           │ Build services ${AVAILABLE_SERVICES:?}                       ║"
+  echo "║ -s --service         │ [arg1]   │           │ Build services ${AVAILABLE_SERVICES:?}, \"nvim-omnisharp\"     ║"
   echo '║                      │          │           │   - Option can be specified multiple times                  ║'
-  echo '║                      │          │           │   - Deplicates are removed from tail                        ║'
+  echo '║                      │          │           │   - Duplicates are removed from tail                        ║'
   echo '║                      │          │           │   - Order of options is the build order                     ║'
   echo "║ -a --all-services    │          │           │ Build all service in following order ${AVAILABLE_SERVICES:?} ║"
   echo '╚══════════════════════╧══════════╧═══════════╧═════════════════════════════════════════════════════════════╝'
@@ -146,13 +146,16 @@ build() {
       tmux | nvim | base )
         services+=("$service-developer_$version")
       ;;
+      omnisharp)
+        services+=("nvim-$service")
+      ;;
       all )
-        services=("base-developer_$version" "tmux-developer_$version" "nvim-developer_$version")
+        services=("base-developer_$version" "tmux-developer_$version" "nvim-omnisharp" "nvim-developer_$version")
       ;;
       *)
         _build_usage
         >&2 echo
-        >&2 echo "service='$1' not an allowed service, use one of these ${AVAILABLE_SERVICES:?}"
+        >&2 echo "service='$1' not an allowed service, use one of these ${AVAILABLE_SERVICES:?}, \"nvim-omnisharp\""
         >&2 echo
         return 1
       ;;
