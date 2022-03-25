@@ -159,13 +159,14 @@ export_dot_env() {
 
   if [ -z ${specfic_value+x} ]; then
     [[ -n "${VERBOSE}" ]] && echo "Exporting all from $env_file"
+    # double dash params do not work in busybox like: --invert-match --quiet, dont use it
     # shellcheck disable=SC2046
     export $(grep -v '^#' "$env_file" | xargs -0)
   else
-    if grep --invert-match '^#' "$env_file" | grep --quiet ^"$specfic_value"; then
+    if grep -v '^#' "$env_file" | grep -q ^"$specfic_value"; then
       [[ -n "${VERBOSE}" ]] && echo "Exporting spcific '$specfic_value'"
       # shellcheck disable=SC2046
-      export $(grep --invert-match '^#' "$env_file" | grep ^"$specfic_value" | xargs -0)
+      export $(grep -v '^#' "$env_file" | grep ^"$specfic_value" | xargs -0)
     else
       [[ -n "${VERBOSE}" ]] && echo "'$specfic_value' in '$env_file' do not exist"
       return 1
