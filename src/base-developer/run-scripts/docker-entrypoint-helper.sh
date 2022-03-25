@@ -12,7 +12,9 @@ clone_multiple() {
 
   for url in "$@"
   do
-    local project_name="$(get_project_name "$url")"
+    local project_name
+    project_name="$(get_project_name "$url")"
+
     if [[ -d "$project_name" ]]; then
       >&2 echo " - Project '$url' already cloned"
       all_errors=0
