@@ -66,9 +66,12 @@ RUN git clone https://github.com/tmux/tmux.git --branch $TMUX_GIT_BRANCH . \
 ## Turn on ressurect processes if not empty
     && [[ ${TMUX_RESURRECT_PROCESSES+x} == x ]] \
         && sed -i "s/\(set -g @continuum-restore 'on'\)/set -g @continuum-restore-max-delay '2 5'\n\1/g" /tmux/.tmux/.tmux.conf.local \
-        && sed -i "s/\(set -g @continuum-restore 'on'\)/set -g @resurrect-processes '$TMUX_RESURRECT_PROCESSES'\n\1/g" /tmux/.tmux/.tmux.conf.local
+        && sed -i "s/\(set -g @continuum-restore 'on'\)/set -g @resurrect-processes '$TMUX_RESURRECT_PROCESSES'\n\1/g" /tmux/.tmux/.tmux.conf.local \
 #        && sed -i "/set -g @continuum-restore 'on'/a set -g @resurrect-processes '$TMUX_RESURRECT_PROCESSES'" /tmux/.tmux/.tmux.conf.local
-
+## Comment out default-terminal="screen-256color" in .tmux.conf
+    && sed -i '/^set -g default-terminal"/s/^#*/#/g' /tmux/.tmux/.tmux.conf \
+## Add 'set -g default-terminal "tmux-256color"' (required to get some of the colorscheme workign in nvim in docker)
+    && sed -i '/default-terminal/a set -g default-terminal "tmux-256color"' /tmux/.tmux/.tmux.conf
 RUN ./autogen.sh && ./configure --prefix="$TMUX_OUTPUT" && make install
 
 ########## FINAL IMAGE ##########
