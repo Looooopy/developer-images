@@ -56,7 +56,7 @@ docker_compose() {
     echo 'ALPINE_TAG=latest' >> "$SRC_ROOT/.env-temp"
 
     # shellcheck disable=SC2068
-    if ! DEV_UID=1000 DEV_GID=1000 docker-compose \
+    if ! docker-compose \
       -f "$SRC_ROOT/docker-compose.yml" \
       ${runtime_compose[@]} \
       --env-file "$SRC_ROOT/.env-temp" "${compose_cmd}" ${compose_cmd_args[@]};
@@ -68,7 +68,7 @@ docker_compose() {
     return 0
   else
     # shellcheck disable=SC2068
-    if ! DEV_UID=1000 DEV_GID=1000 docker-compose \
+    if ! docker-compose \
       -f "$SRC_ROOT/docker-compose.yml" \
       ${runtime_compose[@]} \
       --env-file "$SRC_ROOT/.env" "${compose_cmd}" ${compose_cmd_args[@]};
