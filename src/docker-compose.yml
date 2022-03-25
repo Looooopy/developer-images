@@ -33,6 +33,7 @@ x-base-developer:
     - EXECUTE_PROCESS=${BASE_EXECUTE_PROCESS}
     - EXECUTE_PROCESS_EXTRA_ARGS=${BASE_EXECUTE_PROCESS_EXTRA_ARGS}
     - EXECUTE_PROCESS_NO_ARGS=${BASE_EXECUTE_PROCESS_NO_ARGS}
+    - TERM
   << : *default-run-common-props
   hostname: base-dev-docker
 
@@ -54,6 +55,7 @@ x-tmux-developer:
     - '2022:22'
   environment:
     - HOST_OS
+    - TERM
     - RUN_AS_ROOT=${RUN_AS_ROOT}
     - TMUX_PLUGIN_MANAGER_PATH
     - EXECUTE_PROCESS=${TMUX_EXECUTE_PROCESS}
@@ -74,6 +76,7 @@ x-nvim-developer:
       NEOVIM_GIT_BRANCH: "${NEOVIM_GIT_BRANCH}"
   << : *default-run-common-props
   environment:
+    - TERM
     - HOST_OS
     - RUN_AS_ROOT=${RUN_AS_ROOT}
     - EXECUTE_PROCESS=nvim
