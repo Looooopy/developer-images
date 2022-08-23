@@ -28,7 +28,7 @@ Run this script as administrator once
     Get-Service -Name ssh-agent | Set-Service -StartupType Automatic
 
     # Now start the sshd service
-    Start-Service sshd
+    Start-Service ssh-agent
 
     # Add ssh private keys to agent
     ssh-add
