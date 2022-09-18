@@ -1,0 +1,76 @@
+version: "3.8"
+## See https://github.com/compose-spec/compose-spec/blob/master/spec.md
+
+## Templates
+x-base-developer:
+  &default-base-developer
+#  environment:
+#    - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
+  volumes:
+#    - type: bind
+#      source: /run/host-services/ssh-auth.sock
+#      target: /run/host-services/ssh-auth.sock
+    - /var/run/docker.sock:/var/run/docker.sock
+    - base-projects-localhost:/projects:rw
+
+x-tmux-developer:
+  &default-tmux-developer
+  environment:
+    - SSH_AUTH_SOCK=/agent.sock
+  volumes:
+    - tmux-projects-localhost:/projects
+    - tmux-ressurect-localhost:/home/${DEV_USER}/.tmux/resurrect
+
+x-nvim-developer:
+  &default-nvim-developer
+  environment:
+    - SSH_AUTH_SOCK=/agent.sock
+  volumes:
+    - nvim-projects-localhost:/projects:rw
+
+## Services
+services:
+  base-developer_latest:
+    << : *default-base-developer
+  base-developer_specific:
+    << : *default-base-developer
+  nvim-developer_latest:
+    << : *default-base-developer
+    << : *default-nvim-developer
+  nvim-developer_specific:
+    << : *default-base-developer
+    << : *default-nvim-developer
+  tmux-developer_latest:
+    << : *default-base-developer
+    << : *default-tmux-developer
+  tmux-developer_specific:
+    << : *default-base-developer
+    << : *default-tmux-developer
+
+volumes:
+## Mapping to localhost
+## https://blog.code4hire.com/2018/06/define-named-volume-with-host-mount-in-the-docker-compose-file/
+  base-projects-localhost:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${BASE_PROJECTS_HOST_PATH}
+      o: bind
+  tmux-projects-localhost:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${TMUX_PROJECTS_HOST_PATH}
+      o: bind
+  tmux-ressurect-localhost:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${TMUX_RESURRECT_HOST_PATH}
+      o: bind
+  nvim-projects-localhost:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${NVIM_PROJECTS_HOST_PATH}
+      o: bind
