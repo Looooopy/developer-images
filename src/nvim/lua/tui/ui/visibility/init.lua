@@ -85,12 +85,12 @@ end
 -- Private functions
 --------------------
 register_commands = function()
-    vim.api.nvim_add_user_command('TuiHideAll', 'lua require("tui.ui.visibility").hideAll(false)', {})
-    vim.api.nvim_add_user_command('TuiShowAll', 'lua require("tui.ui.visibility").showAll(false)', {})
-    vim.api.nvim_add_user_command('TuiToggleAll', 'lua require("tui.ui.visibility").toggleAll(false)', {})
-    vim.api.nvim_add_user_command('TuiHideAllButDap', 'lua require("tui.ui.visibility").hideAll(true)', {})
-    vim.api.nvim_add_user_command('TuiShowAllButDap', 'lua require("tui.ui.visibility").showAll(true)', {})
-    vim.api.nvim_add_user_command('TuiToggleAllButDap', 'lua require("tui.ui.visibility").toggleAll(true)', {})
+    vim.api.nvim_create_user_command('TuiHideAll', 'lua require("tui.ui.visibility").hideAll(false)', {})
+    vim.api.nvim_create_user_command('TuiShowAll', 'lua require("tui.ui.visibility").showAll(false)', {})
+    vim.api.nvim_create_user_command('TuiToggleAll', 'lua require("tui.ui.visibility").toggleAll(false)', {})
+    vim.api.nvim_create_user_command('TuiHideAllButDap', 'lua require("tui.ui.visibility").hideAll(true)', {})
+    vim.api.nvim_create_user_command('TuiShowAllButDap', 'lua require("tui.ui.visibility").showAll(true)', {})
+    vim.api.nvim_create_user_command('TuiToggleAllButDap', 'lua require("tui.ui.visibility").toggleAll(true)', {})
 end
 
 register_keys = function()

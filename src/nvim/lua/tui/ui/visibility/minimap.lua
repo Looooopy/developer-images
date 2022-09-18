@@ -123,9 +123,9 @@ register_commands = function(autocmd)
         })
     end
 
-    vim.api.nvim_add_user_command('TuiToggleMinimap', 'lua require("tui.ui.visibility.minimap").toggle()', {})
-    vim.api.nvim_add_user_command('TuiShowMinimap', 'lua require("tui.ui.visibility.minimap").show()', {})
-    vim.api.nvim_add_user_command('TuiHideMinimap', 'lua require("tui.ui.visibility.minimap").hide()', {})
+    vim.api.nvim_create_user_command('TuiToggleMinimap', 'lua require("tui.ui.visibility.minimap").toggle()', {})
+    vim.api.nvim_create_user_command('TuiShowMinimap', 'lua require("tui.ui.visibility.minimap").show()', {})
+    vim.api.nvim_create_user_command('TuiHideMinimap', 'lua require("tui.ui.visibility.minimap").hide()', {})
 end
 
 bind_keys = function()

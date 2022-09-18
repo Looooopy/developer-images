@@ -118,9 +118,9 @@ function M.hide()
 end
 
 register_commands = function()
-    vim.api.nvim_add_user_command('TuiToggleStatusline', 'lua require("tui.ui.standard.statusline").toggle()', {})
-    vim.api.nvim_add_user_command('TuiShowStatusline', 'lua require("tui.ui.standard.statusline").show()', {})
-    vim.api.nvim_add_user_command('TuiHideStatusline', 'lua require("tui.ui.standard.statusline").hide()', {})
+    vim.api.nvim_create_user_command('TuiToggleStatusline', 'lua require("tui.ui.standard.statusline").toggle()', {})
+    vim.api.nvim_create_user_command('TuiShowStatusline', 'lua require("tui.ui.standard.statusline").show()', {})
+    vim.api.nvim_create_user_command('TuiHideStatusline', 'lua require("tui.ui.standard.statusline").hide()', {})
 end
 
 bind_keys = function()

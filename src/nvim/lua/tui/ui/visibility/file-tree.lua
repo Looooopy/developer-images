@@ -171,9 +171,9 @@ bind_keys = function()
 end
 
 register_commands = function()
-    vim.api.nvim_add_user_command('TuiToggleFileTree', 'lua require("tui.ui.visibility.file-tree").toggle()', {})
-    vim.api.nvim_add_user_command('TuiShowFileTree', 'lua require("tui.ui.visibility.file-tree").show()', {})
-    vim.api.nvim_add_user_command('TuiHideFileTree', 'lua require("tui.ui.visibility.file-tree").hide()', {})
+    vim.api.nvim_create_user_command('TuiToggleFileTree', 'lua require("tui.ui.visibility.file-tree").toggle()', {})
+    vim.api.nvim_create_user_command('TuiShowFileTree', 'lua require("tui.ui.visibility.file-tree").show()', {})
+    vim.api.nvim_create_user_command('TuiHideFileTree', 'lua require("tui.ui.visibility.file-tree").hide()', {})
 end
 
 set_global_options = function(globals)

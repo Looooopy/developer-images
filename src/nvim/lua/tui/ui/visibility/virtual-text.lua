@@ -79,9 +79,9 @@ applyConfig = function(config)
 end
 
 register_commands = function()
-    vim.api.nvim_add_user_command('TuiToggleVirtualText', 'lua require("tui.ui.visibility.virtual-text").toggle()', {})
-    vim.api.nvim_add_user_command('TuiShowVirtualText', 'lua require("tui.ui.visibility.virtual-text").show()', {})
-    vim.api.nvim_add_user_command('TuiHideVirtualText', 'lua require("tui.ui.visibility.virtual-text").hide()', {})
+    vim.api.nvim_create_user_command('TuiToggleVirtualText', 'lua require("tui.ui.visibility.virtual-text").toggle()', {})
+    vim.api.nvim_create_user_command('TuiShowVirtualText', 'lua require("tui.ui.visibility.virtual-text").show()', {})
+    vim.api.nvim_create_user_command('TuiHideVirtualText', 'lua require("tui.ui.visibility.virtual-text").hide()', {})
 end
 
 bind_keys = function()

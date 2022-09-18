@@ -44,9 +44,9 @@ function M.default_config()
 end
 
 register_commands = function()
-    vim.api.nvim_add_user_command('TuiToggleSyntaxHighlighting', 'lua require("tui.ui.standard.syntax-highlighting").toggle()', {})
-    vim.api.nvim_add_user_command('TuiShowSyntaxHighlighting', 'lua require("tui.ui.standard.syntax-highlighting").show()', {})
-    vim.api.nvim_add_user_command('TuiHideSyntaxHighlighting', 'lua require("tui.ui.standard.syntax-highlighting").hide()', {})
+    vim.api.nvim_create_user_command('TuiToggleSyntaxHighlighting', 'lua require("tui.ui.standard.syntax-highlighting").toggle()', {})
+    vim.api.nvim_create_user_command('TuiShowSyntaxHighlighting', 'lua require("tui.ui.standard.syntax-highlighting").show()', {})
+    vim.api.nvim_create_user_command('TuiHideSyntaxHighlighting', 'lua require("tui.ui.standard.syntax-highlighting").hide()', {})
 end
 
 bind_keys = function()
