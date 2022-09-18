@@ -43,20 +43,22 @@ function M.default_config()
                 on_bind = bind_keys,
             },
         },
-        globals = {
-            respect_buf_cwd = 1,
+        respect_buf_cwd = 1,
+         renderer = {
+             special_files = {
+                 run = 1,
+                 build = 1,
+                 prune = 1,
+             },
+             icons = {
+                  git = 1,
+                  folders = 1,
+                  files = 1,
+                  folder_arrows = 1,
+             }
+        },
+        globals = {            
             refresh_wait = 500,
-            special_files = {
-                run = 1,
-                build = 1,
-                prune = 1,
-            },
-            show_icons = {
-                git = 1,
-                folders = 1,
-                files = 1,
-                folder_arrows = 1,
-            },
         },
         applyConfig = {
             view = {
@@ -84,7 +86,7 @@ function M.default_config()
                 },
             },
             open_on_setup = true,
-            update_to_buf_dir   = {
+            hijack_directories   = {
                 enable    = true,
                 -- false by default, opens the tree when typing `nvim $DIR` or `nvim`
                 auto_open = true,
@@ -97,7 +99,7 @@ function M.default_config()
                     'startify', 'dashboard'
                 }
             },
-            fileters = {
+            filters = {
                 dotfiles = false,
                 custom = {
                     ".git",

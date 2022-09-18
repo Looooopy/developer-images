@@ -41,7 +41,7 @@ docker_compose() {
   local runtime_compose=''
 
   compose_cmd="${1:?'Missing docker-compose command'}"
-  version="${2:?'Missing version (latest or specifc)'}"
+  version="${2:?'Missing version (latest or specific)'}"
   volume_type="${3:?'Missing volume type'}"
   shift 3
   compose_cmd_args=( "$@" )
@@ -151,24 +151,24 @@ echo_os_specific() {
 }
 
 export_dot_env() {
-  local specfic_value
+  local specific_value
   local env_file
 
-  specfic_value="$1"
+  specific_value=$1
   env_file="$SRC_ROOT"/.env
 
-  if [ -z ${specfic_value+x} ]; then
-    [[ -n "${VERBOSE}" ]] && echo "Exporting all from $env_file"
+  if [ -z ${specific_value} ]; then
+    [[ -n "${VERBOSE}" ]] && >&2 echo "Exporting all from $env_file"
     # double dash params do not work in busybox like: --invert-match --quiet, dont use it
     # shellcheck disable=SC2046
     export $(grep -v '^#' "$env_file" | xargs -0)
   else
-    if grep -v '^#' "$env_file" | grep -q ^"$specfic_value"; then
-      [[ -n "${VERBOSE}" ]] && echo "Exporting spcific '$specfic_value'"
+    if grep -v '^#' "$env_file" | grep -q ^"$specific_value"; then
+      [[ -n "${VERBOSE}" ]] && >&2 echo "Exporting specific '$specific_value'"
       # shellcheck disable=SC2046
-      export $(grep -v '^#' "$env_file" | grep ^"$specfic_value" | xargs -0)
+      export "$(grep -v '^#' "$env_file" | grep ^"$specific_value" | xargs -0)"
     else
-      [[ -n "${VERBOSE}" ]] && echo "'$specfic_value' in '$env_file' do not exist"
+      [[ -n "${VERBOSE}" ]] && >&2 echo "'$specific_value' in '$env_file' do not exist"
       return 1
     fi
   fi
