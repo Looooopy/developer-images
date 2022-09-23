@@ -110,9 +110,10 @@ bind_keys = function()
 end
 
 create_highlight_dap_ui = function()
-    vim.highlight.create('DapBreakpoint', { ctermbg=0, guifg='#993939', guibg='#31353f' }, false)
-    vim.highlight.create('DapLogPoint', { ctermbg=0, guifg='#61afef', guibg='#31353f' }, false)
-    vim.highlight.create('DapStopped', { ctermbg=0, guifg='#98c379', guibg='#31353f' }, false)
+    local ns = vim.api.nvim_create_namespace('lsp-highlight')
+    vim.api.nvim_set_hl(ns, 'DapBreakpoint', { ctermbg=0, fg='#993939', bg='#31353f' })
+    vim.api.nvim_set_hl(ns, 'DapLogPoint', { ctermbg=0, fg='#61afef', bg='#31353f' })
+    vim.api.nvim_set_hl(ns, 'DapStopped', { ctermbg=0, fg='#98c379', bg='#31353f' })
 end
 
 set_highlighs_icons_chars_dap_ui = function ()
