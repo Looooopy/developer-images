@@ -1,4 +1,4 @@
-version: "3.8"
+##version: "3.8"
 ## See https://github.com/compose-spec/compose-spec/blob/master/spec.md
 
 ## Templates
@@ -6,7 +6,7 @@ x-build-args:
   &default-build-args
   ALPINE_TAG: ${ALPINE_TAG}
   DEV_USER: ${DEV_USER}
-  DEV_UID: "${DEV_UID:?'Missing DEV_UID Run DEV_UID=$(id -u) DEV_GID=$(id -g) docker-compose build [options]'}"
+  DEV_UID: "${DEV_UID}"
   DEV_GID: "${DEV_GID}"
 
 x-build-args-xdg-x:

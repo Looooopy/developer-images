@@ -34,6 +34,31 @@ This project aims to setup docker containers with all essential binaries to do
 
   - Use Nerd font in iTerm2
 
+    - Arch Linux
+
+      - yay
+         ```bash
+            sudo pacman -S --needed base-devel git
+            git clone https://aur.archlinux.org/yay.git
+            cd yay
+            makepkg -si
+        ```
+      - Nerd fonts
+        ```bash
+        yay -S nerd-fonts-meslo
+        ```
+          - Investigate the name to be used in Alacritty it do only support mono fonts.
+            ```bash
+            fc-list | grep Meslo | grep Mono
+            ```
+            ```bash
+            /usr/share/fonts/TTF/Meslo LG M DZ Italic Nerd Font Complete Mono.ttf: MesloLGMDZ Nerd Font Mono:style=Italic
+            /usr/share/fonts/TTF/Meslo LG S Regular Nerd Font Complete Mono.ttf: MesloLGS Nerd Font Mono:style=Regular
+            /usr/share/fonts/TTF/Meslo LG L DZ Italic Nerd Font Complete Mono.ttf: MesloLGLDZ Nerd Font Mono:style=Italic
+            ...
+            ```
+            Use the name `MesloLGMDZ Nerd Font Mono` for the regular font
+
 ## Build images or run a container
 
 [Command scripts](/docs/commands/README.md)
