@@ -13,6 +13,8 @@ M.setup = function(config)
 
   if (vim.env.HOST_OS == "wsl2") then
     require('tui.data.clipboard.host.wsl2').setup(wsl2)
+  elseif (vim.env.HOST_OS == "linux") then
+    vim.o.clipboard = "unnamedplus"
   else
     print('May have to setup clipboard')
   end
