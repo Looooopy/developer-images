@@ -56,7 +56,7 @@ return require('packer').startup(
 
         -- Language Server Protocol (LSP) plugins
         use { 'neovim/nvim-lspconfig' }                                                 -- Setup for Server side to given code language suggestion and refactoring
-        use { 'Looooopy/lspcontainers.nvim', branch = 'feature/use-docker-volumes' }    -- Dockerized Server side to given code language suggestion and refactoring
+        use { 'lspcontainers/lspcontainers.nvim' }                                      -- Dockerized Server side to given code language suggestion and refactoring
         use { 'onsails/lspkind-nvim'}                                                   -- Adds LSP Kind as VSCode (e.g. Class Interface and so on)
         use { 'ray-x/lsp_signature.nvim' }                                              -- Handles function arguments for cerrtain programrinng languages
         use { 'folke/trouble.nvim' }                                                    -- Display a list from LSP when you got issue in your code.

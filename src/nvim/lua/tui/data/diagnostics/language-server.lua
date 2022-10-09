@@ -62,7 +62,7 @@ M.default_config = function()
 end
 
 M.attach = function(client, bufnr)
-    local capabilities = client.resolved_capabilities
+    local capabilities = client.server.capabilities
     -- if client.name == "tsserver" then
     --     capabilities.document_formatting = false
     -- end
