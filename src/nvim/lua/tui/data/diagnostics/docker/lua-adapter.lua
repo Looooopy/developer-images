@@ -34,7 +34,7 @@ M.setup = function(config)
     -- table.insert(runtime_path, "lua/?.lua")
     -- table.insert(runtime_path, "lua/?/init.lua")
 
-    lspconfig.sumneko_lua.setup {
+    lspconfig.lua_ls.setup {
         cmd = require'lspcontainers'.command('sumneko_lua'),
         on_attach = language_server.attach,
         capabilities = language_server.capabilities,

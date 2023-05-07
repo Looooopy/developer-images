@@ -5,6 +5,7 @@ M.default_config = function()
     bash_adapter = require('tui.data.diagnostics.docker.bash-adapter').default_config(),
     omnisharp_adapter = require('tui.data.diagnostics.docker.omnisharp-adapter').default_config(),
     lua_adapter = require('tui.data.diagnostics.docker.lua-adapter').default_config(),
+    rust_adapter =  require('tui.data.diagnostics.docker.rust-adapter').default_config(),
   }
 end
 
@@ -14,6 +15,7 @@ M.setup = function(config)
     require('tui.data.diagnostics.docker.bash-adapter').setup(config.bash_adapter)
     require('tui.data.diagnostics.docker.omnisharp-adapter').setup(config.omnisharp_adapter)
     require('tui.data.diagnostics.docker.lua-adapter').setup(config.lua_adapter)
+    require('tui.data.diagnostics.docker.rust-adapter').setup(config.rust_adapter)
 end
 
 return M

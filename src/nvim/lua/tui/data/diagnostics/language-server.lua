@@ -44,7 +44,7 @@ M.setup = function(config)
     require('trouble').setup()
 
     -- Hook up completion engine with language server
-    M.capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+    M.capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 end
 
 M.default_config = function()
@@ -62,7 +62,7 @@ M.default_config = function()
 end
 
 M.attach = function(client, bufnr)
-    local capabilities = client.server.capabilities
+    local capabilities = client.resolved_capabilities
     -- if client.name == "tsserver" then
     --     capabilities.document_formatting = false
     -- end

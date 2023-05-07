@@ -64,6 +64,7 @@ return require('packer').startup(
         use { 'hrsh7th/vim-vsnip' }                                                     -- used by nvim-cmp (Snippet engine)
         use { 'hrsh7th/cmp-buffer' }                                                    -- used by nvim-cmp (Buffer completion source)
         use { 'hrsh7th/cmp-nvim-lsp' }                                                  -- Autocomplete integrates with LSP
+        use { 'hrsh7th/cmp-cmdline' }                                                   -- Autocomplete command line
         use { 'hrsh7th/cmp-path' }                                                      -- Get workingdir for a buffer use
         use { 'jose-elias-alvarez/null-ls.nvim' }                                       -- Hook into LSP to support things like formatting where it is missing
         use { 'L3MON4D3/LuaSnip' }                                                      -- used by nvim-cmp (Snippet engine)
@@ -97,7 +98,7 @@ return require('packer').startup(
         use { 'lewis6991/gitsigns.nvim' }                                               -- Add git decorations to the buffer
         --use { 'lukas-reineke/indent-blankline.nvim' }                                 -- Show indentation and and whitespaces line feed (LF)
         use { 'folke/which-key.nvim' }                                                  -- Display next shortcut key after a while
-         use { 'hoob3rt/lualine.nvim' }                                                  -- Display status line at bottom in nvim
+        use { 'hoob3rt/lualine.nvim' }                                                  -- Display status line at bottom in nvim
 
         -- Editor support extended
         use { 'windwp/nvim-autopairs' }                                                 -- Should add pairs automagically, you type '{' and you get the end '}'
@@ -109,7 +110,8 @@ return require('packer').startup(
         use { 'tversteeg/registers.nvim' }                                              -- Show content of registers
         use { 'ntpeters/vim-better-whitespace' }                                        -- Mark invalid whitespace that can be removed
         use { 'AckslD/nvim-neoclip.lua' }                                               -- Handles a clipboard history (use :Telescope neoclip to see it)
-
+        use { 'tanvirtin/vgit.nvim', requires = { 'nvim-lua/plenary.nvim' } }           -- Git helper
+        use { 'github/copilot.vim' }                                                    -- Git copilot AI helper
         -- Tools incorporation
         use { 'kyazdani42/nvim-web-devicons' }                                          -- used by nvim-tree for file icons
         use { 'kyazdani42/nvim-tree.lua' }                                              -- File tree explorer

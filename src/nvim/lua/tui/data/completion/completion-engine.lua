@@ -55,7 +55,7 @@ M.setup = function(config)
     --     })
 
     cmp.setup.cmdline('/', _config.cmdline_slash)
-    -- cmp.setup.cmdline(':', _config.cmdline_colon)
+    cmp.setup.cmdline(':', _config.cmdline_colon)
 end
 
 
@@ -129,7 +129,9 @@ M.default_config = function()
                 { name = 'buffer' }
             }
         },
+
         cmdline_colon = {
+            mapping = cmp.mapping.preset.cmdline(),
             sources = cmp.config.sources(
                 {
                     { name = 'path' }
@@ -140,6 +142,7 @@ M.default_config = function()
             )
         }
     }
+
 end
 
 -- Return Module

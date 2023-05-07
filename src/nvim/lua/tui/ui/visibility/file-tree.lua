@@ -57,7 +57,7 @@ function M.default_config()
                   folder_arrows = 1,
              }
         },
-        globals = {            
+        globals = {
             refresh_wait = 500,
         },
         applyConfig = {
@@ -84,7 +84,6 @@ function M.default_config()
                   error = "",
                 },
             },
-            open_on_setup = true,
             hijack_directories   = {
                 enable    = true,
                 -- false by default, opens the tree when typing `nvim $DIR` or `nvim`
