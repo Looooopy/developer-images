@@ -26,6 +26,7 @@ config = vim.tbl_deep_extend("force", M.default_config(), config or {})
     end
 
     require'lspconfig'.rust_analyzer.setup{
+        cmd = require'lspcontainers'.command('rust_analyzer', { network='docker_default' }),
         settings = {
             ['rust-analyzer'] = {
                 diagnostics = {
