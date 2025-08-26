@@ -90,18 +90,11 @@ bind_keys = function()
     local m = require('constants.vim-mode')
 
     -- toggle group minimap (toggle, show, hide)
-    wk.register(
+    wk.add(
         {
-            ['tgv'] = {
-                t =  {'<cmd>TuiToggleVirtualText<cr>', '🍃 Toggle Virtual Text'},
-                s =  {'<cmd>TuiShowVirtualText<cr>', '🍃 Show Virtual Text'},
-                h =  {'<cmd>TuiHideVirtualText<cr>', '🍃 Hide Virtual Text'},
-            },
-        },
-        {
-            prefix = '<leader>',
-            mode = m.normal,
-            buffer = nil,
+            {'tgvt', '<cmd>TuiToggleVirtualText<cr>', desc = '🍃 Toggle Virtual Text'},
+            {'tgvs', '<cmd>TuiShowVirtualText<cr>', desc = '🍃 Show Virtual Text'},
+            {'tgvh', '<cmd>TuiHideVirtualText<cr>', desc = '🍃 Hide Virtual Text'},
         }
     );
 end

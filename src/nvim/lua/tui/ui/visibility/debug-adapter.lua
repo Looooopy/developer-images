@@ -83,26 +83,21 @@ bind_keys = function()
     local b = require('constants.buffer')
     local m = require('constants.vim-mode')
 
-    wk.register(
+    wk.add(
         {
             -- (T)oggle (G)roup (D)ebug Adapter Protocol
-            ['tgd'] = {
-                t =  {'<cmd>TuiToggleDebug<cr>',    '🍃 Toggle Debug Adapter UI (Debug)'},
-                s =  {'<cmd>TuiShowDebug<cr>',      '🍃 Show Debug Adapter UI (Debug)'},
-                h =  {'<cmd>TuiHideDebug<cr>',      '🍃 Hide Debug Adapter UI (Debug)'},
-            },
+            { '<leader>tgdt', '<cmd>TuiToggleDebug<cr>',  desc = '🍃 Toggle Debug Adapter UI (Debug)' },
+            { '<leader>tgds', '<cmd>TuiShowDebug<cr>',    desc = '🍃 Show Debug Adapter UI (Debug)' },
+            { '<leader>tgdh', '<cmd>TuiHideDebug<cr>',    desc = '🍃 Hide Debug Adapter UI (Debug)'},
             -- (D)ebug
-            ['d'] = {
-                d = { '<cmd>lua require("dap").continue()<cr>',             '🍃 launch/resume' },
-                b = { '<cmd>lua require("dap").toggle_breakpoint()<cr>',    '🍃 Toggle breakpoint' },
-                h = { '<cmd>lua require("dap").step_over()<cr>',            '🍃 Step over' },
-                l = { '<cmd>lua require("dap").step_into()<cr>',            '🍃 Step into' },
-                g = { '<cmd>lua require("dap").repl.open()<cr>',            '🍃 Open Repl (type exit to close)' },
-                t = { '<cmd>TuiToggleDebug<cr>',                            '🍃 Toggle Debug Adapter UI' },
-            }
+            { '<leader>dd', '<cmd>lua require("dap").continue()<cr>',           desc = '🍃 launch/resume' },
+            { '<leader>db', '<cmd>lua require("dap").toggle_breakpoint()<cr>',  desc = '🍃 Toggle breakpoint' },
+            { '<leader>dh', '<cmd>lua require("dap").step_over()<cr>',          desc = '🍃 Step over' },
+            { '<leader>dl', '<cmd>lua require("dap").step_into()<cr>',          desc = '🍃 Step into' },
+            { '<leader>dg', '<cmd>lua require("dap").repl.open()<cr>',          desc = '🍃 Open Repl (type exit to close)' },
+            { '<leader>dt', '<cmd>TuiToggleDebug<cr>',                          desc = '🍃 Toggle Debug Adapter UI' },
         },
         {
-            prefix = '<leader>',
             mode = m.normal,
             buffer = nil,
         }

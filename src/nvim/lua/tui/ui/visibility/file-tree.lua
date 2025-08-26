@@ -45,6 +45,7 @@ function M.default_config()
         },
         respect_buf_cwd = 1,
          renderer = {
+             root_folder_label = " ",
              special_files = {
                  run = 1,
                  build = 1,
@@ -59,17 +60,19 @@ function M.default_config()
         },
         globals = {
             refresh_wait = 500,
+            loaded_netrw = 1,
+            loaded_netrwPlugin = 1,
         },
         applyConfig = {
             view = {
                 width = 30,
-                hide_root_folder = false,
+--                hide_root_folder = false,   -- deprcated, use renderer.root_folder_label=""
                 side = 'left',
                 preserve_window_proportions = false,
-                mappings = {
-                  custom_only = false,
-                  list = {}
-                },
+--                mappings = {
+--                  custom_only = false,
+--                  list = {}
+--                },
                 number = false,
                 relativenumber = false,
                 signcolumn = "yes"
@@ -124,16 +127,19 @@ function M.default_config()
 end
 
 function M.toggle()
-    require('nvim-tree').toggle(false,false)
+    local api = require("nvim-tree.api")
+    api.tree.toggle()
 end
 
 function M.show()
-    require('nvim-tree').open()
+    local api = require("nvim-tree.api")
+    api.tree.open()
     vim.cmd('wincmd p') -- Update nvim tree so is get content
 end
 
 function M.hide()
-    require('nvim-tree.view').close()
+    local api = require("nvim-tree.api")
+    api.tree.close()
 end
 
 --------------------
@@ -150,20 +156,17 @@ bind_keys = function()
     local m = require('constants.vim-mode')
 
     -- toggle group minimap (toggle, show, hide)
-    wk.register(
+    wk.add(
         {
             -- Toggle Group FileTree
-            ['tgf'] = {
-                t =  {'<cmd>TuiToggleFileTree<cr>', '🍃 Toggle File-tree'},
-                s =  {'<cmd>TuiShowFileTree<cr>', '🍃 Show File-tree'},
-                h =  {'<cmd>TuiHideFileTree<cr>', '🍃 Hide File-tree'},
-            },
+            { '<leader>tgft', '<cmd>TuiToggleFileTree<cr>', desc = '🍃 Toggle File-tree'},
+            { '<leader>tgfs', '<cmd>TuiShowFileTree<cr>', desc = '🍃 Show File-tree'},
+            { '<leader>tgfh', '<cmd>TuiHideFileTree<cr>', desc = '🍃 Hide File-tree'},
             -- name = 'Files',
-            ['fh'] = { '<cmd>NvimTreeFocus<cr>', '🍃 Focus (NvimTree)' },
-            ['fj'] = { '<cmd>NvimTreeFindFile<cr>', '🍃 Find (NvimTree)' },
+            { '<leader>fh', '<cmd>NvimTreeFocus<cr>', desc = '🍃 Focus (NvimTree)' },
+            { '<leader>fj', '<cmd>NvimTreeFindFile<cr>', desc = '🍃 Find (NvimTree)' },
         },
         {
-            prefix = '<leader>',
             mode = m.normal,
             buffer = b.all_buffers,
         }

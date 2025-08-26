@@ -36,33 +36,25 @@ key_binding = function(bufnr)
     local m = require('constants.vim-mode')
     local wk = require('which-key')
 
-    wk.register(
+    wk.add(
         {
-            g = {
-                name = 'Git',
-                [']c'] = {'<cmd>Gitsigns stage_hunk<cr>',                                                         '🍃 Stage hunk'},
-                ['[c'] = {'<cmd>Gitsigns reset_hunk<cr>',                                                         '🍃 Reset hunk'},
-
-                ['S'] = { '<cmd>lua require("gitsigns").stage_buffer()<cr>',                                      '🍃 Stage buffer'},
-                ['s'] = { '<cmd>lua require("gitsigns").stage_hunk({vim.fn.line("."), vim.fn.line(".")})<cr>',    '🍃 Stage line'},
-                ['u'] = { '<cmd>lua require("gitsigns").undo_stage_hunk()<cr>',                                   '🍃 Undo stage hunk'},
-                ['R'] = { '<cmd>lua require("gitsigns").reset_buffer()<cr>',                                      '🍃 Reset buffer'},
-                ['p'] = { '<cmd>lua require("gitsigns").preview_hunk()<cr>',                                      '🍃 Preview hunk'},
-                ['b'] = { function() require("gitsigns").blame_line{full=true} end,                               '🍃 Blame line'},
-                ['d'] = { '<cmd>lua require("gitsigns").diffthis()<cr>',                                          '🍃 Diff this'},
-                ['D'] = { function() require("gitsigns").diffthis("~") end,                                       '🍃 Diff vs latest commit'},
-                ['d'] = { '<cmd>lua require("gitsigns").toggle_deleted()<cr>',                                    '🍃 Toggle deleted'},
-                ['b'] = { '<cmd>lua require("gitsigns").toggle_current_line_blame()<cr>',                         '🍃 Toggle blame line'},
-            },
-        },
-        {
-            prefix = '<leader>',
-            mode = m.normal,
-            buffer = bufnr,
+            { "<leader>g", group = "Git" },
+            { "<leader>g]c", "<cmd>Gitsigns stage_hunk<cr>", desc = "🍃 Stage hunk" },
+            { "<leader>g[c", "<cmd>Gitsigns reset_hunk<cr>", desc = "🍃 Reset hunk" },
+            { "<leader>gS", "<cmd>Gitsigns stage_buffer<cr>", desc = "🍃 Stage buffer" },
+            { "<leader>gs", "<cmd>Gitsigns stage_hunk({vim.fn.line('.'), vim.fn.line('v')})<cr>", desc = "🍃 Stage line" },
+            { "<leader>gu", "<cmd>Gitsigns undo_stage_hunk<cr>", desc = "🍃 Undo stage hunk" },
+            { "<leader>gR", "<cmd>Gitsigns reset_buffer<cr>", desc = "🍃 Reset buffer" },
+            { "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", desc = "🍃 Preview hunk" },
+            { "<leader>gb", function() gs.blame_line{full=true} end, desc = "🍃 Blame line" },
+            { "<leader>gd", "<cmd>Gitsigns diffthis<cr>", desc = "🍃 Diff this" },
+            { "<leader>gD", function() gs.diffthis("~") end, desc = "🍃 Diff vs latest commit" },
+            { "<leader>gd", "<cmd>Gitsigns toggle_deleted<cr>", desc = "🍃 Toggle deleted" },
+            { "<leader>gb", "<cmd>Gitsigns toggle_current_line_blame<cr>", desc = "🍃 Toggle blame line" },
         }
     );
 
-  wk.register(
+  wk.add(
         {
             g = {
                 name = 'Git',
@@ -76,7 +68,7 @@ key_binding = function(bufnr)
         }
   );
 
-  wk.register(
+  wk.add(
         {
             g = {
                 ['ih'] = {'<cmd><C-U>Gitsigns select_hunk<cr>',                                                   '🍃 Select hunk'},

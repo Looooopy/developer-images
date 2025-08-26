@@ -134,13 +134,11 @@ bind_keys = function()
     local m = require('constants.vim-mode')
 
     -- toggle group minimap (toggle, show, hide)
-    wk.register(
+    wk.add(
         {
-            ['tgm'] = {
-                ['t'] = {'<cmd>TuiToggleMinimap<cr>',   '🍃 Toggle Minimap' },
-                ['s'] = {'<cmd>TuiShowMinimap<cr>',     '🍃 Show Minimap' },
-                ['h'] = {'<cmd>TuiHideMinimap<cr>',     '🍃 Hide Minimap' },
-            },
+                {'tgmt' , '<cmd>TuiToggleMinimap<cr>',   desc = '🍃 Toggle Minimap' },
+                {'tgms' , '<cmd>TuiShowMinimap<cr>',     desc = '🍃 Show Minimap' },
+                {'tgmh' , '<cmd>TuiHideMinimap<cr>',     desc = '🍃 Hide Minimap' },
         },
         {
             prefix = '<leader>',

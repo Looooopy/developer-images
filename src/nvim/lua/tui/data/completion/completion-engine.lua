@@ -48,7 +48,7 @@ M.setup = function(config)
     local lspkind = require('lspkind')
 
     cmp.setup(_config.global)
-    -- wk.register(_config.which_key,
+    -- wk.add(_config.which_key,
     --     {
     --         mode = m.normal,
     --         buffer = b.all_buffers,

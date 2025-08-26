@@ -14,9 +14,6 @@ M.setup = function(config)
     require('tui.data').setup(config.data)
     require('tui.ui').setup(config.ui)
 
-    -- Had to move this to packer bacause the plugins are loaded after init.lua
-    -- https://github.com/wbthomason/packer.nvim/issues/554
-    -- https://github.com/wbthomason/packer.nvim/pull/402 (Fix in progress)
     --require('tui.ui.colourscheme').random()
 
     -- require("trouble").setup({})

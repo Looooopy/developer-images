@@ -128,14 +128,12 @@ bind_keys = function()
     local b = require('constants.buffer')
     local m = require('constants.vim-mode')
 
-    wk.register(
+    wk.add(
         {
             -- (T)oggle (G)roup (S)statusline
-            ['tgs'] = {
-                t =  {'<cmd>TuiToggleStatusline<cr>',    '🍃 Toggle Statusline'},
-                s =  {'<cmd>TuiShowStatusline<cr>',      '🍃 Show Statusline'},
-                h =  {'<cmd>TuiHideStatusline<cr>',      '🍃 Hide Statusline'},
-            },
+            {'tgst', '<cmd>TuiToggleStatusline<cr>',  desc = '🍃 Toggle Statusline'},
+            {'tgss', '<cmd>TuiShowStatusline<cr>',    desc = '🍃 Show Statusline'},
+            {'tgsh', '<cmd>TuiHideStatusline<cr>',    desc = '🍃 Hide Statusline'},
         },
         {
             prefix = '<leader>',

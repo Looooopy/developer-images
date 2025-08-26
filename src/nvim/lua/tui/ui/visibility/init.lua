@@ -99,58 +99,34 @@ register_keys = function()
     local m = require('constants.vim-mode')
 
     -- Register Names
-    wk.register(
+    wk.add(
         {
             --c = {
                 -- name = 'Clipboard',
             --},
-            d = {
-                name = 'Debug',
-                 -- see lua/tui/ui/debug-adapter.lua
-            },
-            f = {
-                name = 'Files',
-                f = { '<cmd>lua require("telescope.builtin").find_files()<cr>', '🍃 Find files (Telescope)' },
-                g = { '<cmd>lua require("telescope.builtin").live_grep()<cr>', '🍃 Live grep (Telescope)' },
-                b = { '<cmd>lua require("telescope.builtin").buffers()<cr>', '🍃 Find buffer (Telescope)' },
-                b = { '<cmd>lua require("telescope.builtin").help_tags()<cr>', '🍃 Find helptags (Telescope)' },
-            },
-            t = {
-                name = 'Tui toggle',
-                t = {'<cmd>TuiToggleAllButDap<cr>', '🍃 Toggle all'},
-                h = {'<cmd>TuiHideAll<cr>',         '🍃 Hide all'},
-                s = {'<cmd>TuiShowAllButDap<cr>',   '🍃 Show all'},
-                g = {
-                    name = 'Group / Specific',
-                    m = {
-                         name = 'Minimap',
-                    },
-                    f = {
-                        name = 'File Tree',
-                    },
-                    s = {
-                        name = 'Statusline',
-                    },
-                    h = {
-                        name = 'Syntax Highlighting',
-                    },
-                    t = {
-                        name = 'Terminal',
-                    },
-                    -- g = {
-                    --     name = 'Git',
-                    -- },
-                    d = {
-                        name = 'Debug',
-                    },
-                    v = {
-                        name = 'Virtual Text',
-                    },
-                },
-            },
+            -- see lua/tui/ui/debug-adapter.lua
+            { '<leader>d', name = 'Debug' },
+            -- Files
+            { '<leader>f', name = 'Files' },
+            { '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>', desc = '🍃 Find files (Telescope)' },
+            { '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>',  desc = '🍃 Live grep (Telescope)' },
+            { '<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>',  desc = '🍃 Find buffer (Telescope)' },
+            { '<leader>fb', '<cmd>lua require("telescope.builtin").help_tags()<cr>',  desc = '🍃 Find helptags (Telescope)' },
+            { '<leader>t', name = 'Tui toggle' },
+            { '<leader>tt', '<cmd>TuiToggleAllButDap<cr>',  desc = '🍃 Toggle all'},
+            { '<leader>th', '<cmd>TuiHideAll<cr>',          desc = '🍃 Hide all'},
+            { '<leader>ts', '<cmd>TuiShowAllButDap<cr>',    desc = '🍃 Show all'},
+            { '<leader>tg', name = 'Group / Specific'},
+            { '<leader>tgm', name = 'Minimap' },
+            { '<leader>tgmf', name = 'File Tree' },
+            { '<leader>tgms', name = 'Statusline' },
+            { '<leader>tgmh', name = 'Syntax Highlighting'},
+            { '<leader>tgmt', name = 'Terminal' },
+            -- { '<leader>tgmg', name = 'Git' },
+            { '<leader>tgmd', name = 'Debug' },
+            { '<leader>tgmv', name = 'Virtual Text'},
         },
         {
-            prefix = '<leader>',
             mode = m.normal,
             buffer = b.all_buffers,
         }

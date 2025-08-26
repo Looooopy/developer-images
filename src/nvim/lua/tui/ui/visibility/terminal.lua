@@ -91,13 +91,11 @@ bind_keys = function()
     local m = require('constants.vim-mode')
 
     -- toggle group minimap (toggle, show, hide)
-    wk.register(
+    wk.add(
         {
-            ['tgt'] = {
-                t =  {'<cmd>TuiToggleTerminals<cr>', '🍃 Toggle Terminals (Short: <C-A>)'},
-                s =  {'<cmd>TuiShowTerminals<cr>', '🍃 Show Terminals'},
-                h =  {'<cmd>TuiHideTerminals<cr>', '🍃 Hide Terminals (Short: <C-Z>)'},
-            },
+            {'tgtt', '<cmd>TuiToggleTerminals<cr>', desc = '🍃 Toggle Terminals (Short: <C-A>)'},
+            {'tgts', '<cmd>TuiShowTerminals<cr>', desc = '🍃 Show Terminals'},
+            {'tgth', '<cmd>TuiHideTerminals<cr>', desc = '🍃 Hide Terminals (Short: <C-Z>)'},
         },
         {
             prefix = '<leader>',
@@ -106,10 +104,10 @@ bind_keys = function()
         }
     );
 
-    wk.register(
+    wk.add(
         {
-            ['<C-A>'] = { '<cmd>TuiShowTerminals<cr>',    '🍃 Show terminals' },
-            ['<C-Z>'] = { '<cmd>TuiToggleTerminals<cr>',  '🍃 Toggle terminals' },
+            {'<C-A>', '<cmd>TuiShowTerminals<cr>',   desc = '🍃 Show terminals' },
+            {'<C-Z>', '<cmd>TuiToggleTerminals<cr>', desc = '🍃 Toggle terminals' },
         },
         {
             mode = m.normal,

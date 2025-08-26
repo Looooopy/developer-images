@@ -84,7 +84,7 @@ end
 bind_keys = function(bufnr)
     local m = require('constants.vim-mode')
     local wk = require('which-key')
-    wk.register(
+    wk.add(
         {
             g = {
                 name = 'Goto',

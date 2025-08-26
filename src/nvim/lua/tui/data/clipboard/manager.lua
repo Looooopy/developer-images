@@ -7,14 +7,9 @@ M.setup = function(config)
     require('telescope').load_extension('neoclip')
     local b = require('constants.buffer')
     local m = require('constants.vim-mode')
-    require('which-key').register(
-        {
-            c = { '<cmd>Telescope neoclip<cr>', '🍃 Clipboard search' },
-        },
-        {
-            prefix = '<leader>',
-            mode = m.normal,
-            buffer = b.all_buffers,
+    wk = require('which-key')
+    wk.add({
+                                      { "<leader>c", "<cmd>Telescope neoclip<cr>", desc = "🍃 Clipboard search" }
         }
     )
 end

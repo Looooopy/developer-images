@@ -71,7 +71,7 @@ return require('packer').startup(
 
         -- Debugger Adapter Protocol (DAP) plugins
         use { 'mfussenegger/nvim-dap' }                                                 -- Debugger: Handles debugging of program languages
-        use { 'rcarriga/nvim-dap-ui' }                                                  -- Debugger: Handles ui for stack and so on.
+        use { 'rcarriga/nvim-dap-ui',requires = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"} }                                                  -- Debugger: Handles ui for stack and so on.
         use { 'theHamsta/nvim-dap-virtual-text' }                                       -- Debugger Extension: Inlines the values for variables as virtual text using treesitter.
         use { 'nvim-telescope/telescope-dap.nvim' }                                     -- Debugger Extension: Overriding dap internal ui and use telescope instead.
         use { 'jbyuki/one-small-step-for-vimkind' }                                     -- Debugger Language: lua
@@ -117,6 +117,25 @@ return require('packer').startup(
         use { 'kyazdani42/nvim-tree.lua' }                                              -- File tree explorer
         use { 'akinsho/toggleterm.nvim' }                                               -- Handles terminal in neovim
         use { 'jeffkreeftmeijer/vim-numbertoggle' }                                     -- Toggle line numbers
+        use { 'yetone/avante.nvim',
+           build = 'make BUILD_FROM_SOURCE=true',
+          lazy = false,
+          version = false,
+          BUILD_FROM_SOURCE = true,
+          config = function()
+            require('avante_lib').load()
+            require('avante').setup()
+          end,
+          requires = {
+            'nvim-treesitter/nvim-treesitter',
+            'stevearc/dressing.nvim',
+            'nvim-lua/plenary.nvim',
+            'MunifTanjim/nui.nvim',
+            --- The below dependencies are optional,
+            'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+            'HakonHarnes/img-clip.nvim',
+          },
+        }
         --use { 'glacambre/firenvim' }                                                    -- Cool plugin that takes over text areas in brower with a Neovim instance
 
     -- Automatically set up your configuration after cloning packer.nvim

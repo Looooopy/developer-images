@@ -55,7 +55,7 @@ bind_keys = function()
     local m = require('constants.vim-mode')
 
     -- toggle group minimap (toggle, show, hide)
-    wk.register(
+    wk.add(
         {
             -- (T)oggle (G)roup Syntax (H)ighlighting
             ['tgh'] = {
