@@ -1,0 +1,29 @@
+[window]
+position = { x = 0, y = 0 }
+decorations = "None"
+opacity = 0.96
+startup_mode = "Maximized"
+title = "Alacritty"
+dynamic_title = true
+option_as_alt = "Both"
+
+[scrolling]
+history = 50000
+
+[font]
+normal = { family = "MesloLGS NF", style = "Regular" }
+bold = { family = "MesloLGS NF", style = "Bold" }
+italic = { family = "MesloLGS NF", style = "Italic" }
+bold_italic = { family =  "MesloLGS NF", style = "Bold Italic" }
+size = 14.0
+
+[selection]
+save_to_clipboard = true
+
+[cursor]
+unfocused_hollow = true
+
+[keyboard]
+bindings = [
+  { key = "N", mods = "Command", action = "CreateNewWindow" }
+]
